@@ -55,29 +55,18 @@ local function findNewTarget()
     return nil
 end
 
-local function setupPositionControl(hrp, targetPosition)
-    -- Clear existing BodyGyro and BodyPosition if they exist
-    local existingGyro = hrp:FindFirstChild("BodyGyro")
-    if existingGyro then existingGyro:Destroy() end
+local function setPlayerToLyingPosition()
+    local player = game.Players.LocalPlayer
+    local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
     
-    local existingPosition = hrp:FindFirstChild("BodyPosition")
-    if existingPosition then existingPosition:Destroy() end
-
-    -- Create and configure new BodyGyro
-    local bodyGyro = Instance.new("BodyGyro")
-    bodyGyro.Parent = hrp
-    bodyGyro.CFrame = targetPosition
-    bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
-    bodyGyro.P = 10000
-    bodyGyro.D = 1000
-
-    -- Create and configure new BodyPosition
-    local bodyPosition = Instance.new("BodyPosition")
-    bodyPosition.Parent = hrp
-    bodyPosition.Position = targetPosition.Position
-    bodyPosition.MaxForce = Vector3.new(4000, 4000, 4000)
-    bodyPosition.P = 10000
-    bodyPosition.D = 1000
+    if hrp and humanoid then
+        -- Ensure the character is sitting to prevent unwanted movements
+        humanoid.Sit = true
+        -- Set the CFrame to the desired position
+        hrp.CFrame = hrp.CFrame * CFrame.new(0, 2.5, 0) -- Adjust offset as needed
+        -- Optionally, lock the character's position by setting up BodyGyro and BodyPosition as needed
+    end
 end
 
 spawn(function()
@@ -109,17 +98,13 @@ spawn(function()
                 end
 
                 if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
-                    -- Move to the position 2.5 times the height above the head
+                    -- Move to the position above the head
                     local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 2.5
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
                     teleportToTarget(targetPosition)
                     
-                    -- Apply BodyGyro and BodyPosition to maintain position
-                    local player = game.Players.LocalPlayer
-                    local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-                    if hrp then
-                        setupPositionControl(hrp, targetPosition)
-                    end
+                    -- Set the player to lying position
+                    setPlayerToLyingPosition()
                 end
             end
         end
@@ -136,15 +121,10 @@ AutofarmTab:AddToggle({
         local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
         
         if not _G.Auto_Farm then
-            -- Clean up BodyGyro and BodyPosition when toggled off
+            -- Reset player's position or other cleanup
             if hrp then
-                local existingGyro = hrp:FindFirstChild("BodyGyro")
-                if existingGyro then existingGyro:Destroy() end
-                
-                local existingPosition = hrp:FindFirstChild("BodyPosition")
-                if existingPosition then existingPosition:Destroy() end
+                hrp.CFrame = hrp.CFrame -- Reset to original position or handle as needed
             end
         end
     end    
 })
-
