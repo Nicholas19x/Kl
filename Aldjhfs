@@ -33,7 +33,7 @@ AutofarmSettingTab:AddDropdown({
 })
 
 spawn(function()
-    while task.wait(0.5) do
+    while task.wait(0.2) do
         pcall(function()
             if _G.Auto_Farm then
                 local args = {
