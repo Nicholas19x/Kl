@@ -45,6 +45,8 @@ function checklevel()
     if lv == 1 or lv >= 9999 then  -- แก้ไขเปรียบเทียบการเช็คเลเวล
         Mon = "Soldier [Lv. 1]"  -- แก้ไขชื่อ Monster
         Quest = "Kill 4 Soldiers"  -- แก้ไขชื่อ Quest
+        -- ดีบักค่าของ Quest
+        print("Quest Set To:", Quest)
     end
 end
 
@@ -58,34 +60,44 @@ spawn(function()
                 
                 -- ตรวจสอบว่า QuestBoard ไม่แสดงอยู่หรือไม่
                 if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
-                    local args = {
-                        [1] = "take",
-                        [2] = Quest
-                    }
-      print("args[1]:", args[1])  -- แสดงค่า [1]
-                        print("args[2]:", args[2])  -- 
+                    -- ตรวจสอบค่าตัวแปร Quest ก่อนใช้งาน
+                    if Quest and Quest ~= "" then
+                        local args = {
+                            [1] = "take",
+                            [2] = Quest  -- ใช้ค่าจากตัวแปร Quest ที่ประกาศไว้
+                        }
 
-                    -- เรียกใช้ RemoteFunction เพื่อขอรับเควส
-                    game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+                        -- ดีบักค่าของ args
+                        print("args[1]:", args[1])  -- แสดงค่า [1]
+                        print("args[2]:", args[2])  -- แสดงค่า [2]
+
+                        -- เรียกใช้ RemoteFunction เพื่อขอรับเควส
+                        game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+                    else
+                        warn("Quest variable is empty or nil")  -- แจ้งเตือนถ้าค่าตัวแปร Quest ว่างเปล่าหรือเป็น nil
+                    end
                 end
             end
         end)
     end
 end)
 
--- ตรวจสอบเมื่อ QuestBoard เปิดอยู่
+-- สร้างกระบวนการใหม่ (Thread) เพื่อทำงานแยกจากโค้ดหลัก
 spawn(function()
-    while _G.Auto_Farm do
-        if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
-            for _,v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-                if v.Name == Mon then
-                    totarget(v.HumanoidRootPart.CFrame * CFrame.new(0,1,15))
-                    v.HumanoidRootPart.Size = Vector3.new(60,2.5,60)
-                    v.HumanoidRootPart.CFrame = CFrameMon
+    while task.wait(0.1) do
+        if _G.Auto_Farm then
+            -- ตรวจสอบเมื่อ QuestBoard เปิดอยู่
+            if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
+                for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
+                    if v.Name == Mon then
+                        -- ใช้ฟังก์ชัน totarget เพื่อทำการตั้งค่า CFrame ของมอนสเตอร์
+                        totarget(v.HumanoidRootPart.CFrame * CFrame.new(0,1,15))
+                        v.HumanoidRootPart.Size = Vector3.new(60,2.5,60)
+                        v.HumanoidRootPart.CFrame = CFrameMon
+                    end
                 end
             end
         end
-        task.wait(0.1)
     end
 end)
 
