@@ -1,77 +1,28 @@
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
 
-local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+local player = Players.LocalPlayer
+local character = player.Character
+local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 
-local AutofarmSettingTab = Window:MakeTab({
-    Name = "Setting",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
+local function moveTo(position)
+    if humanoidRootPart then
+        local tweenInfo = TweenInfo.new(
+            1,  -- Duration of the tween in seconds
+            Enum.EasingStyle.Linear,  -- Easing style
+            Enum.EasingDirection.InOut,  -- Easing direction
+            0,  -- Number of times to repeat
+            false,  -- Reverse the tween or not
+            0  -- Delay time
+        )
 
-local AutofarmTab = Window:MakeTab({
-    Name = "Auto farm",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
-local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle
-local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName
-
-AutofarmSettingTab:AddDropdown({
-    Name = "Weapon",
-    Default = "melee",
-    Options = {"melee", "sword"},
-    Callback = function(Value)
-        if Value == "melee" and melee then
-        elseif Value == "sword" and sword then
-        end
-    end    
-})
-
-function checklevel()
-    local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
-    if lv == 1 or lv <= 2000 then
-        Mon = "Soldier [Lv. 1]"
-        QuestName = "Kill 4 Soldiers"
+        local goal = { CFrame = position }
+        local tween = TweenService:Create(humanoidRootPart, tweenInfo, goal)
+        tween:Play()
     end
-end
-
-local function totarget(position)
-    if position then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = position
-    end
-end
-
-local function findNewTarget()
-    for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-        if v.Name == Mon and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
-            return v
-        end
-    end
-    return nil
 end
 
 spawn(function()
-    while task.wait(0.1) do
-        pcall(function()
-            if _G.Auto_Farm then
-                checklevel()
-                if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
-                    if QuestName and QuestName ~= "" then
-                        local args = {
-                            [1] = "take",
-                            [2] = QuestName
-                        }
-                        game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
-                    end
-                end
-            end
-        end)
-    end
-end)
-
-spawn(function()
-    local currentTarget = nil
     while task.wait(0.1) do
         if _G.Auto_Farm then
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
@@ -82,22 +33,9 @@ spawn(function()
                     -- Move to the position 2.5 times the height above the head
                     local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 2.5
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
-                    totarget(targetPosition)
-                    currentTarget.HumanoidRootPart.Size = Vector3.new(60, 2.5, 60)
-                    -- Ensure CFrameMon is defined
-                    if CFrameMon then
-                        currentTarget.HumanoidRootPart.CFrame = CFrameMon
-                    end
+                    moveTo(targetPosition)
                 end
             end
         end
     end
 end)
-
-AutofarmTab:AddToggle({
-    Name = "Auto farm",
-    Default = false,
-    Callback = function(Value)
-        _G.Auto_Farm = Value
-    end    
-})
