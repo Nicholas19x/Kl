@@ -138,7 +138,7 @@ spawn(function()
 
                 if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
                     -- Move to the position above the head
-                    local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 5
+                    local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * Distancehigh
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
                     teleportToTarget(targetPosition)
 
