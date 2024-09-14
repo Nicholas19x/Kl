@@ -27,3 +27,10 @@ AutofarmTab:AddDropdown({
 		end
 	end    
 })
+AutoFarmTab:AddToggle({
+	Name = "This is a toggle!",
+	Default = false,
+	Callback = function(Value)
+		print(Value)
+	end    
+})
