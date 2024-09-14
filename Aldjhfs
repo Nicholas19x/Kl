@@ -85,9 +85,9 @@ end)
 
 -- เพิ่ม Toggle ในแท็บ Auto farm
 AutofarmTab:AddToggle({
-	Name = "This is a toggle!",
+	Name = "Auto farm",
 	Default = false,
 	Callback = function(Value)
-		print(Value)  -- แสดงค่า Toggle ที่เลือก
+		_G.Auto_Farm = Value
 	end    
 })
