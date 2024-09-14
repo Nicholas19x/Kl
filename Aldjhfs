@@ -70,7 +70,6 @@ local function setupPositionControl(hrp, targetPosition)
     bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
     bodyGyro.P = 10000
     bodyGyro.D = 1000
-    bodyGyro.CFrame = targetPosition
 
     -- Create and configure new BodyPosition
     local bodyPosition = Instance.new("BodyPosition")
@@ -78,6 +77,7 @@ local function setupPositionControl(hrp, targetPosition)
     bodyPosition.Position = targetPosition.Position
     bodyPosition.MaxForce = Vector3.new(4000, 4000, 4000)
     bodyPosition.P = 10000
+    bodyPosition.D = 1000
 end
 
 spawn(function()
