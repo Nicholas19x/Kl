@@ -16,6 +16,7 @@ local AutofarmTab = Window:MakeTab({
 
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName
+local Weapon = "FS_Default_M1" -- กำหนดค่าเริ่มต้นให้กับ Weapon
 
 AutofarmSettingTab:AddDropdown({
     Name = "Weapon",
@@ -23,18 +24,20 @@ AutofarmSettingTab:AddDropdown({
     Options = {"melee", "sword"},
     Callback = function(Value)
         if Value == "melee" and melee then
+            Weapon = "FS_" .. Value .. "_M1"
         elseif Value == "sword" and sword then
+            Weapon = "SW_" .. Value .. "_M1"
         end
     end    
 })
 
 AutofarmSettingTab:AddTextbox({
-	Name = "Distance",
-	Default = "2.5",
-	TextDisappear = true,
-	Callback = function(Value)
-		Distancehigh = tonumber(Value)
-	end	  
+    Name = "Distance",
+    Default = "2.5",
+    TextDisappear = true,
+    Callback = function(Value)
+        Distancehigh = tonumber(Value) -- แปลงเป็นตัวเลข
+    end
 })
 
 function checklevel()
