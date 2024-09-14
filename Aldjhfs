@@ -46,16 +46,16 @@ local function teleportToTarget(position)
 
         -- Create BodyGyro if not already present
         local bodyGyro = hrp:FindFirstChild("BodyGyro")
-
-        if _G.Auto_Farm then
-            if not bodyGyro then
-                bodyGyro = Instance.new("BodyGyro", hrp)
-                bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
-                bodyGyro.P = 3000
-                bodyGyro.CFrame = position
-            end
-        elseif bodyGyro then
+        if not bodyGyro and _G.Auto_Farm then
+            bodyGyro = Instance.new("BodyGyro", hrp)
+            bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
+            bodyGyro.P = 3000
+        elseif bodyGyro and not _G.Auto_Farm then
             bodyGyro:Destroy()
+        end
+
+        if bodyGyro then
+            bodyGyro.CFrame = position
         end
     end
 end
