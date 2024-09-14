@@ -52,12 +52,20 @@ end
 
 -- สร้างกระบวนการใหม่ (Thread) เพื่อทำงานแยกจากโค้ดหลัก
 spawn(function()
+    while true do
+        checklevel()  -- เรียกใช้ฟังก์ชัน checklevel
+        
+        -- รอ 5 วินาทีก่อนทำงานซ้ำ
+        task.wait(5)
+    end
+end)
+
+-- สร้างกระบวนการใหม่ (Thread) เพื่อทำงานแยกจากโค้ดหลัก
+spawn(function()
     while task.wait(.1) do
         pcall(function()
             -- ตรวจสอบว่า Auto_Farm ถูกเปิดใช้งานหรือไม่ (_G.Auto_Farm)
             if _G.Auto_Farm then
-                checklevel()  -- เรียกใช้ฟังก์ชัน checklevel
-                
                 -- ตรวจสอบว่า QuestBoard ไม่แสดงอยู่หรือไม่
                 if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
                     -- ตรวจสอบค่าตัวแปร Quest ก่อนใช้งาน
