@@ -1,22 +1,29 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+
 local AutofarmTab = Window:MakeTab({
 	Name = "Auto farm",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
-local melee = Game.Players.LocalPlayer.PlayerStats.FightingStyle
-local sword = Game.Players.LocalPlayer.PlayerStats.SwordName
+
+-- แก้ไขเป็นตัวพิมพ์เล็กสำหรับ 'game'
+local melee = game.Players.LocalPlayer.PlayerStats.FightingStyle
+local sword = game.Players.LocalPlayer.PlayerStats.SwordName
+
+-- เพิ่ม Dropdown
 AutofarmTab:AddDropdown({
 	Name = "Weapon",
 	Default = "melee",
 	Options = {"melee", "sword"},
 	Callback = function(Value)
-				if Value == "melee" and melee then
+		-- ตรวจสอบว่าผู้เล่นเลือก "melee" หรือ "sword" และแสดงค่าที่เกี่ยวข้อง
+		if Value == "melee" and melee then
 			print(melee.Value)
 		elseif Value == "sword" and sword then
 			print(sword.Value)
 		else
+			warn("Invalid selection or stat not found")
+		end
 	end    
 })
-
