@@ -23,10 +23,20 @@ AutofarmSettingTab:AddDropdown({
     Options = {"melee", "sword"},
     Callback = function(Value)
         if Value == "melee" and melee then
+        Weapon = "FS_(Value)_M1"
         elseif Value == "sword" and sword then
+        Weapon = "SW_(Value)_M1"
         end
     end    
 })
+spawn(function()
+while taskwait(0.5) do
+pcall(function()
+if _G.Auto_Farm then
+local args = {
+[1] = Weapon
+}
+game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
 
 AutofarmSettingTab:AddTextbox({
 	Name = "Distance",
