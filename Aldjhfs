@@ -16,9 +16,3 @@ AutofarmTab:AddDropdown({
 	end    
 })
 
---[[
-Name = <string> - The name of the dropdown.
-Default = <string> - The default value of the dropdown.
-Options = <table> - The options in the dropdown.
-Callback = <function> - The function of the dropdown.
-]]
