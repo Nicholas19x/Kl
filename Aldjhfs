@@ -70,18 +70,18 @@ spawn(function()
     while task.wait(0.1) do
         if _G.Auto_Farm then
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
-                for i,v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-                    for i,v2 in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-                        if v.Name == Mon and v2.Name == Mon then
-                            local heightAboveHead = v.HumanoidRootPart.Size.Y * 2.5
-                            local targetPosition = v.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
-                            
-                            if targetPosition then
-                                totarget(targetPosition)
-                                v.HumanoidRootPart.Size = Vector3.new(60, 2.5, 60)
-                                if CFrameMon then
-                                    v.HumanoidRootPart.CFrame = CFrameMon
-                                end
+                for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
+                    if v.Name == Mon then
+                        -- Move to the position 2.5 times the height above the head
+                        local heightAboveHead = v.HumanoidRootPart.Size.Y * 2.5
+                        local targetPosition = v.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
+                        
+                        if targetPosition then
+                            totarget(targetPosition)
+                            v.HumanoidRootPart.Size = Vector3.new(60, 2.5, 60)
+                            -- Ensure CFrameMon is defined
+                            if CFrameMon then
+                                v.HumanoidRootPart.CFrame = CFrameMon
                             end
                         end
                     end
