@@ -65,10 +65,17 @@ spawn(function()
     while task.wait(0.1) do
         if _G.Auto_Farm then
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
-                local foundTarget = false
-                
                 for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
                     if v.Name == Mon then
+                        local humanoid = v:FindFirstChildOfClass("Humanoid")
+                        if humanoid and humanoid.Health > 0 then
+                            -- Destroy the HumanoidRootPart if health is greater than 0
+                            local rootPart = v:FindFirstChild("HumanoidRootPart")
+                            if rootPart then
+                                rootPart:Destroy()
+                            end
+                        end
+
                         local heightAboveHead = v.HumanoidRootPart.Size.Y * 2.5
                         local targetPosition = v.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
                         
@@ -78,8 +85,6 @@ spawn(function()
                             if CFrameMon then
                                 v.HumanoidRootPart.CFrame = CFrameMon
                             end
-                            foundTarget = true
-                            break
                         end
                     end
                 end
