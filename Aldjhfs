@@ -45,14 +45,20 @@ local function teleportToTarget(position)
         hrp.CFrame = position
 
         -- Create BodyGyro if not already present
-        local bodyGyro = hrp:FindFirstChild("BodyGyro") or Instance.new("BodyGyro", hrp)
+        local bodyGyro = hrp:FindFirstChild("BodyGyro")
         
-        bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
-        bodyGyro.CFrame = position
-        bodyGyro.P = 3000
+        if _G.Auto_Farm and not bodyGyro then
+            bodyGyro = Instance.new("BodyGyro", hrp)
+            bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
+            bodyGyro.P = 3000
+        elseif not _G.Auto_Farm and bodyGyro then
+            bodyGyro:Destroy()
+        end
         
-        -- Ensure BodyGyro is not affected by physics
-        bodyGyro.P = 0
+        if bodyGyro then
+            bodyGyro.CFrame = position
+            bodyGyro.P = 0
+        end
     end
 end
 
@@ -101,6 +107,12 @@ spawn(function()
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
                     teleportToTarget(targetPosition)
                 end
+            end
+        else
+            -- If Auto_Farm is off, remove BodyGyro
+            local bodyGyro = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("BodyGyro")
+            if bodyGyro then
+                bodyGyro:Destroy()
             end
         end
     end
