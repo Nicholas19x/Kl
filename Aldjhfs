@@ -112,8 +112,6 @@ spawn(function()
                     -- Move to the position 2.5 times the height above the head
                     local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 2.5
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
-                    
-                    -- Teleport to the calculated position
                     teleportToTarget(targetPosition)
                     
                     -- Apply BodyGyro and BodyPosition to maintain position
@@ -121,8 +119,6 @@ spawn(function()
                     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
                     if hrp then
                         setupPositionControl(hrp, targetPosition)
-                        -- Set the orientation to lie down flat
-                        hrp.CFrame = targetPosition * CFrame.Angles(math.rad(-90), 0, 0) -- Orientation as if lying face down
                     end
                 end
             end
@@ -151,3 +147,4 @@ AutofarmTab:AddToggle({
         end
     end    
 })
+
