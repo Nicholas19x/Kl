@@ -42,6 +42,7 @@ AutofarmSettingTab:AddDropdown({
 -- ฟังก์ชันตรวจสอบเลเวล
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
+print(lv)
     if lv == 1 or lv >= 2000 then  -- แก้ไขเปรียบเทียบการเช็คเลเวล
         Mon = "Soldier [Lv. 1]"  -- แก้ไขชื่อ Monster
         Quest = "Kill 4 Soldiers"  -- แก้ไขชื่อ Quest
