@@ -47,17 +47,19 @@ local function teleportToTarget(position)
         -- Create BodyGyro if not already present
         local bodyGyro = hrp:FindFirstChild("BodyGyro")
         
-        if _G.Auto_Farm and not bodyGyro then
-            bodyGyro = Instance.new("BodyGyro", hrp)
-            bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
-            bodyGyro.P = 3000
-        elseif not _G.Auto_Farm and bodyGyro then
+        if _G.Auto_Farm then
+            if not bodyGyro then
+                bodyGyro = Instance.new("BodyGyro", hrp)
+                bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
+                bodyGyro.P = 3000
+            end
+            -- Ensure BodyGyro stays at the position
+            if bodyGyro then
+                bodyGyro.CFrame = position
+                bodyGyro.P = 0
+            end
+        elseif bodyGyro then
             bodyGyro:Destroy()
-        end
-        
-        if bodyGyro then
-            bodyGyro.CFrame = position
-            bodyGyro.P = 0
         end
     end
 end
@@ -92,15 +94,14 @@ end)
 
 spawn(function()
     local currentTarget = nil
-    while task.wait(0.1) do
+    while true do
+        task.wait(0.1)
         if _G.Auto_Farm then
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
-                -- Update target if current target is nil or dead
                 if not currentTarget or (currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0) then
                     currentTarget = findNewTarget()
                 end
 
-                -- Move to target if it's valid and alive
                 if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
                     -- Move to the position 2.5 times the height above the head
                     local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 2.5
@@ -109,7 +110,7 @@ spawn(function()
                 end
             end
         else
-            -- If Auto_Farm is off, remove BodyGyro
+            -- Remove BodyGyro if Auto_Farm is off
             local bodyGyro = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("BodyGyro")
             if bodyGyro then
                 bodyGyro:Destroy()
