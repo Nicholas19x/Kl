@@ -6,7 +6,8 @@ local AutofarmTab = Window:MakeTab({
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
-
+Local melee = Game.Player.LocalPlayer.PlayerGui.Backpack.Slot.1.ToolName
+Local sword = Game.Player.LocalPlayer.PlayerGui.Backpack.Slot.2.ToolName
 AutofarmTab:AddDropdown({
 	Name = "Weapon",
 	Default = "1",
