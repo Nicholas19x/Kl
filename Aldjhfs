@@ -44,8 +44,8 @@ function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
 print(lv)
     if lv == 1 or lv >= 2000 then  -- แก้ไขเปรียบเทียบการเช็คเลเวล
-        Mon = "Soldier [Lv. 1]"  -- แก้ไขชื่อ Monster
-        Quest = "Kill 4 Soldiers"  -- แก้ไขชื่อ Quest
+        MonName = "Soldier [Lv. 1]"  -- แก้ไขชื่อ Monster
+        QuestName = "Kill 4 Soldiers"  -- แก้ไขชื่อ Quest
         -- ดีบักค่าของ Quest
         print("Quest Set To:", Quest)
     end
@@ -65,13 +65,12 @@ spawn(function()
                     if Quest and Quest ~= "" then
                         local args = {
                             [1] = "take",
-                            [2] = Quest  -- ใช้ค่าจากตัวแปร Quest ที่ประกาศไว้
+                            [2] = QuestName  -- ใช้ค่าจากตัวแปร Quest ที่ประกาศไว้
                         }
 
                         -- ดีบักค่าของ args
                         print("args[1]:", args[1])  -- แสดงค่า [1]
                         print("args[2]:", args[2])  -- แสดงค่า [2]
-print(Mon)
                         -- เรียกใช้ RemoteFunction เพื่อขอรับเควส
                         game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
                     else
@@ -90,7 +89,7 @@ spawn(function()
             -- ตรวจสอบเมื่อ QuestBoard เปิดอยู่
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
                 for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-                    if v.Name == Mon then
+                    if v.Name == MonName then
                         -- ใช้ฟังก์ชัน totarget เพื่อทำการตั้งค่า CFrame ของมอนสเตอร์
                         totarget(v.HumanoidRootPart.CFrame * CFrame.new(0,1,15))
                         v.HumanoidRootPart.Size = Vector3.new(60,2.5,60)
