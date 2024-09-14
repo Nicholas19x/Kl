@@ -2,7 +2,7 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local AutofarmSettingTab = Window:MakeTab({
-	Name = "Auto farm Setting",
+	Name = "Setting",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -33,7 +33,7 @@ AutofarmSettingTab:AddDropdown({
 		end
 	end    
 })
-AutoFarmTab:AddToggle({
+AutofarmTab:AddToggle({
 	Name = "This is a toggle!",
 	Default = false,
 	Callback = function(Value)
