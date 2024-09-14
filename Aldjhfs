@@ -70,7 +70,7 @@ spawn(function()
                         -- ดีบักค่าของ args
                         print("args[1]:", args[1])  -- แสดงค่า [1]
                         print("args[2]:", args[2])  -- แสดงค่า [2]
-
+print(Mon)
                         -- เรียกใช้ RemoteFunction เพื่อขอรับเควส
                         game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
                     else
