@@ -30,6 +30,15 @@ AutofarmSettingTab:AddDropdown({
     end    
 })
 
+spawn(function()
+while taskwait(0.5) do
+pcall(function()
+if _G.Auto_Farm then
+local args = {
+[1] = Weapon
+}
+game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+))
 AutofarmSettingTab:AddTextbox({
     Name = "Distance",
     Default = "2.5",
