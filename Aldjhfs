@@ -36,9 +36,9 @@ function checklevel()
     end
 end
 
-local function totarget(position)
-    if position then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = position
+local function moveToTarget(targetPosition)
+    if targetPosition then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetPosition
     end
 end
 
@@ -75,19 +75,14 @@ spawn(function()
     while task.wait(0.1) do
         if _G.Auto_Farm then
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
-                if not currentTarget or currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0 then
+                if not currentTarget or (currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0) then
                     currentTarget = findNewTarget()
                 end
                 if currentTarget then
                     -- Move to the position 2.5 times the height above the head
                     local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 2.5
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
-                    totarget(targetPosition)
-                    currentTarget.HumanoidRootPart.Size = Vector3.new(60, 2.5, 60)
-                    -- Ensure CFrameMon is defined
-                    if CFrameMon then
-                        currentTarget.HumanoidRootPart.CFrame = CFrameMon
-                    end
+                    moveToTarget(targetPosition)
                 end
             end
         end
