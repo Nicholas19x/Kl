@@ -40,7 +40,22 @@ if lv == 1 or lv => 9999
   Mon = "Soilder [Lv. 1]"
   Quest = "Kill 4 Soldiers"
   end
-spawn 
+spawn(function()
+    while task.wait(.1) do
+        pcall(function()
+            if _G.Auto_Farm then
+            checklevel()
+                if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visibily == false
+                 then
+                  local args = {
+[1] = "take",
+[2] = "Quest"
+}
+
+game:GatService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+
+
+
 AutofarmTab:AddToggle({
 	Name = "This is a toggle!",
 	Default = false,
