@@ -1,9 +1,20 @@
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
 
 local player = Players.LocalPlayer
 local character = player.Character
 local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+local currentTarget
+
+local function findNewTarget()
+    -- ฟังก์ชันนี้จะคืนค่ามอนสเตอร์ตัวใหม่ที่เป็นเป้าหมาย
+    for _, v in pairs(Workspace.Monster.Mon:GetChildren()) do
+        if v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+            return v
+        end
+    end
+end
 
 local function moveTo(position)
     if humanoidRootPart then
@@ -25,8 +36,8 @@ end
 spawn(function()
     while task.wait(0.1) do
         if _G.Auto_Farm then
-            if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
-                if not currentTarget or currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0 then
+            if player.PlayerGui.MainGui.QuestBoard.Visible == true then
+                if not currentTarget or (currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0) then
                     currentTarget = findNewTarget()
                 end
                 if currentTarget then
