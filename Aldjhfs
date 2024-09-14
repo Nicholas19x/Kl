@@ -17,15 +17,18 @@ local AutofarmTab = Window:MakeTab({
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName
 local Weapon = "FS_Default_M1" -- กำหนดค่าเริ่มต้นให้กับ Weapon
+local Distancehigh = 2.5 -- กำหนดค่าเริ่มต้นให้กับ Distancehigh
+local Mon = nil
+local QuestName = nil
 
 AutofarmSettingTab:AddDropdown({
     Name = "Weapon",
     Default = "melee",
     Options = {"melee", "sword"},
     Callback = function(Value)
-        if Value == "melee" and melee then
+        if Value == "melee" then
             Weapon = "FS_" .. Value .. "_M1"
-        elseif Value == "sword" and sword then
+        elseif Value == "sword" then
             Weapon = "SW_" .. Value .. "_M1"
         end
     end    
@@ -36,8 +39,8 @@ AutofarmSettingTab:AddTextbox({
     Default = "2.5",
     TextDisappear = true,
     Callback = function(Value)
-        Distancehigh = tonumber(Value) -- แปลงเป็นตัวเลข
-    end
+        Distancehigh = tonumber(Value) or 2.5
+    end    
 })
 
 function checklevel()
@@ -53,6 +56,9 @@ local function teleportToTarget(position)
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
     if hrp then
+        -- Debugging: print the position to see if it's being set correctly
+        print("Teleporting to: " .. tostring(position))
+
         -- Teleport to the target position
         hrp.CFrame = position
     end
@@ -127,48 +133,3 @@ spawn(function()
     local currentTarget = nil
     while task.wait(0.1) do
         if _G.Auto_Farm then
-            if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
-                if not currentTarget or (currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0) then
-                    currentTarget = findNewTarget()
-                end
-
-                if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
-                    -- Move to the position above the head
-                    local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * Distancehigh
-                    local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
-                    teleportToTarget(targetPosition)
-
-                    -- Set the player to lying position
-                    setPlayerToLyingPosition()
-                end
-            end
-        end
-    end
-end)
-
-AutofarmTab:AddToggle({
-    Name = "Auto farm",
-    Default = false,
-    Callback = function(Value)
-        _G.Auto_Farm = Value
-
-        local player = game.Players.LocalPlayer
-        local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-
-        if not _G.Auto_Farm then
-            -- Reset player state
-            if hrp then
-                local existingGyro = hrp:FindFirstChild("BodyGyro")
-                if existingGyro then existingGyro:Destroy() end
-
-                local existingPosition = hrp:FindFirstChild("BodyPosition")
-                if existingPosition then existingPosition:Destroy() end
-
-                local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-                if humanoid then
-                    humanoid.PlatformStand = false
-                end
-            end
-        end
-    end    
-})
