@@ -33,8 +33,14 @@ AutofarmSettingTab:AddDropdown({
 		end
 	end    
 })
+
 function checklevel()
- local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl
+ local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
+if lv == 1 or lv => 9999
+  Mon = "Soilder [Lv. 1]"
+  Quest = "Kill 4 Soldiers"
+  end
+spawn 
 AutofarmTab:AddToggle({
 	Name = "This is a toggle!",
 	Default = false,
