@@ -14,8 +14,8 @@ local AutofarmTab = Window:MakeTab({
 })
 
 -- แก้ไขเป็นตัวพิมพ์เล็กสำหรับ 'game'
-local melee = game.Players.LocalPlayer.PlayerStats.FightingStyle
-local sword = game.Players.LocalPlayer.PlayerStats.SwordName
+local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle
+local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName
 
 -- เพิ่ม Dropdown
 AutofarmSettingTab:AddDropdown({
@@ -33,6 +33,8 @@ AutofarmSettingTab:AddDropdown({
 		end
 	end    
 })
+function checklevel()
+ local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl
 AutofarmTab:AddToggle({
 	Name = "This is a toggle!",
 	Default = false,
