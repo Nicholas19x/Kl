@@ -36,26 +36,46 @@ function checklevel()
     end
 end
 
+local function createOrUpdateBodyGyro()
+    local player = game.Players.LocalPlayer
+    local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    if hrp then
+        local bodyGyro = hrp:FindFirstChild("BodyGyro")
+        if not bodyGyro then
+            bodyGyro = Instance.new("BodyGyro")
+            bodyGyro.Name = "BodyGyro"
+            bodyGyro.Parent = hrp
+            bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
+            bodyGyro.P = 3000
+        end
+        bodyGyro.CFrame = hrp.CFrame
+    end
+end
+
+local function removeBodyGyro()
+    local player = game.Players.LocalPlayer
+    local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    if hrp then
+        local bodyGyro = hrp:FindFirstChild("BodyGyro")
+        if bodyGyro then
+            bodyGyro:Destroy()
+        end
+    end
+end
+
 local function teleportToTarget(position)
     local player = game.Players.LocalPlayer
-    local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+    local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
     if hrp then
         -- Teleport to the target position
         hrp.CFrame = position
 
-        -- Create BodyGyro if not already present
-        local bodyGyro = hrp:FindFirstChild("BodyGyro")
-        if not bodyGyro and _G.Auto_Farm then
-            bodyGyro = Instance.new("BodyGyro", hrp)
-            bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
-            bodyGyro.P = 3000
-        elseif bodyGyro and not _G.Auto_Farm then
-            bodyGyro:Destroy()
-        end
-
-        if bodyGyro then
-            bodyGyro.CFrame = position
+        -- Create or update BodyGyro if needed
+        if _G.Auto_Farm then
+            createOrUpdateBodyGyro()
+        else
+            removeBodyGyro()
         end
     end
 end
@@ -105,14 +125,8 @@ spawn(function()
                 end
             end
         else
-            -- Remove BodyGyro if Auto_Farm is off
-            local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-            if hrp then
-                local bodyGyro = hrp:FindFirstChild("BodyGyro")
-                if bodyGyro then
-                    bodyGyro:Destroy()
-                end
-            end
+            -- Ensure BodyGyro is removed when Auto_Farm is off
+            removeBodyGyro()
         end
     end
 end)
