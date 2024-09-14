@@ -29,20 +29,14 @@ AutofarmSettingTab:AddDropdown({
 })
 
 AutofarmSettingTab:AddTextbox({
-	Name = "Distance",
-	Default = "2.5",
-	TextDisappear = true,
-	Callback = function(Value)
-		Distancehigh = tonumber(Value)
-	end	  
+    Name = "Distance",
+    Default = "2.5",
+    TextDisappear = true,
+    Callback = function(Value)
+        Distancehigh = tonumber(Value)
+    end    
 })
 
---[[
-Name = <string> - The name of the textbox.
-Default = <string> - The default value of the textbox.
-TextDisappear = <bool> - Makes the text disappear in the textbox after losing focus.
-Callback = <function> - The function of the textbox.
-]]
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
     if lv == 1 or lv <= 2000 then
@@ -56,17 +50,21 @@ local function teleportToTarget(position)
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
     if hrp then
-        -- Teleport to the target position
+        print("Teleporting to:", position)  -- Debugging teleport position
         hrp.CFrame = position
+    else
+        print("HumanoidRootPart not found.")
     end
 end
 
 local function findNewTarget()
     for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
         if v.Name == Mon and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+            print("Found target:", v.Name)  -- Debugging target identification
             return v
         end
     end
+    print("No target found.")  -- Debugging when no target is found
     return nil
 end
 
@@ -76,20 +74,16 @@ local function setPlayerToLyingPosition()
     local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
 
     if hrp and humanoid then
-        -- Disable character movement
         humanoid.PlatformStand = true
 
-        -- Set the CFrame to a lying position
-        hrp.CFrame = hrp.CFrame * CFrame.Angles(math.rad(-90), 0, 0) -- Rotate to lying position
+        hrp.CFrame = hrp.CFrame * CFrame.Angles(math.rad(-90), 0, 0)
 
-        -- Clear any existing BodyGyro and BodyPosition
         local existingGyro = hrp:FindFirstChild("BodyGyro")
         if existingGyro then existingGyro:Destroy() end
 
         local existingPosition = hrp:FindFirstChild("BodyPosition")
         if existingPosition then existingPosition:Destroy() end
 
-        -- Create and configure new BodyGyro
         local bodyGyro = Instance.new("BodyGyro")
         bodyGyro.Parent = hrp
         bodyGyro.CFrame = hrp.CFrame
@@ -97,7 +91,6 @@ local function setPlayerToLyingPosition()
         bodyGyro.P = 10000
         bodyGyro.D = 1000
 
-        -- Create and configure new BodyPosition
         local bodyPosition = Instance.new("BodyPosition")
         bodyPosition.Parent = hrp
         bodyPosition.Position = hrp.Position
@@ -136,12 +129,11 @@ spawn(function()
                 end
 
                 if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
-                    -- Move to the position above the head
-                    local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * Distancehigh
+                    local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * (Distancehigh or 2.5)
+                    print("Moving to target with distance:", heightAboveHead)  -- Debugging distance
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
                     teleportToTarget(targetPosition)
 
-                    -- Set the player to lying position
                     setPlayerToLyingPosition()
                 end
             end
@@ -159,7 +151,6 @@ AutofarmTab:AddToggle({
         local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
         if not _G.Auto_Farm then
-            -- Reset player state
             if hrp then
                 local existingGyro = hrp:FindFirstChild("BodyGyro")
                 if existingGyro then existingGyro:Destroy() end
