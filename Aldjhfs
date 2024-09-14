@@ -44,7 +44,7 @@ function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
     if lv == 1 or lv >= 9999 then  -- แก้ไขเปรียบเทียบการเช็คเลเวล
         Mon = "Soldier [Lv. 1]"  -- แก้ไขชื่อ Monster
-        Quest = "Kill 4 Soldiers"  -- แก้ไขชื่อ Quest
+        Poppy = "Kill 4 Soldiers"  -- แก้ไขชื่อ Quest
     end
 end
 
@@ -60,7 +60,7 @@ spawn(function()
                 if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
                     local args = {
                         [1] = "take",
-                        [2] = Quest
+                        [2] = Poppy
                     }
 
                     -- เรียกใช้ RemoteFunction เพื่อขอรับเควส
