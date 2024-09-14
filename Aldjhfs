@@ -1,11 +1,6 @@
-local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Orion/main/source'))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
-local Window = OrionLib:MakeWindow({
-    Name = "Title of the library",
-    HidePremium = false,
-    SaveConfig = true,
-    ConfigFolder = "OrionTest"
-})
+local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local AutofarmSettingTab = Window:MakeTab({
     Name = "Setting",
@@ -21,29 +16,33 @@ local AutofarmTab = Window:MakeTab({
 
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName
-local Weapon = "FS_Default_M1" -- กำหนดค่าเริ่มต้นให้กับ Weapon
 
 AutofarmSettingTab:AddDropdown({
     Name = "Weapon",
     Default = "melee",
     Options = {"melee", "sword"},
     Callback = function(Value)
-        if Value == "melee" then
-            Weapon = "FS_" .. Value .. "_M1"
-        elseif Value == "sword" then
-            Weapon = "SW_" .. Value .. "_M1"
+        if Value == "melee" and melee then
+        elseif Value == "sword" and sword then
         end
-    end
+    end    
 })
 
 AutofarmSettingTab:AddTextbox({
-    Name = "Distance",
-    Default = "2.5",
-    TextDisappear = true,
-    Callback = function(Value)
-        Distancehigh = tonumber(Value)
-    end
+	Name = "Distance",
+	Default = "2.5",
+	TextDisappear = true,
+	Callback = function(Value)
+		Distancehigh = tonumber(Value)
+	end	  
 })
+
+--[[
+Name = <string> - The name of the textbox.
+Default = <string> - The default value of the textbox.
+TextDisappear = <bool> - Makes the text disappear in the textbox after losing focus.
+Callback = <function> - The function of the textbox.
+]]
 
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
@@ -56,7 +55,9 @@ end
 local function teleportToTarget(position)
     local player = game.Players.LocalPlayer
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+
     if hrp then
+        -- Teleport to the target position
         hrp.CFrame = position
     end
 end
@@ -76,15 +77,20 @@ local function setPlayerToLyingPosition()
     local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
 
     if hrp and humanoid then
+        -- Disable character movement
         humanoid.PlatformStand = true
-        hrp.CFrame = hrp.CFrame * CFrame.Angles(math.rad(-90), 0, 0)
 
+        -- Set the CFrame to a lying position
+        hrp.CFrame = hrp.CFrame * CFrame.Angles(math.rad(-90), 0, 0) -- Rotate to lying position
+
+        -- Clear any existing BodyGyro and BodyPosition
         local existingGyro = hrp:FindFirstChild("BodyGyro")
         if existingGyro then existingGyro:Destroy() end
 
         local existingPosition = hrp:FindFirstChild("BodyPosition")
         if existingPosition then existingPosition:Destroy() end
 
+        -- Create and configure new BodyGyro
         local bodyGyro = Instance.new("BodyGyro")
         bodyGyro.Parent = hrp
         bodyGyro.CFrame = hrp.CFrame
@@ -92,6 +98,7 @@ local function setPlayerToLyingPosition()
         bodyGyro.P = 10000
         bodyGyro.D = 1000
 
+        -- Create and configure new BodyPosition
         local bodyPosition = Instance.new("BodyPosition")
         bodyPosition.Parent = hrp
         bodyPosition.Position = hrp.Position
@@ -130,9 +137,12 @@ spawn(function()
                 end
 
                 if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
+                    -- Move to the position above the head
                     local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * Distancehigh
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
                     teleportToTarget(targetPosition)
+
+                    -- Set the player to lying position
                     setPlayerToLyingPosition()
                 end
             end
@@ -150,6 +160,7 @@ AutofarmTab:AddToggle({
         local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
         if not _G.Auto_Farm then
+            -- Reset player state
             if hrp then
                 local existingGyro = hrp:FindFirstChild("BodyGyro")
                 if existingGyro then existingGyro:Destroy() end
@@ -163,5 +174,5 @@ AutofarmTab:AddToggle({
                 end
             end
         end
-    end
+    end    
 })
