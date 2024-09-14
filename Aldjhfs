@@ -78,9 +78,6 @@ local function setupPositionControl(hrp, targetPosition)
     bodyPosition.MaxForce = Vector3.new(4000, 4000, 4000)
     bodyPosition.P = 10000
     bodyPosition.D = 1000
-
-    -- Adjust the CFrame to make the character face down
-    hrp.CFrame = targetPosition * CFrame.Angles(math.rad(-90), 0, 0)
 end
 
 spawn(function()
@@ -122,6 +119,8 @@ spawn(function()
                     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
                     if hrp then
                         setupPositionControl(hrp, targetPosition)
+                        -- Ensure BodyGyro and BodyPosition stay in sync
+                        hrp.CFrame = targetPosition * CFrame.Angles(math.rad(-90), 0, 0)
                     end
                 end
             end
