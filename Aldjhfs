@@ -52,9 +52,6 @@ local function teleportToTarget(position)
                 bodyGyro = Instance.new("BodyGyro", hrp)
                 bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
                 bodyGyro.P = 3000
-            end
-            -- Ensure BodyGyro stays at the position
-            if bodyGyro then
                 bodyGyro.CFrame = position
             end
         elseif bodyGyro then
@@ -93,8 +90,7 @@ end)
 
 spawn(function()
     local currentTarget = nil
-    while true do
-        task.wait(0.1)
+    while task.wait(0.1) do
         if _G.Auto_Farm then
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
                 if not currentTarget or (currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0) then
@@ -110,9 +106,12 @@ spawn(function()
             end
         else
             -- Remove BodyGyro if Auto_Farm is off
-            local bodyGyro = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("BodyGyro")
-            if bodyGyro then
-                bodyGyro:Destroy()
+            local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+            if hrp then
+                local bodyGyro = hrp:FindFirstChild("BodyGyro")
+                if bodyGyro then
+                    bodyGyro:Destroy()
+                end
             end
         end
     end
