@@ -23,29 +23,20 @@ AutofarmSettingTab:AddDropdown({
 	Options = {"melee", "sword"},
 	Callback = function(Value)
 		if Value == "melee" and melee then
-			print(melee.Value)
+			-- Removed print statement
 		elseif Value == "sword" and sword then
-			print(sword.Value)
+			-- Removed print statement
 		else
-			warn("Invalid selection or stat not found")
+			-- Removed warn statement
 		end
 	end    
 })
 
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
-    print(lv)
     if lv == 1 or lv <= 2000 then
         MonName = "Soldier [Lv. 1]"
         QuestName = "Kill 4 Soldiers"
-        print("Quest Set To:", QuestName)
-    end
-end
-
-function totarget(targetCFrame)
-    local character = game:GetService("Players").LocalPlayer.Character
-    if character and character:FindFirstChild("HumanoidRootPart") then
-        character.HumanoidRootPart.CFrame = targetCFrame
     end
 end
 
@@ -60,11 +51,7 @@ spawn(function()
                             [1] = "take",
                             [2] = QuestName
                         }
-                        print("args[1]:", args[1])
-                        print("args[2]:", args[2])
                         game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
-                    else
-                        warn("QuestName variable is empty or nil")
                     end
                 end
             end
@@ -95,10 +82,6 @@ AutofarmTab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		_G.Auto_Farm = Value
-		if _G.Auto_Farm then
-			print("Auto farm started")
-		else
-			print("Auto farm stopped")
-		end
+		-- Removed print statements
 	end    
 })
