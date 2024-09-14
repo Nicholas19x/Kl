@@ -63,13 +63,12 @@ spawn(function()
     while task.wait(0.1) do
         if _G.Auto_Farm then
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
-                for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-                    if v.Name == Mon then
-                        local heightAboveHead = v.HumanoidRootPart.Size.Y * 2.5  -- 2.5 เท่าของความสูงของ HumanoidRootPart
-                        local targetPosition = v.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
-                        totarget(targetPosition)
-                        v.HumanoidRootPart.Size = Vector3.new(60, 2.5, 60)
-                        v.HumanoidRootPart.CFrame = CFrameMon
+                for i,v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
+        for i,v2 in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
+        if v.Name == Mon and v2.Name == Mon then
+            totarget(v.HumanoidRootPart.CFrame * CFrame.new(0,1,15))
+            v.HumanoidRootPart.Size = Vector3.new(60,2.5,60)
+            v.HumanoidRootPart.CFrame = CFrameMon
                     end
                 end
             end
