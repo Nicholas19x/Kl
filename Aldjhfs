@@ -16,7 +16,7 @@ local AutofarmTab = Window:MakeTab({
 
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName
-
+local Weapon = "FS_meles_M1"
 AutofarmSettingTab:AddDropdown({
     Name = "Weapon",
     Default = "melee",
