@@ -80,7 +80,7 @@ local function setupPositionControl(hrp, targetPosition)
     bodyPosition.D = 1000
 
     -- Adjust the CFrame to make the character face down
-    hrp.CFrame = hrp.CFrame * CFrame.Angles(math.rad(-90), 0, 0)
+    hrp.CFrame = targetPosition * CFrame.Angles(math.rad(-90), 0, 0)
 end
 
 spawn(function()
