@@ -3,29 +3,33 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local AutofarmSettingTab = Window:MakeTab({
-    Name = "Setting",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
+	Name = "Setting",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
 })
 
 local AutofarmTab = Window:MakeTab({
-    Name = "Auto farm",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
+	Name = "Auto farm",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
 })
 
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName
 
 AutofarmSettingTab:AddDropdown({
-    Name = "Weapon",
-    Default = "melee",
-    Options = {"melee", "sword"},
-    Callback = function(Value)
-        if Value == "melee" and melee then
-        elseif Value == "sword" and sword then
-        end
-    end    
+	Name = "Weapon",
+	Default = "melee",
+	Options = {"melee", "sword"},
+	Callback = function(Value)
+		if Value == "melee" and melee then
+			-- Removed print statement
+		elseif Value == "sword" and sword then
+			-- Removed print statement
+		else
+			-- Removed warn statement
+		end
+	end    
 })
 
 function checklevel()
@@ -36,6 +40,7 @@ function checklevel()
     end
 end
 
+-- Define the 'totarget' function if it's missing
 local function totarget(position)
     if position then
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = position
@@ -63,32 +68,17 @@ end)
 
 spawn(function()
     while task.wait(0.1) do
-        pcall(function()
-            if _G.Auto_Farm then
-                if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
-                    for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-                        if v.Name == Mon then
-                            -- Move to the position 2.5 times the height above the head
-                            local heightAboveHead = v.HumanoidRootPart.Size.Y * 2.5
-                            local targetPosition = v.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
-                            
-                            -- Move to the target position
+        if _G.Auto_Farm then
+            if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
+                for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
+                    if v.Name == Mon then
+                        -- Move to the position 2.5 times the height above the head
+                        local heightAboveHead = v.HumanoidRootPart.Size.Y * 2.5
+                        local targetPosition = v.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
+                        
+                        if targetPosition then
                             totarget(targetPosition)
-                            
-                            -- Wait for a short period to ensure we reach the target
-                            task.wait(0.5)
-                            
-                            -- Check if the monster is still alive
-                            local humanoid = v:FindFirstChildOfClass("Humanoid")
-                            if humanoid and humanoid.Health > 0 then
-                                -- Destroy the HumanoidRootPart if health is greater than 0
-                                local rootPart = v:FindFirstChild("HumanoidRootPart")
-                                if rootPart then
-                                    rootPart:Destroy()
-                                end
-                            end
-                            
-                            -- Additional logic for handling monster destruction and respawn
+                            v.HumanoidRootPart.Size = Vector3.new(60, 2.5, 60)
                             -- Ensure CFrameMon is defined
                             if CFrameMon then
                                 v.HumanoidRootPart.CFrame = CFrameMon
@@ -97,14 +87,15 @@ spawn(function()
                     end
                 end
             end
-        end)
+        end
     end
 end)
 
 AutofarmTab:AddToggle({
-    Name = "Auto farm",
-    Default = false,
-    Callback = function(Value)
-        _G.Auto_Farm = Value
-    end    
+	Name = "Auto farm",
+	Default = false,
+	Callback = function(Value)
+		_G.Auto_Farm = Value
+		-- Removed print statements
+	end    
 })
