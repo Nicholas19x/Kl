@@ -16,7 +16,7 @@ local AutofarmTab = Window:MakeTab({
 
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value -- ค่าของ FightingStyle
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value -- ค่าของ SwordName
-local Weapon = melee -- กำหนดค่าเริ่มต้นเป็น melee
+local Weapon = "FS_" .. melee .. "_M1" -- ค่าเริ่มต้นเป็น melee
 
 AutofarmSettingTab:AddDropdown({
     Name = "Weapon",
@@ -24,9 +24,9 @@ AutofarmSettingTab:AddDropdown({
     Options = {"melee", "sword"},
     Callback = function(Value)
         if Value == "melee" and melee then
-            Weapon = melee -- ตั้งค่า Weapon เป็น melee
+            Weapon = "FS_" .. melee .. "_M1" -- ใช้ค่า melee ในสตริง
         elseif Value == "sword" and sword then
-            Weapon = sword -- ตั้งค่า Weapon เป็น sword
+            Weapon = "SW_" .. sword .. "_M1" -- ใช้ค่า sword ในสตริง
         end
         print("Weapon Set To: " .. Weapon) -- Debug print
     end    
@@ -37,7 +37,7 @@ spawn(function()
         pcall(function()
             if _G.Auto_Farm then
                 local args = {
-                    [1] = Weapon -- ส่งค่าของ melee หรือ sword ไปยังฟังก์ชัน
+                    [1] = Weapon -- ส่งค่าสตริงที่สร้างใหม่ไปยังฟังก์ชัน
                 }
                 game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
