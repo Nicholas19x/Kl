@@ -46,7 +46,7 @@ local function teleportToTarget(position)
 
         -- Create BodyGyro if not already present
         local bodyGyro = hrp:FindFirstChild("BodyGyro")
-        
+
         if _G.Auto_Farm then
             if not bodyGyro then
                 bodyGyro = Instance.new("BodyGyro", hrp)
@@ -56,7 +56,6 @@ local function teleportToTarget(position)
             -- Ensure BodyGyro stays at the position
             if bodyGyro then
                 bodyGyro.CFrame = position
-                bodyGyro.P = 0
             end
         elseif bodyGyro then
             bodyGyro:Destroy()
