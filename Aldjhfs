@@ -37,8 +37,26 @@ function checklevel()
 end
 
 local function moveToTarget(position)
-    local playerHRP = game.Players.LocalPlayer.Character.HumanoidRootPart
-    playerHRP.CFrame = position
+    local player = game.Players.LocalPlayer
+    local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+    
+    if hrp then
+        -- Create BodyGyro and BodyPosition if not already present
+        local bodyGyro = hrp:FindFirstChild("BodyGyro") or Instance.new("BodyGyro", hrp)
+        local bodyPosition = hrp:FindFirstChild("BodyPosition") or Instance.new("BodyPosition", hrp)
+        
+        bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
+        bodyGyro.CFrame = position
+        bodyGyro.P = 3000
+        
+        bodyPosition.MaxForce = Vector3.new(4000, 4000, 4000)
+        bodyPosition.Position = position.Position
+        bodyPosition.D = 1000
+        
+        -- Stop BodyGyro and BodyPosition from being affected by physics
+        bodyGyro.P = 0
+        bodyPosition.D = 0
+    end
 end
 
 local function findNewTarget()
@@ -85,13 +103,6 @@ spawn(function()
                     local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 2.5
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
                     moveToTarget(targetPosition)
-                    
-                    -- Check if the player is already at the target position
-                    local playerHRP = game.Players.LocalPlayer.Character.HumanoidRootPart
-                    if (playerHRP.Position - targetPosition.Position).magnitude < 0.1 then
-                        -- Player is very close to the target position
-                        playerHRP.CFrame = targetPosition
-                    end
                 end
             end
         end
