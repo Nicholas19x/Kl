@@ -67,7 +67,7 @@ spawn(function()
 end)
 
 spawn(function()
-    while task.wait(0.1) do
+    while wait(0) do
         if _G.Auto_Farm then
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
                 for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
