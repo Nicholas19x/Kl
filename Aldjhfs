@@ -100,7 +100,7 @@ spawn(function()
                 -- Move to target if it's valid and alive
                 if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
                     -- Move to the position 2.5 times the height above the head
-                    local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 2.5
+                    local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 5
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
                     moveToTarget(targetPosition)
                 end
