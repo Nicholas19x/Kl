@@ -70,6 +70,7 @@ local function setupPositionControl(hrp, targetPosition)
     bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
     bodyGyro.P = 10000
     bodyGyro.D = 1000
+    bodyGyro.CFrame = targetPosition
 
     -- Create and configure new BodyPosition
     local bodyPosition = Instance.new("BodyPosition")
@@ -110,7 +111,7 @@ spawn(function()
 
                 if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
                     -- Move to the position 2.5 times the height above the head
-                    local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 2.5
+                    local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 5
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
                     teleportToTarget(targetPosition)
                     
@@ -118,10 +119,10 @@ spawn(function()
                     local player = game.Players.LocalPlayer
                     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
                     if hrp then
+                        -- Make sure the BodyGyro is set to hold the exact orientation
                         setupPositionControl(hrp, targetPosition)
-                        -- Ensure BodyGyro and BodyPosition stay in sync
-                        hrp.CFrame = targetPosition * CFrame.Angles(math.rad(-90), 0, 0)
-                        hrp.CanCollide = false -- Disable collision for a noclip effect
+                        hrp.CFrame = targetPosition * CFrame.Angles(math.rad(-90), 0, 0) -- Ensure it’s facing downwards
+                        hrp.CanCollide = false -- Disable collision for noclip effect
                     end
                 end
             end
