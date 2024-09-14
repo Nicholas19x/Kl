@@ -70,6 +70,18 @@ spawn(function()
         end)
     end
 end)
+if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
+for i,v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
+        for i,v2 in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
+        if v.Name == Mon and v2.Name == Mon then
+            totarget(v.HumanoidRootPart.CFrame * CFrame.new(0,1,15))
+            v.HumanoidRootPart.Size = Vector3.new(60,2.5,60)
+            v.HumanoidRootPart.CFrame = CFrameMon
+end
+            end
+        end)
+    end
+end)
 
 -- เพิ่ม Toggle ในแท็บ Auto farm
 AutofarmTab:AddToggle({
