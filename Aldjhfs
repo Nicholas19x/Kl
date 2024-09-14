@@ -35,7 +35,7 @@ AutofarmSettingTab:AddDropdown({
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
     print(lv)
-    if lv == 1 or lv >= 2000 then
+    if lv == 1 or lv <= 2000 then
         MonName = "Soldier [Lv. 1]"
         QuestName = "Kill 4 Soldiers"
         print("Quest Set To:", QuestName)
