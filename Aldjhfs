@@ -97,6 +97,13 @@ spawn(function()
                     local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 2.5
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
                     moveToTargetSmooth(targetPosition)
+                    
+                    -- Check if the player is already at the target position
+                    local playerHRP = game.Players.LocalPlayer.Character.HumanoidRootPart
+                    if (playerHRP.Position - targetPosition.Position).magnitude < 0.5 then
+                        -- Player is very close to the target position
+                        playerHRP.CFrame = targetPosition
+                    end
                 end
             end
         end
