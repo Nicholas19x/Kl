@@ -67,6 +67,17 @@ spawn(function()
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
                 for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
                     if v.Name == Mon then
+                        -- Move to the position 2.5 times the height above the head
+                        local heightAboveHead = v.HumanoidRootPart.Size.Y * 2.5
+                        local targetPosition = v.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
+
+                        -- Move to the target position
+                        totarget(targetPosition)
+                        
+                        -- Wait for a short period to ensure we reach the target
+                        task.wait(0.5)
+
+                        -- Check if the monster is still alive
                         local humanoid = v:FindFirstChildOfClass("Humanoid")
                         if humanoid and humanoid.Health > 0 then
                             -- Destroy the HumanoidRootPart if health is greater than 0
@@ -76,15 +87,10 @@ spawn(function()
                             end
                         end
 
-                        local heightAboveHead = v.HumanoidRootPart.Size.Y * 2.5
-                        local targetPosition = v.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
-                        
-                        if targetPosition then
-                            totarget(targetPosition)
-                            v.HumanoidRootPart.Size = Vector3.new(60, 2.5, 60)
-                            if CFrameMon then
-                                v.HumanoidRootPart.CFrame = CFrameMon
-                            end
+                        -- Additional logic for handling monster destruction and respawn
+                        -- Ensure CFrameMon is defined
+                        if CFrameMon then
+                            v.HumanoidRootPart.CFrame = CFrameMon
                         end
                     end
                 end
