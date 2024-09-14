@@ -33,7 +33,7 @@ Tab:AddTextbox({
 	Default = "2.5",
 	TextDisappear = true,
 	Callback = function(Value)
-		Distancehigh = (Value)
+		Distancehigh = tonumber(Value)
 	end	  
 })
 
