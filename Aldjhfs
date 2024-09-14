@@ -1,12 +1,17 @@
+-- โหลด OrionLib จาก URL ที่ระบุ
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+-- สร้างหน้าต่างของ OrionLib
 local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
+-- สร้างแท็บสำหรับการตั้งค่า
 local AutofarmSettingTab = Window:MakeTab({
 	Name = "Setting",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
+-- สร้างแท็บสำหรับการฟาร์มอัตโนมัติ
 local AutofarmTab = Window:MakeTab({
 	Name = "Auto farm",
 	Icon = "rbxassetid://4483345998",
@@ -17,7 +22,7 @@ local AutofarmTab = Window:MakeTab({
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName
 
--- เพิ่ม Dropdown
+-- เพิ่ม Dropdown ในแท็บการตั้งค่า
 AutofarmSettingTab:AddDropdown({
 	Name = "Weapon",
 	Default = "melee",
@@ -34,32 +39,43 @@ AutofarmSettingTab:AddDropdown({
 	end    
 })
 
+-- ฟังก์ชันตรวจสอบเลเวล
 function checklevel()
- local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
-if lv == 1 or lv => 9999
-  Mon = "Soilder [Lv. 1]"
-  Quest = "Kill 4 Soldiers"
-  end
+    local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
+    if lv == 1 or lv >= 9999 then  -- แก้ไขเปรียบเทียบการเช็คเลเวล
+        Mon = "Soldier [Lv. 1]"  -- แก้ไขชื่อ Monster
+        Quest = "Kill 4 Soldiers"  -- แก้ไขชื่อ Quest
+    end
+end
+
+-- สร้างกระบวนการใหม่ (Thread) เพื่อทำงานแยกจากโค้ดหลัก
 spawn(function()
     while task.wait(.1) do
         pcall(function()
+            -- ตรวจสอบว่า Auto_Farm ถูกเปิดใช้งานหรือไม่ (_G.Auto_Farm)
             if _G.Auto_Farm then
-            checklevel()
-                if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visibily == false
-                 then
-                  local args = {
-[1] = "take",
-[2] = "Quest"
-}
+                checklevel()  -- เรียกใช้ฟังก์ชัน checklevel
+                
+                -- ตรวจสอบว่า QuestBoard ไม่แสดงอยู่หรือไม่
+                if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
+                    local args = {
+                        [1] = "take",
+                        [2] = "Quest"
+                    }
 
-game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+                    -- เรียกใช้ RemoteFunction เพื่อขอรับเควส
+                    game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+                end
+            end
+        end)
+    end
+end)
 
-
-
+-- เพิ่ม Toggle ในแท็บ Auto farm
 AutofarmTab:AddToggle({
 	Name = "This is a toggle!",
 	Default = false,
 	Callback = function(Value)
-		print(Value)
+		print(Value)  -- แสดงค่า Toggle ที่เลือก
 	end    
 })
