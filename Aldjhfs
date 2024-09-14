@@ -13,7 +13,7 @@ AutofarmTab:AddDropdown({
 	Default = "melee",
 	Options = {"melee", "sword"},
 	Callback = function(Value)
-		print(melee)
+		print([melee])
 	end    
 })
 
