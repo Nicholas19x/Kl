@@ -1,34 +1,27 @@
--- โหลด OrionLib จาก URL ที่ระบุ
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
--- สร้างหน้าต่างของ OrionLib
 local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
--- สร้างแท็บสำหรับการตั้งค่า
 local AutofarmSettingTab = Window:MakeTab({
 	Name = "Setting",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
--- สร้างแท็บสำหรับการฟาร์มอัตโนมัติ
 local AutofarmTab = Window:MakeTab({
 	Name = "Auto farm",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
--- แก้ไขเป็นตัวพิมพ์เล็กสำหรับ 'game'
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName
 
--- เพิ่ม Dropdown ในแท็บการตั้งค่า
 AutofarmSettingTab:AddDropdown({
 	Name = "Weapon",
 	Default = "melee",
 	Options = {"melee", "sword"},
 	Callback = function(Value)
-		-- ตรวจสอบว่าผู้เล่นเลือก "melee" หรือ "sword" และแสดงค่าที่เกี่ยวข้อง
 		if Value == "melee" and melee then
 			print(melee.Value)
 		elseif Value == "sword" and sword then
@@ -39,42 +32,32 @@ AutofarmSettingTab:AddDropdown({
 	end    
 })
 
--- ฟังก์ชันตรวจสอบเลเวล
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
-print(lv)
-    if lv == 1 or lv >= 2000 then  -- แก้ไขเปรียบเทียบการเช็คเลเวล
-        MonName = "Soldier [Lv. 1]"  -- แก้ไขชื่อ Monster
-        QuestName = "Kill 4 Soldiers"  -- แก้ไขชื่อ Quest
-        -- ดีบักค่าของ Quest
-        print("Quest Set To:", Quest)
+    print(lv)
+    if lv == 1 or lv >= 2000 then
+        MonName = "Soldier [Lv. 1]"
+        QuestName = "Kill 4 Soldiers"
+        print("Quest Set To:", QuestName)
     end
 end
 
--- สร้างกระบวนการใหม่ (Thread) เพื่อทำงานแยกจากโค้ดหลัก
 spawn(function()
     while task.wait(.1) do
         pcall(function()
-            -- ตรวจสอบว่า Auto_Farm ถูกเปิดใช้งานหรือไม่ (_G.Auto_Farm)
             if _G.Auto_Farm then
-                checklevel()  -- เรียกใช้ฟังก์ชัน checklevel
-                
-                -- ตรวจสอบว่า QuestBoard ไม่แสดงอยู่หรือไม่
+                checklevel()
                 if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
-                    -- ตรวจสอบค่าตัวแปร Quest ก่อนใช้งาน
-                    if Quest and Quest ~= "" then
+                    if QuestName and QuestName ~= "" then
                         local args = {
                             [1] = "take",
-                            [2] = QuestName  -- ใช้ค่าจากตัวแปร Quest ที่ประกาศไว้
+                            [2] = QuestName
                         }
-
-                        -- ดีบักค่าของ args
-                        print("args[1]:", args[1])  -- แสดงค่า [1]
-                        print("args[2]:", args[2])  -- แสดงค่า [2]
-                        -- เรียกใช้ RemoteFunction เพื่อขอรับเควส
+                        print("args[1]:", args[1])
+                        print("args[2]:", args[2])
                         game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
                     else
-                        warn("Quest variable is empty or nil")  -- แจ้งเตือนถ้าค่าตัวแปร Quest ว่างเปล่าหรือเป็น nil
+                        warn("QuestName variable is empty or nil")
                     end
                 end
             end
@@ -82,15 +65,12 @@ spawn(function()
     end
 end)
 
--- สร้างกระบวนการใหม่ (Thread) เพื่อทำงานแยกจากโค้ดหลัก
 spawn(function()
     while task.wait(0.1) do
         if _G.Auto_Farm then
-            -- ตรวจสอบเมื่อ QuestBoard เปิดอยู่
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
                 for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
                     if v.Name == MonName then
-                        -- ใช้ฟังก์ชัน totarget เพื่อทำการตั้งค่า CFrame ของมอนสเตอร์
                         totarget(v.HumanoidRootPart.CFrame * CFrame.new(0,1,15))
                         v.HumanoidRootPart.Size = Vector3.new(60,2.5,60)
                         v.HumanoidRootPart.CFrame = CFrameMon
@@ -101,7 +81,6 @@ spawn(function()
     end
 end)
 
--- เพิ่ม Toggle ในแท็บ Auto farm
 AutofarmTab:AddToggle({
 	Name = "Auto farm",
 	Default = false,
