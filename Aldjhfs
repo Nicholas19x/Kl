@@ -60,7 +60,7 @@ spawn(function()
                 if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
                     local args = {
                         [1] = "take",
-                        [2] = Quest'
+                        [2] = Quest
                     }
 
                     -- เรียกใช้ RemoteFunction เพื่อขอรับเควส
