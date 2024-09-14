@@ -28,7 +28,7 @@ AutofarmSettingTab:AddDropdown({
     end    
 })
 
-Tab:AddTextbox({
+AutofarmSettingTab:AddTextbox({
 	Name = "Distance",
 	Default = "2.5",
 	TextDisappear = true,
