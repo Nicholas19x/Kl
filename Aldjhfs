@@ -36,7 +36,7 @@ function checklevel()
     end
 end
 
-local function moveToTarget(targetPosition)
+local function moveToTargetSmooth(targetPosition)
     local playerHRP = game.Players.LocalPlayer.Character.HumanoidRootPart
     local tweenTime = 0.5 -- Duration in seconds
 
@@ -96,7 +96,7 @@ spawn(function()
                     -- Move to the position 2.5 times the height above the head
                     local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 2.5
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
-                    moveToTarget(targetPosition)
+                    moveToTargetSmooth(targetPosition)
                 end
             end
         end
