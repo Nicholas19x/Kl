@@ -37,9 +37,20 @@ function checklevel()
 end
 
 local function moveToTarget(targetPosition)
-    if targetPosition then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetPosition
+    local playerHRP = game.Players.LocalPlayer.Character.HumanoidRootPart
+    local tweenTime = 0.5 -- Duration in seconds
+
+    local startPos = playerHRP.CFrame
+    local endPos = targetPosition
+    local startTime = tick()
+
+    while tick() - startTime < tweenTime do
+        local alpha = (tick() - startTime) / tweenTime
+        playerHRP.CFrame = startPos:Lerp(endPos, alpha)
+        task.wait(0.03) -- Wait for a short interval before updating the position
     end
+
+    playerHRP.CFrame = endPos -- Ensure the final position is set
 end
 
 local function findNewTarget()
