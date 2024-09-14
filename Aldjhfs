@@ -23,9 +23,9 @@ AutofarmSettingTab:AddDropdown({
     Options = {"melee", "sword"},
     Callback = function(Value)
         if Value == "melee" and melee then
-        Weapon = "FS_(Value)_M1"
+        Weapon = "FS_ .. Value .._M1"
         elseif Value == "sword" and sword then
-        Weapon = "SW_(Value)_M1"
+        Weapon = "SW_  .. Value .. _M1"
         end
     end    
 })
