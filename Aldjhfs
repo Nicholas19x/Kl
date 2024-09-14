@@ -36,21 +36,9 @@ function checklevel()
     end
 end
 
-local function moveToTargetSmooth(targetPosition)
+local function moveToTarget(position)
     local playerHRP = game.Players.LocalPlayer.Character.HumanoidRootPart
-    local tweenTime = 0.5 -- Duration in seconds
-
-    local startPos = playerHRP.CFrame
-    local endPos = targetPosition
-    local startTime = tick()
-
-    while tick() - startTime < tweenTime do
-        local alpha = (tick() - startTime) / tweenTime
-        playerHRP.CFrame = startPos:Lerp(endPos, alpha)
-        task.wait(0.03) -- Wait for a short interval before updating the position
-    end
-
-    playerHRP.CFrame = endPos -- Ensure the final position is set
+    playerHRP.CFrame = position
 end
 
 local function findNewTarget()
@@ -96,11 +84,11 @@ spawn(function()
                     -- Move to the position 2.5 times the height above the head
                     local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * 2.5
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
-                    moveToTargetSmooth(targetPosition)
+                    moveToTarget(targetPosition)
                     
                     -- Check if the player is already at the target position
                     local playerHRP = game.Players.LocalPlayer.Character.HumanoidRootPart
-                    if (playerHRP.Position - targetPosition.Position).magnitude < 0.5 then
+                    if (playerHRP.Position - targetPosition.Position).magnitude < 0.1 then
                         -- Player is very close to the target position
                         playerHRP.CFrame = targetPosition
                     end
