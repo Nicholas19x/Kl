@@ -3,33 +3,29 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local AutofarmSettingTab = Window:MakeTab({
-	Name = "Setting",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
+    Name = "Setting",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
 })
 
 local AutofarmTab = Window:MakeTab({
-	Name = "Auto farm",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
+    Name = "Auto farm",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
 })
 
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName
 
 AutofarmSettingTab:AddDropdown({
-	Name = "Weapon",
-	Default = "melee",
-	Options = {"melee", "sword"},
-	Callback = function(Value)
-		if Value == "melee" and melee then
-			-- Removed print statement
-		elseif Value == "sword" and sword then
-			-- Removed print statement
-		else
-			-- Removed warn statement
-		end
-	end    
+    Name = "Weapon",
+    Default = "melee",
+    Options = {"melee", "sword"},
+    Callback = function(Value)
+        if Value == "melee" and melee then
+        elseif Value == "sword" and sword then
+        end
+    end    
 })
 
 function checklevel()
@@ -40,7 +36,6 @@ function checklevel()
     end
 end
 
--- Define the 'totarget' function if it's missing
 local function totarget(position)
     if position then
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = position
@@ -70,19 +65,21 @@ spawn(function()
     while task.wait(0.1) do
         if _G.Auto_Farm then
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
+                local foundTarget = false
+                
                 for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
                     if v.Name == Mon then
-                        -- Move to the position 2.5 times the height above the head
                         local heightAboveHead = v.HumanoidRootPart.Size.Y * 2.5
                         local targetPosition = v.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
                         
                         if targetPosition then
                             totarget(targetPosition)
                             v.HumanoidRootPart.Size = Vector3.new(60, 2.5, 60)
-                            -- Ensure CFrameMon is defined
                             if CFrameMon then
                                 v.HumanoidRootPart.CFrame = CFrameMon
                             end
+                            foundTarget = true
+                            break
                         end
                     end
                 end
@@ -92,10 +89,9 @@ spawn(function()
 end)
 
 AutofarmTab:AddToggle({
-	Name = "Auto farm",
-	Default = false,
-	Callback = function(Value)
-		_G.Auto_Farm = Value
-		-- Removed print statements
-	end    
+    Name = "Auto farm",
+    Default = false,
+    Callback = function(Value)
+        _G.Auto_Farm = Value
+    end    
 })
