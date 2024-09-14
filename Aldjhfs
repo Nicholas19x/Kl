@@ -28,6 +28,22 @@ AutofarmSettingTab:AddDropdown({
     end    
 })
 
+AutofarmSettingTab:AddTextbox({
+	Name = "Distance",
+	Default = "2.5",
+	TextDisappear = true,
+	Callback = function(Value)
+		Distancehigh = tonumber(Value)
+	end	  
+})
+
+--[[
+Name = <string> - The name of the textbox.
+Default = <string> - The default value of the textbox.
+TextDisappear = <bool> - Makes the text disappear in the textbox after losing focus.
+Callback = <function> - The function of the textbox.
+]]
+
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
     if lv == 1 or lv <= 2000 then
