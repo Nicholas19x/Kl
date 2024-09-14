@@ -67,7 +67,14 @@ local function setPlayerToLyingPosition()
         -- Set the CFrame to a lying position
         hrp.CFrame = hrp.CFrame * CFrame.Angles(math.rad(-90), 0, 0) -- Rotate to lying position
 
-        -- Lock position with BodyGyro and BodyPosition
+        -- Clear any existing BodyGyro and BodyPosition
+        local existingGyro = hrp:FindFirstChild("BodyGyro")
+        if existingGyro then existingGyro:Destroy() end
+
+        local existingPosition = hrp:FindFirstChild("BodyPosition")
+        if existingPosition then existingPosition:Destroy() end
+
+        -- Create and configure new BodyGyro
         local bodyGyro = Instance.new("BodyGyro")
         bodyGyro.Parent = hrp
         bodyGyro.CFrame = hrp.CFrame
@@ -75,6 +82,7 @@ local function setPlayerToLyingPosition()
         bodyGyro.P = 10000
         bodyGyro.D = 1000
 
+        -- Create and configure new BodyPosition
         local bodyPosition = Instance.new("BodyPosition")
         bodyPosition.Parent = hrp
         bodyPosition.Position = hrp.Position
