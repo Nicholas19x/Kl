@@ -58,7 +58,7 @@ end)
 
 AutofarmSettingTab:AddTextbox({
     Name = "Distance",
-    Default = "2.5",
+    Default = "5.5",
     TextDisappear = true,
     Callback = function(Value)
         Distancehigh = tonumber(Value)
