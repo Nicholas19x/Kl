@@ -151,6 +151,7 @@ spawn(function()
     while task.wait(0.1) do
         if _G.Auto_Farm then
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
+                -- หยุดหามอนสเตอร์ใหม่จนกว่าจะฆ่าเป้าหมายปัจจุบันได้
                 if not currentTarget or (currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0) then
                     currentTarget = findNewTarget()
                 end
