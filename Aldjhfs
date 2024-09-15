@@ -196,7 +196,7 @@ local teleportPositions = {
     SoldierIsland = Vector3.new(-2359, 300, -2597),
     Bubble        = Vector3.new(1660, 300, 878),
     ChefShip      = Vector3.new(-4226, 300, -2895),
-    Fishland      = Vector3.new(-706, 300, -6395)
+    Fishland      = Vector3.new(-706, 300, -6395) -- ปิดวงเล็บที่นี่
 }
 
 -- ฟังก์ชันสำหรับการเทเลพอร์ตตัวละคร
@@ -219,9 +219,15 @@ end
 
 -- ฟังก์ชันตรวจสอบว่ามีเกาะใน Workspace.Areas ตรงกับตารางหรือไม่
 local function createButtonsForIslands()
-    local areas = game:GetService("Workspace").Areas:GetChildren()
+    local areas = game:GetService("Workspace"):FindFirstChild("Areas")
+    if not areas then
+        warn("No 'Areas' folder found in Workspace")
+        return
+    end
+
+    local areaChildren = areas:GetChildren()
     
-    for _, area in pairs(areas) do
+    for _, area in pairs(areaChildren) do
         local islandName = area.Name
         if teleportPositions[islandName] then
             TeleportTab:AddButton({
@@ -231,6 +237,7 @@ local function createButtonsForIslands()
                     teleportToPosition(islandName)
                 end
             })
+            print("Button created for " .. islandName)
         end
     end
 end
