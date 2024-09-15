@@ -22,9 +22,9 @@ local TeleportTab = Window:MakeTab({
 
 local vu = game:GetService("VirtualUser")
 game:GetService("Players").LocalPlayer.Idled:connect(function()
-vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-wait(1)
-vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    vu:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+    wait(1)
+    vu:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
 end)
 
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
@@ -67,12 +67,15 @@ AutofarmSettingTab:AddTextbox({
 
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
-    if lv == 1 or lv <= 9 then
+    if lv <= 9 then
         Mon = "Soldier [Lv. 1]"
         QuestName = "Kill 4 Soldiers"
-    elseif lv == 1000 or lv <= 9999 then
+    elseif lv >= 1000 and lv <= 9999 then
         Mon = "High-class Soldier [Lv. 1050]"
         QuestName = "Kill 4 High-class Soldier"
+    else
+        Mon = nil
+        QuestName = nil
     end
 end
 
@@ -131,13 +134,19 @@ spawn(function()
         pcall(function()
             if _G.Auto_Farm then
                 checklevel()
+                print("Current QuestName: ", QuestName)  -- ตรวจสอบค่าของ QuestName
                 if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
                     if QuestName and QuestName ~= "" then
                         local args = {
                             [1] = "take",
                             [2] = QuestName
                         }
-                        game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+                        local success, result = pcall(function()
+                            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+                        end)
+                        if not success then
+                            print("Failed to take quest: ", result)
+                        end
                     end
                 end
             end
