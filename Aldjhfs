@@ -72,9 +72,9 @@ local function teleportToTarget(position)
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
     if hrp then
-        -- คูณตำแหน่ง Y ด้วย Distancehigh และวาปไปยังตำแหน่งที่คำนวณ
-        local adjustedPosition = position + Vector3.new(0, 4 , 0)
-        hrp.CFrame = CFrame.new(adjustedPosition)
+        -- คูณตำแหน่งด้วย 4 เท่า
+        local targetPosition = position + Vector3.new(0, position.Y * 4, 0)
+        hrp.CFrame = CFrame.new(targetPosition)
     end
 end
 
