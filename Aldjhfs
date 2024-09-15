@@ -190,12 +190,51 @@ AutofarmTab:AddToggle({
     end    
 })
 
-local island = {
- [StarterIsland] = -2091,100,-4615,
- [SoilderIsland] = 1,
+-- รับตำแหน่งที่ต้องการให้เทเลพอร์ต
+local teleportPositions = {
+    StarterIsland = Vector3.new(-2091, 100, -4615),
+    SoilderIsland = Vector3.new(100, 50, -3000)
 }
 
-local function findisland()
-for _, i pairs(game:GetService("Workspace").Areas
-if i.Name == island then
-print
+-- ฟังก์ชันสำหรับการเทเลพอร์ตตัวละคร
+local function teleportToPosition(islandName)
+    local player = game:GetService("Players").LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    
+    -- ตรวจสอบว่าเกาะมีอยู่ในตารางหรือไม่
+    local position = teleportPositions[islandName]
+    if position then
+        -- ถ้าพบตำแหน่งเกาะ ก็เทเลพอร์ตไปยังพิกัดนั้น
+        humanoidRootPart.CFrame = CFrame.new(position)
+        print("Teleported to " .. islandName)
+    else
+        -- ถ้าไม่พบตำแหน่งเกาะ ก็แจ้งเตือน
+        warn("Island not found: " .. islandName)
+    end
+end
+
+-- ฟังก์ชันตรวจสอบว่ามีเกาะใน Workspace.Areas ตรงกับตารางหรือไม่
+local function isIslandInWorkspace(islandName)
+    for _, area in pairs(game:GetService("Workspace").Areas:GetChildren()) do
+        if area.Name == islandName then
+            return true -- พบชื่อเกาะใน Workspace
+        end
+    end
+    return false -- ไม่พบชื่อเกาะ
+end
+
+-- สร้างปุ่มเฉพาะเมื่อพบเกาะใน Workspace.Areas และมีอยู่ในตาราง
+for islandName, _ in pairs(teleportPositions) do
+    if isIslandInWorkspace(islandName) then
+        TeleportTab:AddButton({
+            Name = "Go to " .. islandName,
+            Callback = function()
+                -- เมื่อกดปุ่ม จะเทเลพอร์ตไปยังเกาะที่ต้องการ
+                teleportToPosition(islandName)
+            end
+        })
+    else
+        warn("Island not found in Workspace: " .. islandName)
+    end
+end
