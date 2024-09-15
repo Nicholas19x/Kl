@@ -56,15 +56,6 @@ spawn(function()
     end
 end)
 
-AutofarmSettingTab:AddTextbox({
-    Name = "Distance",
-    Default = "2.5",
-    TextDisappear = true,
-    Callback = function(Value)
-        Distancehigh = tonumber(Value) or 2.5
-    end    
-})
-
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
     if lv == 1 or lv <= 9 then
@@ -82,7 +73,7 @@ local function teleportToTarget(position)
 
     if hrp then
         -- คูณตำแหน่ง Y ด้วย Distancehigh และวาปไปยังตำแหน่งที่คำนวณ
-        local adjustedPosition = position + Vector3.new(0, (Distancehigh or 2.5), 0)
+        local adjustedPosition = position + Vector3.new(0, 4 , 0)
         hrp.CFrame = CFrame.new(adjustedPosition)
     end
 end
