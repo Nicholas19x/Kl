@@ -187,9 +187,7 @@ local teleportPositions = {
     SoldierIsland = Vector3.new(-2359, 300, -2597),
     Bubble        = Vector3.new(1660, 300, 878),
     ChefShip      = Vector3.new(-4226, 300, -2895),
-    Fishland      = Vector3.new(-1706, 100, 6395),
-    LobbyIsland   = Vector3.new(-1210, 300, 2193),
-    PirateIsland  = Vector3.new(-585, 300, -3465)
+    Fishland      = Vector3.new(-1706, 100, 6395)
 }
 
 local function teleportToPosition(islandName)
@@ -219,10 +217,12 @@ local function createButtonsForIslands()
                 teleportToPosition(islandName)
             end
             
-            TeleportTab:AddButton({
-                Name = buttonName,
-                Callback = callback
-            })
+            if TeleportTab and TeleportTab.AddButton then
+                TeleportTab:AddButton({
+                    Name = buttonName,
+                    Callback = callback
+                })
+            end
         end
     end
 end
