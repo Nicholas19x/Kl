@@ -29,13 +29,13 @@ end)
 
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
-
+local Weapon = "SW_" .. sword .. "_M1"
 spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
                 local args = {
-                    [1] = "FS_" .. melee .. "_M1"
+                    [1] = Weapon
                 }
                 game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
@@ -43,18 +43,7 @@ spawn(function()
     end
 end)
 
-spawn(function()
-    while task.wait(0.25) do
-        pcall(function()
-            if _G.Auto_Farm then
-                local args = {
-                    [1] = "SW_" .. sword .. "_M1"
-                }
-                game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-            end
-        end)
-    end
-end)
+
 
 AutofarmSettingTab:AddTextbox({
     Name = "Distance",
@@ -206,7 +195,8 @@ local teleportPositions = {
     SoldierIsland = Vector3.new(-2359, 300, -2597),
     Bubble        = Vector3.new(1660, 300, 878),
     ChefShip      = Vector3.new(-4226, 300, -2895),
-    Fishland      = Vector3.new(-1706, 100, 6395)
+    Fishland      = Vector3.new(-1706, 100, 6395),
+    LobbyIsland   = Vector3.new(-1211, 300,2193)
 }
 
 local function teleportToPosition(islandName)
