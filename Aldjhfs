@@ -216,7 +216,9 @@ end
 
 -- ฟังก์ชันตรวจสอบว่ามีเกาะใน Workspace.Areas ตรงกับตารางหรือไม่
 local function createButtonsForIslands()
-    for _, area in pairs(game:GetService("Workspace").Areas:GetChildren()) do
+    local areas = game:GetService("Workspace").Areas:GetChildren()
+    
+    for _, area in pairs(areas) do
         local islandName = area.Name
         if teleportPositions[islandName] then
             TeleportTab:AddButton({
@@ -232,4 +234,3 @@ end
 
 -- สร้างปุ่มตามไฟล์ที่พบใน Workspace.Areas
 createButtonsForIslands()
-
