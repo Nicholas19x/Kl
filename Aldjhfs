@@ -58,7 +58,7 @@ end)
 
 AutofarmSettingTab:AddTextbox({
     Name = "Distance",
-    Default = "5.5",
+    Default = "2.5",
     TextDisappear = true,
     Callback = function(Value)
         Distancehigh = tonumber(Value)
@@ -73,11 +73,7 @@ function checklevel()
     elseif lv <= 9999 then
         Mon = "High-class Soldier [Lv. 1050]"
         QuestName = "Kill 4 High-class Soldier"
-    else
-        Mon = nil
-        QuestName = nil
     end
-    print("Checked level. Mon:", Mon, "QuestName:", QuestName)
 end
 
 local function teleportToTarget(position)
@@ -85,17 +81,13 @@ local function teleportToTarget(position)
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
     if hrp then
-        hrp.CFrame = position
+        -- ใช้ค่า Distancehigh เท่านั้น
+        hrp.CFrame = CFrame.new(position) * CFrame.new(0, Distancehigh or 2.5, 0)
     end
 end
 
 local function findNewTarget()
-    checklevel()
-    if not Mon then return nil end
-
-    print("Searching for target:", Mon)
     for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
-        print("Found monster:", v.Name)
         if v.Name == Mon and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
             return v
         end
@@ -159,19 +151,15 @@ spawn(function()
     while task.wait(0.1) do
         if _G.Auto_Farm then
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
-                checklevel()  -- ตรวจสอบเลเวลก่อนค้นหามอนสเตอร์
-                if Mon then
-                    if not currentTarget or (currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0) then
-                        currentTarget = findNewTarget()
-                    end
+                if not currentTarget or (currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0) then
+                    currentTarget = findNewTarget()
+                end
 
-                    if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
-                        local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * (Distancehigh or 2.5)
-                        local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
-                        teleportToTarget(targetPosition)
+                if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
+                    local targetPosition = currentTarget.HumanoidRootPart.Position
+                    teleportToTarget(targetPosition)
 
-                        setPlayerToLyingPosition()
-                    end
+                    setPlayerToLyingPosition()
                 end
             end
         end
