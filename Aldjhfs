@@ -75,15 +75,15 @@ local function teleportToTarget(target)
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
     if hrp and target and target:FindFirstChild("HumanoidRootPart") then
-        -- คำนวณตำแหน่งเบี่ยงเบน
-        local offset = Vector3.new(0, 20, 0)  -- ปรับค่า x และ z ตามต้องการ
+        -- คำนวณตำแหน่งเหนือหัวของมอนสเตอร์
         local targetPosition = target.HumanoidRootPart.Position
+        local headHeight = target.HumanoidRootPart.Size.Y / 2  -- ความสูงของหัวมอนสเตอร์
+        local offsetY = 10  -- ปรับเพิ่มตามต้องการ
 
-        -- วาปไปยังตำแหน่งที่ปรับเพิ่ม
-        hrp.CFrame = CFrame.new(targetPosition + offset)
+        -- วาปตัวละครไปยังตำแหน่งที่อยู่เหนือหัวมอนสเตอร์
+        hrp.CFrame = CFrame.new(targetPosition + Vector3.new(0, headHeight + offsetY, 0))
     end
 end
-
 local function findNewTarget()
     for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
         if v.Name == Mon and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
