@@ -192,8 +192,11 @@ AutofarmTab:AddToggle({
 
 -- รับตำแหน่งที่ต้องการให้เทเลพอร์ต
 local teleportPositions = {
-    StarterIsland = Vector3.new(-2091, 100, -4615),
-    SoldierIsland = Vector3.new(100, 50, -3000)
+    StarterIsland = Vector3.new(-2091, 300, -4615),
+    SoldierIsland = Vector3.new(-2359, 300, -2597),
+    Bubble        = Vector3.new(1660, 300, 878),
+    ChefShip      = Vector3.new(-4226, 300, -2895),
+    Fishland      = Vector3.new(-706, 300, -6395,
 }
 
 -- ฟังก์ชันสำหรับการเทเลพอร์ตตัวละคร
