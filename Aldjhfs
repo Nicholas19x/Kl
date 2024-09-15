@@ -196,7 +196,7 @@ local teleportPositions = {
     SoldierIsland = Vector3.new(-2359, 300, -2597),
     Bubble        = Vector3.new(1660, 300, 878),
     ChefShip      = Vector3.new(-4226, 300, -2895),
-    Fishland      = Vector3.new(-706, 300, -6395
+    Fishland      = Vector3.new(-706, 300, -6395)
 }
 
 -- ฟังก์ชันสำหรับการเทเลพอร์ตตัวละคร
