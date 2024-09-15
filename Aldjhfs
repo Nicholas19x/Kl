@@ -75,7 +75,7 @@ local function teleportToTarget(position)
 
     if hrp then
         -- เพิ่มความสูงที่ตำแหน่งที่วาป
-        hrp.CFrame = CFrame.new(position + Vector3.new(0, 5, 0)) -- เพิ่มความสูง 5 studs
+        hrp.CFrame = CFrame.new(position + Vector3.new(0, 40, 0)) -- เพิ่มความสูง 5 studs
     end
 end
 
