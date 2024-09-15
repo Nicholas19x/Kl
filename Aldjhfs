@@ -65,9 +65,6 @@ function checklevel()
     elseif lv <= 9999 then
         Mon = "Naval personnel [Lv. 1200]"
         QuestName = "Kill 4 Naval personnel"
-    elseif lv <= 1300 then
-        Mon = "Giraffe [Lv. 1300]"
-        QuestName = "Kill 1 Giraffe"
     end
 end
 
