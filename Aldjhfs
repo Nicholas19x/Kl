@@ -31,7 +31,7 @@ local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.V
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
 
 spawn(function()
-    while task.wait(0.2) do
+    while task.wait(0.1) do
         pcall(function()
             if _G.Auto_Farm then
                 local args = {
@@ -44,7 +44,7 @@ spawn(function()
 end)
 
 spawn(function()
-    while task.wait(0.2) do
+    while task.wait(0.1) do
         pcall(function()
             if _G.Auto_Farm then
                 local args = {
