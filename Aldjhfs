@@ -215,26 +215,21 @@ local function teleportToPosition(islandName)
 end
 
 -- ฟังก์ชันตรวจสอบว่ามีเกาะใน Workspace.Areas ตรงกับตารางหรือไม่
-local function isIslandInWorkspace(islandName)
+local function createButtonsForIslands()
     for _, area in pairs(game:GetService("Workspace").Areas:GetChildren()) do
-        if area.Name == islandName then
-            return true -- พบชื่อเกาะใน Workspace
+        local islandName = area.Name
+        if teleportPositions[islandName] then
+            Tab:AddButton({
+                Name = "Go to " .. islandName,
+                Callback = function()
+                    -- เมื่อกดปุ่ม จะเทเลพอร์ตไปยังเกาะที่ต้องการ
+                    teleportToPosition(islandName)
+                end
+            })
         end
     end
-    return false -- ไม่พบชื่อเกาะ
 end
 
--- สร้างปุ่มเฉพาะเมื่อพบเกาะใน Workspace.Areas และมีอยู่ในตาราง
-for islandName, _ in pairs(teleportPositions) do
-    if isIslandInWorkspace(islandName) then
-        TeleportTab:AddButton({
-            Name = "Go to " .. islandName,
-            Callback = function()
-                -- เมื่อกดปุ่ม จะเทเลพอร์ตไปยังเกาะที่ต้องการ
-                teleportToPosition(islandName)
-            end
-        })
-    else
-        warn("Island not found in Workspace: " .. islandName)
-    end
-end
+-- สร้างปุ่มตามไฟล์ที่พบใน Workspace.Areas
+createButtonsForIslands()
+
