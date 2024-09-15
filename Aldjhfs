@@ -187,7 +187,15 @@ local teleportPositions = {
     SoldierIsland = Vector3.new(-2359, 300, -2597),
     Bubble        = Vector3.new(1660, 300, 878),
     ChefShip      = Vector3.new(-4226, 300, -2895),
-    Fishland      = Vector3.new(-1706, 100, 6395)
+    Fishland      = Vector3.new(-1706, 100, 6395),
+    LobbyIsland   = Vector3.new(-1210, 300, 2193),
+    PirateIsland  = Vector3.new(-585, 300, -3465),
+    RainyStone    = Vector3.new(1978, 300, -4951),
+    Sea of dust   = Vector3.new(-2892, 300, -630),
+
+
+
+
 }
 
 local function teleportToPosition(islandName)
