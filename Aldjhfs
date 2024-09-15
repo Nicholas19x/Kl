@@ -56,12 +56,21 @@ spawn(function()
     end
 end)
 
+AutofarmSettingTab:AddTextbox({
+    Name = "Distance",
+    Default = "2.5",
+    TextDisappear = true,
+    Callback = function(Value)
+        Distancehigh = tonumber(Value)
+    end    
+})
+
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
-    if lv == 1 or lv <= 9 then
+    if lv <= 9 then
         Mon = "Soldier [Lv. 1]"
         QuestName = "Kill 4 Soldiers"
-    elseif lv == 1000 or lv <= 9999 then
+    elseif lv >= 1000 then
         Mon = "High-class Soldier [Lv. 1050]"
         QuestName = "Kill 4 High-class Soldier"
     end
@@ -72,11 +81,12 @@ local function teleportToTarget(position)
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
     if hrp and position then
-        -- คูณตำแหน่ง Y ของ position ด้วย 4 เท่า
-        local targetPosition = position.Position + Vector3.new(0, position.Position.Y * 4, 0)
+        -- คูณความสูง (Y) ของตำแหน่งด้วย 4 เท่า
+        local targetPosition = position + Vector3.new(0, position.Y * 4, 0)
         hrp.CFrame = CFrame.new(targetPosition)
     end
 end
+
 local function findNewTarget()
     for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
         if v.Name == Mon and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
@@ -93,7 +103,6 @@ local function setPlayerToLyingPosition()
 
     if hrp and humanoid then
         humanoid.PlatformStand = true
-
         hrp.CFrame = hrp.CFrame * CFrame.Angles(math.rad(-90), 0, 0)
 
         local existingGyro = hrp:FindFirstChild("BodyGyro")
@@ -149,7 +158,6 @@ spawn(function()
                 if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
                     local targetPosition = currentTarget.HumanoidRootPart.Position
                     teleportToTarget(targetPosition)
-
                     setPlayerToLyingPosition()
                 end
             end
@@ -186,9 +194,9 @@ AutofarmTab:AddToggle({
 local teleportPositions = {
     StarterIsland = Vector3.new(-2091, 300, -4615),
     SoldierIsland = Vector3.new(-2359, 300, -2597),
-    Bubble        = Vector3.new(1660, 300, 878),
-    ChefShip      = Vector3.new(-4226, 300, -2895),
-    Fishland      = Vector3.new(-1706, 100, 6395)
+    Bubble = Vector3.new(1660, 300, 878),
+    ChefShip = Vector3.new(-4226, 300, -2895),
+    Fishland = Vector3.new(-1706, 100, 6395)
 }
 
 local function teleportToPosition(islandName)
@@ -198,4 +206,34 @@ local function teleportToPosition(islandName)
     
     local position = teleportPositions[islandName]
     if position then
-        humanoidRootPart
+        humanoidRootPart.CFrame = CFrame.new(position)
+    end
+end
+
+local function createButtonsForIslands()
+    local areas = game:GetService("Workspace"):FindFirstChild("Areas")
+    if not areas then
+        return
+    end
+
+    local areaChildren = areas:GetChildren()
+    
+    for _, area in pairs(areaChildren) do
+        local islandName = area.Name
+        if teleportPositions[islandName] then
+            local buttonName = "Go to " .. islandName
+            local callback = function()
+                teleportToPosition(islandName)
+            end
+            
+            if TeleportTab and TeleportTab.AddButton then
+                TeleportTab:AddButton({
+                    Name = buttonName,
+                    Callback = callback
+                })
+            end
+        end
+    end
+end
+
+createButtonsForIslands()
