@@ -59,12 +59,16 @@ function checklevel()
     if lv <= 9 then
         Mon = "Soldier [Lv. 1]"
         QuestName = "Kill 4 Soldiers"
-    elseif lv <= 9999 then
+    elseif lv <= 10 then
         Mon = "High-class Soldier [Lv. 1050]"
         QuestName = "Kill 4 High-class Soldier"
-    else
-        Mon = nil
-        QuestName = nil
+    else lv <=  then 9999
+        Mon = "Naval personnel [Lv. 1200]
+        QuestName = "Kill 4 Naval personnel"
+    else lv <=  then 1
+        Mon = "Giraffe [Lv. 1300]
+        QuestName = "Kill 1 Giraffe"
+        
     end
 end
 
