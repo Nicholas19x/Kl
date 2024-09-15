@@ -30,7 +30,6 @@ end)
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
 local Weapon = "SW_" .. sword .. "_M1"
-
 spawn(function()
     while task.wait(0.25) do
         pcall(function()
@@ -38,15 +37,7 @@ spawn(function()
                 local args = {
                     [1] = Weapon
                 }
-                local success, result = pcall(function()
-                    return game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-                end)
-                
-                if not success then
-                    print("Error invoking server:", result)
-                else
-                    print("Skill action executed successfully.")
-                end
+                game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
     end
@@ -65,15 +56,12 @@ AutofarmSettingTab:AddTextbox({
 
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
-    if lv <= 1 then
+    if lv <= 9 then
         Mon = "Soldier [Lv. 1]"
         QuestName = "Kill 4 Soldiers"
-    elseif lv <= 2 then
+    elseif lv <= 9999 then
         Mon = "High-class Soldier [Lv. 1050]"
         QuestName = "Kill 4 High-class Soldier"
-    else lv <=  then 9999
-        Mon = "Naval personnel [Lv. 1200]"
-        QuestName = "Kill 4 Naval personnel"
     else
         Mon = nil
         QuestName = nil
