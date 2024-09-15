@@ -29,7 +29,7 @@ end)
 
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
-local Weapon = "SW_" .. sword .. "_M1"
+local Weapon = "FS_" .. melee .. "_M1"
 spawn(function()
     while task.wait(0.25) do
         pcall(function()
@@ -59,9 +59,12 @@ function checklevel()
     if lv <= 9 then
         Mon = "Soldier [Lv. 1]"
         QuestName = "Kill 4 Soldiers"
-    elseif lv <= 9999 then
+    elseif lv <= 1100 then
         Mon = "High-class Soldier [Lv. 1050]"
         QuestName = "Kill 4 High-class Soldier"
+elseif lv <= 9999 then
+        Mon = "Naval personnel [Lv. 1200]"
+        QuestName = "Kill 4 Naval personnel"
     else
         Mon = nil
         QuestName = nil
