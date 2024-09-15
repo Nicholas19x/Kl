@@ -191,6 +191,11 @@ AutofarmTab:AddToggle({
 })
 
 local island = {
- [StarterIsland] = -2091,100,-4615
+ [StarterIsland] = -2091,100,-4615,
+ [SoilderIsland] = 1,
+}
 
 local function findisland()
+for _, i pairs(game:GetService("Workspace").Areas
+if i.Name == island then
+print
