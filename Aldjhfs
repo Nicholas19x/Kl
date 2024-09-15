@@ -18,7 +18,7 @@ local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.V
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value -- ค่าของ SwordName
 
 spawn(function()
-    while task.wait(0.2) do
+    while task.wait(0.35) do
         pcall(function()
             if _G.Auto_Farm then
                 -- ใช้ Fighting Style Action
