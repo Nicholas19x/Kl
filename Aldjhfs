@@ -70,7 +70,7 @@ function checklevel()
     if lv <= 9 then
         Mon = "Soldier [Lv. 1]"
         QuestName = "Kill 4 Soldiers"
-    elseif lv >= 1000 and lv <= 9999 then
+    elseif lv <= 9999 then
         Mon = "High-class Soldier [Lv. 1050]"
         QuestName = "Kill 4 High-class Soldier"
     else
