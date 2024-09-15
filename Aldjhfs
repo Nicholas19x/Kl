@@ -30,6 +30,7 @@ end)
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
 local Weapon = "SW_" .. sword .. "_M1"
+
 spawn(function()
     while task.wait(0.25) do
         pcall(function()
@@ -37,7 +38,15 @@ spawn(function()
                 local args = {
                     [1] = Weapon
                 }
-                game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+                local success, result = pcall(function()
+                    return game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+                end)
+                
+                if not success then
+                    print("Error invoking server:", result)
+                else
+                    print("Skill action executed successfully.")
+                end
             end
         end)
     end
