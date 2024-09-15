@@ -31,7 +31,7 @@ local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.V
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
 
 spawn(function()
-    while task.wait(0.1) do
+    while task.wait(0.2) do
         pcall(function()
             if _G.Auto_Farm then
                 local args = {
@@ -44,7 +44,7 @@ spawn(function()
 end)
 
 spawn(function()
-    while task.wait(0.1) do
+    while task.wait(0.2) do
         pcall(function()
             if _G.Auto_Farm then
                 local args = {
@@ -70,7 +70,7 @@ function checklevel()
     if lv <= 9 then
         Mon = "Soldier [Lv. 1]"
         QuestName = "Kill 4 Soldiers"
-    elseif lv <= 9999 then
+    elseif lv >= 1000 and lv <= 9999 then
         Mon = "High-class Soldier [Lv. 1050]"
         QuestName = "Kill 4 High-class Soldier"
     else
@@ -159,16 +159,19 @@ spawn(function()
     while task.wait(0.1) do
         if _G.Auto_Farm then
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
-                if not currentTarget or (currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0) then
-                    currentTarget = findNewTarget()
-                end
+                checklevel()  -- ตรวจสอบเลเวลก่อนค้นหามอนสเตอร์
+                if Mon then
+                    if not currentTarget or (currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0) then
+                        currentTarget = findNewTarget()
+                    end
 
-                if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
-                    local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * (Distancehigh or 2.5)
-                    local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
-                    teleportToTarget(targetPosition)
+                    if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
+                        local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * (Distancehigh or 2.5)
+                        local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
+                        teleportToTarget(targetPosition)
 
-                    setPlayerToLyingPosition()
+                        setPlayerToLyingPosition()
+                    end
                 end
             end
         end
@@ -246,4 +249,4 @@ local function createButtonsForIslands()
     end
 end
 
-createButtonsForIslands()
+createButtons
