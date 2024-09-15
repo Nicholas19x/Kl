@@ -48,7 +48,7 @@ spawn(function()
         pcall(function()
             if _G.Auto_Farm then
                 local args = {
-                    [1] = "FS_" .. sword .. "_M1"
+                    [1] = "SW_" .. sword .. "_M1"
                 }
                 game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
