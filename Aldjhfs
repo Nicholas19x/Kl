@@ -219,7 +219,7 @@ local function createButtonsForIslands()
     for _, area in pairs(game:GetService("Workspace").Areas:GetChildren()) do
         local islandName = area.Name
         if teleportPositions[islandName] then
-            Tab:AddButton({
+            TeleportTab:AddButton({
                 Name = "Go to " .. islandName,
                 Callback = function()
                     -- เมื่อกดปุ่ม จะเทเลพอร์ตไปยังเกาะที่ต้องการ
