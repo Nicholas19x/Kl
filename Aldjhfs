@@ -43,8 +43,6 @@ spawn(function()
     end
 end)
 
-
-
 AutofarmSettingTab:AddTextbox({
     Name = "Distance",
     Default = "2.5",
@@ -126,19 +124,15 @@ spawn(function()
         pcall(function()
             if _G.Auto_Farm then
                 checklevel()
-                print("Current QuestName: ", QuestName)  -- ตรวจสอบค่าของ QuestName
                 if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
                     if QuestName and QuestName ~= "" then
                         local args = {
                             [1] = "take",
                             [2] = QuestName
                         }
-                        local success, result = pcall(function()
+                        pcall(function()
                             game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
                         end)
-                        if not success then
-                            print("Failed to take quest: ", result)
-                        end
                     end
                 end
             end
@@ -151,7 +145,6 @@ spawn(function()
     while task.wait(0.1) do
         if _G.Auto_Farm then
             if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
-                -- หยุดหามอนสเตอร์ใหม่จนกว่าจะฆ่าเป้าหมายปัจจุบันได้
                 if not currentTarget or (currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0) then
                     currentTarget = findNewTarget()
                 end
@@ -230,7 +223,8 @@ local function createButtonsForIslands()
                 teleportToPosition(islandName)
             end
             
-            if TeleportTab and TeleportTab.AddButton then
+            if TeleportTab and 
+TeleportTab.AddButton then
                 TeleportTab:AddButton({
                     Name = buttonName,
                     Callback = callback
