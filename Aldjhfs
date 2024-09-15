@@ -71,13 +71,12 @@ local function teleportToTarget(position)
     local player = game.Players.LocalPlayer
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
-    if hrp then
-        -- คูณตำแหน่งด้วย 4 เท่า
-        local targetPosition = position + Vector3.new(0, position.Y * 4, 0)
+    if hrp and position then
+        -- คูณตำแหน่ง Y ของ position ด้วย 4 เท่า
+        local targetPosition = position.Position + Vector3.new(0, position.Position.Y * 4, 0)
         hrp.CFrame = CFrame.new(targetPosition)
     end
 end
-
 local function findNewTarget()
     for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
         if v.Name == Mon and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
