@@ -31,7 +31,7 @@ local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.V
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
 
 spawn(function()
-    while task.wait(0.2) do
+    while task.wait(0.3) do
         pcall(function()
             if _G.Auto_Farm then
                 local args = {
@@ -44,7 +44,7 @@ spawn(function()
 end)
 
 spawn(function()
-    while task.wait(0.2) do
+    while task.wait(0.3) do
         pcall(function()
             if _G.Auto_Farm then
                 local args = {
@@ -56,14 +56,7 @@ spawn(function()
     end
 end)
 
-AutofarmSettingTab:AddTextbox({
-    Name = "Distance",
-    Default = "2.5",
-    TextDisappear = true,
-    Callback = function(Value)
-        Distancehigh = tonumber(Value)
-    end    
-})
+
 
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
@@ -81,8 +74,8 @@ local function teleportToTarget(position)
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
     if hrp then
-        -- ใช้ค่า Distancehigh เท่านั้น
-        hrp.CFrame = CFrame.new(position) * CFrame.new(0, Distancehigh or 2.5, 0)
+        -- ใช้ค่า Distancehigh เท
+        hrp.CFrame = CFrame.new(position) * CFrame.new(0, 4.8, 0)
     end
 end
 
