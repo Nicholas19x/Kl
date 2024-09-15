@@ -29,7 +29,7 @@ spawn(function()
         
                 -- ใช้ Sword Action
                 local args = {
-                    [1] = "FS_" .. sword .. "_M1" -- ส่งค่าสตริงที่สร้างใหม่ไปยังฟังก์ชัน
+                    [1] = "SW_" .. sword .. "_M1" -- ส่งค่าสตริงที่สร้างใหม่ไปยังฟังก์ชัน
                 }
                 game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
