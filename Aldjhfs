@@ -67,9 +67,12 @@ AutofarmSettingTab:AddTextbox({
 
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
-    if lv == 1 or lv <= 2000 then
+    if lv == 1 or lv <= 9 then
         Mon = "Soldier [Lv. 1]"
         QuestName = "Kill 4 Soldiers"
+    elseif lv == 1000 or lv <= 9999 then
+        Mon = "High-class Soldier [Lv. 1050]"
+        QuestName = "Kill 4 High-class Soldier"
     end
 end
 
