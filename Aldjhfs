@@ -69,11 +69,13 @@ end
 
 local function teleportToTarget(position)
     local player = game.Players.LocalPlayer
+local function teleportToTarget(position)
+    local player = game.Players.LocalPlayer
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
     if hrp then
-        -- ใช้ตำแหน่งที่รับมาโดยตรง
-        hrp.CFrame = CFrame.new(position)
+        -- เพิ่มความสูงที่ตำแหน่งที่วาป
+        hrp.CFrame = CFrame.new(position + Vector3.new(0, 5, 0)) -- เพิ่มความสูง 5 studs
     end
 end
 
