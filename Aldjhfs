@@ -27,7 +27,6 @@ spawn(function()
     while task.wait(0.2) do
         pcall(function()
             if _G.Auto_Farm then
-                -- ใช้ Fighting Style Action ก่อน
                 local args = {
                     [1] = "FS_" .. melee .. "_M1"
                 }
@@ -41,7 +40,6 @@ spawn(function()
     while task.wait(0.2) do
         pcall(function()
             if _G.Auto_Farm then
-                -- ใช้ Sword Action แยกออกมา
                 local args = {
                     [1] = "FS_" .. sword .. "_M1"
                 }
@@ -73,21 +71,16 @@ local function teleportToTarget(position)
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
     if hrp then
-        print("Teleporting to:", position)  -- Debugging teleport position
         hrp.CFrame = position
-    else
-        print("HumanoidRootPart not found.")
     end
 end
 
 local function findNewTarget()
     for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
         if v.Name == Mon and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
-            print("Found target:", v.Name)  -- Debugging target identification
             return v
         end
     end
-    print("No target found.")  -- Debugging when no target is found
     return nil
 end
 
@@ -153,7 +146,6 @@ spawn(function()
 
                 if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
                     local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * (Distancehigh or 2.5)
-                    print("Moving to target with distance:", heightAboveHead)  -- Debugging distance
                     local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
                     teleportToTarget(targetPosition)
 
@@ -190,38 +182,28 @@ AutofarmTab:AddToggle({
     end    
 })
 
--- รับตำแหน่งที่ต้องการให้เทเลพอร์ต
 local teleportPositions = {
     StarterIsland = Vector3.new(-2091, 300, -4615),
     SoldierIsland = Vector3.new(-2359, 300, -2597),
     Bubble        = Vector3.new(1660, 300, 878),
     ChefShip      = Vector3.new(-4226, 300, -2895),
-    Fishland      = Vector3.new(-706, 300, -6395) -- ปิดวงเล็บที่นี่
+    Fishland      = Vector3.new(-706, 300, -6395)
 }
 
--- ฟังก์ชันสำหรับการเทเลพอร์ตตัวละคร
 local function teleportToPosition(islandName)
     local player = game:GetService("Players").LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
     
-    -- ตรวจสอบว่าเกาะมีอยู่ในตารางหรือไม่
     local position = teleportPositions[islandName]
     if position then
-        -- ถ้าพบตำแหน่งเกาะ ก็เทเลพอร์ตไปยังพิกัดนั้น
         humanoidRootPart.CFrame = CFrame.new(position)
-        print("Teleported to " .. islandName)
-    else
-        -- ถ้าไม่พบตำแหน่งเกาะ ก็แจ้งเตือน
-        warn("Island not found: " .. islandName)
     end
 end
 
--- ฟังก์ชันตรวจสอบว่ามีเกาะใน Workspace.Areas ตรงกับตารางหรือไม่
 local function createButtonsForIslands()
     local areas = game:GetService("Workspace"):FindFirstChild("Areas")
     if not areas then
-        warn("No 'Areas' folder found in Workspace")
         return
     end
 
@@ -230,17 +212,19 @@ local function createButtonsForIslands()
     for _, area in pairs(areaChildren) do
         local islandName = area.Name
         if teleportPositions[islandName] then
-            TeleportTab:AddButton({
-                Name = "Go to " .. islandName,
-                Callback = function()
-                    -- เมื่อกดปุ่ม จะเทเลพอร์ตไปยังเกาะที่ต้องการ
-                    teleportToPosition(islandName)
-                end
-            })
-            print("Button created for " .. islandName)
+            local buttonName = "Go to " .. islandName
+            local callback = function()
+                teleportToPosition(islandName)
+            end
+            
+            if TeleportTab and TeleportTab.AddButton then
+                TeleportTab:AddButton({
+                    Name = buttonName,
+                    Callback = callback
+                })
+            end
         end
     end
 end
 
--- สร้างปุ่มตามไฟล์ที่พบใน Workspace.Areas
 createButtonsForIslands()
