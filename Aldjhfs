@@ -14,29 +14,37 @@ local AutofarmTab = Window:MakeTab({
     PremiumOnly = false
 })
 
-local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value -- ค่าของ FightingStyle
-local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value -- ค่าของ SwordName
+local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
+local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
 
 spawn(function()
-    while task.wait(0.5
-) do
+    while task.wait(0.2) do
         pcall(function()
             if _G.Auto_Farm then
-                -- ใช้ Fighting Style Action
+                -- ใช้ Fighting Style Action ก่อน
                 local args = {
-                    [1] = "FS_" .. melee .. "_M1" -- ส่งค่าสตริงที่สร้างใหม่ไปยังฟังก์ชัน
-                }
-                game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-        
-                -- ใช้ Sword Action
-                local args = {
-                    [1] = "SW_" .. sword .. "_M1" -- ส่งค่าสตริงที่สร้างใหม่ไปยังฟังก์ชัน
+                    [1] = "FS_" .. melee .. "_M1"
                 }
                 game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
     end
 end)
+
+spawn(function()
+    while task.wait(0.2) do
+        pcall(function()
+            if _G.Auto_Farm then
+                -- ใช้ Sword Action แยกออกมา
+                local args = {
+                    [1] = "FS_" .. sword .. "_M1"
+                }
+                game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            end
+        end)
+    end
+end)
+
 AutofarmSettingTab:AddTextbox({
     Name = "Distance",
     Default = "2.5",
