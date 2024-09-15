@@ -61,7 +61,7 @@ AutofarmSettingTab:AddTextbox({
     Default = "2.5",
     TextDisappear = true,
     Callback = function(Value)
-        Distancehigh = tonumber(Value)
+        Distancehigh = tonumber(Value) or 2.5
     end    
 })
 
@@ -81,8 +81,8 @@ local function teleportToTarget(position)
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
     if hrp then
-        -- ใช้ค่า Distancehigh เพื่อวาปไปด้านบนของตำแหน่งที่ระบุ
-        local heightAboveHead = Distancehigh or 2.5
+        -- ใช้ค่า Distancehigh เพื่อคำนวณตำแหน่ง
+        local heightAboveHead = (Distancehigh or 2.5)
         hrp.CFrame = position * CFrame.new(0, heightAboveHead, 0)
     end
 end
@@ -157,7 +157,7 @@ spawn(function()
                 end
 
                 if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
-                    local targetPosition = currentTarget.HumanoidRootPart.CFrame.Position
+                    local targetPosition = currentTarget.HumanoidRootPart.Position
                     teleportToTarget(targetPosition)
 
                     setPlayerToLyingPosition()
@@ -238,4 +238,4 @@ local function createButtonsForIslands()
     end
 end
 
-createButtonsForIslands().
+createButtonsForIslands()
