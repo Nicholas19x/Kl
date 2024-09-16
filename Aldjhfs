@@ -114,7 +114,7 @@ end
 local function teleportmonisland(position)
     local player = game.Players.LocalPlayer
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-    
+
     if hrp and position then
         hrp.CFrame = CFrame.new(position)
     end
@@ -122,15 +122,21 @@ end
 
 local function findNewTarget()
     local foundmonster = false
-    for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
+    local monsters = game:GetService("Workspace").Monster.Mon:GetChildren()
+
+    for _, v in pairs(monsters) do
         if v.Name == Mon and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
             foundmonster = true
             return v
         end
     end
-    if not foundmonster and Monisland then
-        teleportmonisland(Monisland)
+
+    if not foundmonster then
+        if Monisland then
+            teleportmonisland(Monisland)
+        end
     end
+
     return nil
 end
 
