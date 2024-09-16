@@ -27,7 +27,6 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
     vu:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
 end)
 
-
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -44,7 +43,6 @@ local SwordWeaponz = "SW_" .. sword .. "Z"
 local SwordWeaponx = "SW_" .. sword .. "X"
 local SwordWeaponc = "SW_" .. sword .. "C"
 local SwordWeaponv = "SW_" .. sword .. "V"
-
 
 spawn(function()
     while wait(1) do
@@ -85,11 +83,10 @@ spawn(function()
     while task.wait(2) do
         pcall(function()
             if _Z_Weapon then
-                local args = { [1] = Weapon, [2] = { ["Type"] = "Down", ["MouseHit"] = CFrame.new(0, 0, 0)}
-}
-                local args = { [1] = Weapon, [2] = { ["Type"] = "Up", ["MouseHit"] = CFrame.new(0, 0, 0)}
-}
-                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+                local argsDown = { [1] = Weapon, [2] = { ["Type"] = "Down", ["MouseHit"] = CFrame.new(0, 0, 0)} }
+                local argsUp = { [1] = Weapon, [2] = { ["Type"] = "Up", ["MouseHit"] = CFrame.new(0, 0, 0)} }
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(argsDown))
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(argsUp))
             end
         end)
     end
@@ -109,6 +106,8 @@ AutofarmSettingTab:AddToggle({
     Default = false,
     Callback = function(Value)
         _Z_Weapon = Value
+    end
+})
 
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
@@ -123,7 +122,7 @@ function checklevel()
     elseif lv <= 9999 then
         Mon = "Naval personnel [Lv. 1200]"
         QuestName = "Kill 4 Naval personnel"
-        Monisland = Vector3.new(-1211, 300,2193)
+        Monisland = Vector3.new(-1211, 300, 2193)
     else
         Mon = nil
         QuestName = nil
@@ -169,7 +168,6 @@ local function findNewTarget()
     return nil
 end
 
-
 local function setPlayerToLyingPosition()
     local player = game.Players.LocalPlayer
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
@@ -207,113 +205,4 @@ spawn(function()
         pcall(function()
             if _G.Auto_Farm then
                 checklevel()
-                if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
-                    if QuestName and QuestName ~= "" then
-                        local args = {
-                            [1] = "take",
-                            [2] = QuestName
-                        }
-                        pcall(function()
-                            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
-                        end)
-                    end
-                end
-            end
-        end)
-    end
-end)
-
-spawn(function()
-    local currentTarget = nil
-    while task.wait(0.1) do
-        if _G.Auto_Farm then
-            if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == true then
-                if not currentTarget or (currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health <= 0) then
-                    currentTarget = findNewTarget()
-                end
-
-                if currentTarget and currentTarget:FindFirstChild("Humanoid") and currentTarget.Humanoid.Health > 0 then
-                    local heightAboveHead = currentTarget.HumanoidRootPart.Size.Y * (Distancehigh or 2.5)
-                    local targetPosition = currentTarget.HumanoidRootPart.CFrame * CFrame.new(0, heightAboveHead, 0)
-                    teleportToTarget(targetPosition)
-
-                    setPlayerToLyingPosition()
-                end
-            end
-        end
-    end
-end)
-
-AutofarmTab:AddToggle({
-    Name = "Auto farm",
-    Default = false,
-    Callback = function(Value)
-        _G.Auto_Farm = Value
-
-        local player = game.Players.LocalPlayer
-        local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-
-        if not _G.Auto_Farm then
-            if hrp then
-                local existingGyro = hrp:FindFirstChild("BodyGyro")
-                if existingGyro then existingGyro:Destroy() end
-
-                local existingPosition = hrp:FindFirstChild("BodyPosition")
-                if existingPosition then existingPosition:Destroy() end
-
-                local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-                if humanoid then
-                    humanoid.PlatformStand = false
-                end
-            end
-        end
-    end    
-})
-
-local teleportPositions = {
-    StarterIsland = Vector3.new(-2091, 300, -4615),
-    SoldierIsland = Vector3.new(-2359, 300, -2597),
-    Bubble        = Vector3.new(1660, 300, 878),
-    ChefShip      = Vector3.new(-4226, 300, -2895),
-    Fishland      = Vector3.new(-1706, 100, 6395),
-    LobbyIsland   = Vector3.new(-1211, 300,2193)
-}
-
-local function teleportToPosition(islandName)
-    local player = game:GetService("Players").LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-    
-    local position = teleportPositions[islandName]
-    if position then
-        humanoidRootPart.CFrame = CFrame.new(position)
-    end
-end
-
-local function createButtonsForIslands()
-    local areas = game:GetService("Workspace"):FindFirstChild("Areas")
-    if not areas then
-        return
-    end
-
-    local areaChildren = areas:GetChildren()
-    
-    for _, area in pairs(areaChildren) do
-        local islandName = area.Name
-        if teleportPositions[islandName] then
-            local buttonName = "Go to " .. islandName
-            local callback = function()
-                teleportToPosition(islandName)
-            end
-            
-            if TeleportTab and TeleportTab.AddButton then
-                TeleportTab:AddButton({
-                    Name = buttonName,
-                    Callback = callback
-                })
-            end
-        end
-    end
-end
-
-createButtonsForIslands()
+                if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.
