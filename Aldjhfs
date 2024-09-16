@@ -93,8 +93,8 @@ local function findNewTarget()
     local foundmonster = false
     for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
         if v.Name == Mon and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
-            return v
-    local foundmonster = true
+            local foundmonster = true
+          return v
         end
     end
   if not foundmonster then
