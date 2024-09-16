@@ -81,6 +81,9 @@ end
 
 
 local function teleportmonisland(position)
+    local player = game.Players.LocalPlayer
+    local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    
     if hrp then
         hrp.CFrame = CFrame.new(position)
     end
