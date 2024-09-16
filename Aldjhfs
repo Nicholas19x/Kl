@@ -28,8 +28,14 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
 end)
 
 
-local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
-local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local player = Players.LocalPlayer
+local melee = player.PlayerStats.FightingStyle.Value
+local sword = player.PlayerStats.SwordName.Value
+local Weapon = "FS_" .. melee .. "_M1"
+local SwordWeapon = "SW_" .. sword .. "_M1"
 
 spawn(function()
     while wait(1) do
@@ -48,10 +54,8 @@ spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
-                local args = {
-                    [1] = "FS_melee_M1"
-                }
-                game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+                local args = { [1] = Weapon }
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
     end
@@ -61,10 +65,8 @@ spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
-                local args = {
-                    [1] = "SW_sword_M1"
-                }
-                game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+                local args = { [1] = SwordWeapon }
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
     end
