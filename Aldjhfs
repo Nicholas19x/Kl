@@ -36,6 +36,15 @@ local melee = player.PlayerStats.FightingStyle.Value
 local sword = player.PlayerStats.SwordName.Value
 local Weapon = "FS_" .. melee .. "_M1"
 local SwordWeapon = "SW_" .. sword .. "_M1"
+local Weaponz = "FS_" .. melee .. "Z"
+local Weaponx = "FS_" .. melee .. "X"
+local Weaponc = "FS_" .. melee .. "C"
+local Weaponv = "FS_" .. melee .. "V"
+local SwordWeaponz = "SW_" .. sword .. "Z"
+local SwordWeaponx = "SW_" .. sword .. "X"
+local SwordWeaponc = "SW_" .. sword .. "C"
+local SwordWeaponv = "SW_" .. sword .. "V"
+
 
 spawn(function()
     while wait(1) do
