@@ -28,8 +28,23 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
 end)
 
 
-local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
-local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local player = Players.LocalPlayer
+local melee = player.PlayerStats.FightingStyle.Value
+local sword = player.PlayerStats.SwordName.Value
+local Weapon = "FS_" .. melee .. "_M1"
+local SwordWeapon = "SW_" .. sword .. "_M1"
+local Weaponz = "FS_" .. melee .. "Z"
+local Weaponx = "FS_" .. melee .. "X"
+local Weaponc = "FS_" .. melee .. "C"
+local Weaponv = "FS_" .. melee .. "V"
+local SwordWeaponz = "SW_" .. sword .. "Z"
+local SwordWeaponx = "SW_" .. sword .. "X"
+local SwordWeaponc = "SW_" .. sword .. "C"
+local SwordWeaponv = "SW_" .. sword .. "V"
+
 
 spawn(function()
     while wait(1) do
@@ -48,10 +63,8 @@ spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
-                local args = {
-                    [1] = "FS_melee_M1"
-                }
-                game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+                local args = { [1] = Weapon }
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
     end
@@ -61,10 +74,8 @@ spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
-                local args = {
-                    [1] = "SW_sword_M1"
-                }
-                game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+                local args = { [1] = SwordWeapon }
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
     end
@@ -112,7 +123,7 @@ end
 local function teleportmonisland(position)
     local player = game.Players.LocalPlayer
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-    
+
     if hrp and position then
         hrp.CFrame = CFrame.new(position)
     end
@@ -120,15 +131,21 @@ end
 
 local function findNewTarget()
     local foundmonster = false
-    for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
+    local monsters = game:GetService("Workspace").Monster.Mon:GetChildren()
+
+    for _, v in pairs(monsters) do
         if v.Name == Mon and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
             foundmonster = true
             return v
         end
     end
-    if not foundmonster and Monisland then
-        teleportmonisland(Monisland)
+
+    if not foundmonster then
+        if Monisland then
+            teleportmonisland(Monisland)
+        end
     end
+
     return nil
 end
 
