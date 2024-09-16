@@ -32,13 +32,16 @@ local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.V
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
 
 spawn(function()
-      while wait(1) do
-       if _G.Auto_Farm then
-        pcall(function()
-         game.Players.LocalPlayer.Character.Humanoid:EquipTool(sword))
-        end)
-     end
-  end
+    while wait(1) do
+        if _G.Auto_Farm then
+            pcall(function()
+                local tool = player.Backpack:FindFirstChild(sword)
+                if tool then
+                    player.Character.Humanoid:EquipTool(tool)
+                end
+            end)
+        end
+    end
 end)
 
 spawn(function()
