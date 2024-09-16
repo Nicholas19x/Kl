@@ -27,15 +27,39 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
     vu:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
 end)
 
+
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
-local Weapon = "FS_" .. melee .. "_M1"
+
+spawn(function()
+      while wait(1) do
+       if _G.Auto_Farm then
+        pcall(function()
+         game.Players.LocalPlayer.Character.Humanoid:EquipTool(sword))
+        end)
+     end
+  end
+end)
+
 spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
                 local args = {
-                    [1] = Weapon
+                    [1] = "FS_melee_M1"
+                }
+                game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            end
+        end)
+    end
+end)
+
+spawn(function()
+    while task.wait(0.25) do
+        pcall(function()
+            if _G.Auto_Farm then
+                local args = {
+                    [1] = "SW_sword_M1"
                 }
                 game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
