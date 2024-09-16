@@ -223,8 +223,7 @@ local function createButtonsForIslands()
                 teleportToPosition(islandName)
             end
             
-            if TeleportTab and 
-TeleportTab.AddButton then
+            if TeleportTab and TeleportTab.AddButton then
                 TeleportTab:AddButton({
                     Name = buttonName,
                     Callback = callback
