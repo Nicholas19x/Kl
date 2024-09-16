@@ -57,7 +57,6 @@ function checklevel()
     if lv <= 9 then
         Mon = "Soldier [Lv. 1]"
         QuestName = "Kill 4 Soldiers"
-        Monisland = Vector3.new(-2091, 300, -4615)
     elseif lv <= 11 then
         Mon = "High-class Soldier [Lv. 1050]"
         QuestName = "Kill 4 High-class Soldier"
@@ -79,26 +78,11 @@ local function teleportToTarget(position)
     end
 end
 
-
-local function teleportmonisland(position)
-    local player = game.Players.LocalPlayer
-    local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-    
-    if hrp then
-        hrp.CFrame = CFrame.new(position)
-    end
-end
-
 local function findNewTarget()
-    local foundmonster = false
     for _, v in pairs(game:GetService("Workspace").Monster.Mon:GetChildren()) do
         if v.Name == Mon and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
             return v
-    local foundmonster = true
         end
-    end
-  if not foundmonster then
-    teleportmonisland(Monisland)
     end
     return nil
 end
