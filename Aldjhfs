@@ -74,7 +74,21 @@ spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
-                local args = { [1] = SwordWeapon }
+                local args = { [1] = SwordWeaponz }
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            end
+        end)
+    end
+end)
+
+spawn(function()
+    while task.wait(2) do
+        pcall(function()
+            if _Z_Weapon then
+                local args = { [1] = Weapon, [2] = { ["Type"] = "Down", ["MouseHit"] = CFrame.new(0, 0, 0)}
+}
+                local args = { [1] = Weapon, [2] = { ["Type"] = "Up", ["MouseHit"] = CFrame.new(0, 0, 0)}
+}
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
@@ -89,6 +103,12 @@ AutofarmSettingTab:AddTextbox({
         Distancehigh = tonumber(Value)
     end    
 })
+
+AutofarmSettingTab:AddToggle({
+    Name = "Z",
+    Default = false,
+    Callback = function(Value)
+        _Z_Weapon = Value
 
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
