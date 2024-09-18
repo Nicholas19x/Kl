@@ -58,16 +58,25 @@ spawn(function()
     end
 end)
 
+local function getMeleeValue()
+    return player.PlayerStats.FightingStyle.Value
+end
+
 spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
+                local melee = getMeleeValue()  -- อัปเดตค่า melee
                 local args = { [1] = "FS_" .. melee .. "_M1" }
-                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+                local success, errorMessage = pcall(function()
+                    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+                end)
+                end
             end
         end)
     end
 end)
+
 
 spawn(function()
     while task.wait(0.25) do
