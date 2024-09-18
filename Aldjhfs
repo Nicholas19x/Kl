@@ -27,47 +27,6 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
     vu:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
 end)
 
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local player = Players.LocalPlayer
-
-local function updateWeapons()
-    local _G.melee = player.PlayerStats.FightingStyle.Value
-    local _G.sword = player.PlayerStats.SwordName.Value
-    Weapon = "FS_" .. _G.melee .. "_M1"
-    SwordWeapon = "SW_" .. _G.sword .. "_M1"
-    Weaponz = "FS_" .. _G.melee .. "_Z"
-    Weaponx = "FS_" .. _G.melee .. "_X"
-    Weaponc = "FS_" .. _G.melee .. "_C"
-    Weaponv = "FS_" .. _G.melee .. "_V"
-    SwordWeaponz = "SW_" .. _G.sword .. "_Z"
-    SwordWeaponx = "SW_" .. _G.sword .. "_X"
-end
-
-updateWeapons()
-
-spawn(function()
-    while true do
-        updateWeapons()
-        task.wait(2) 
-    end
-end)
-
-
-spawn(function()
-    while wait(1) do
-        if _G.Auto_Farm then
-            pcall(function()
-                local tool = player.Backpack:FindFirstChild(_G.sword)
-                if tool then
-                    player.Character.Humanoid:EquipTool(tool)
-                end
-            end)
-        end
-    end
-end)
-
 spawn(function()
     while task.wait(0.25) do
         pcall(function()
@@ -93,11 +52,63 @@ local Section = AutofarmSettingTab:AddSection({
 	Name = "Skill"
 })
 
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local player = Players.LocalPlayer
+
+_G.Weapon = ""
+_G.SwordWeapon = ""
+_G.Weaponz = ""
+_G.Weaponx = ""
+_G.Weaponc = ""
+_G.Weaponv = ""
+_G.SwordWeaponz = ""
+_G.SwordWeaponx = ""
+
+local function updateWeapons()
+    local melee = player.PlayerStats.FightingStyle.Value
+    local sword = player.PlayerStats.SwordName.Value
+    _G.Weapon = "FS_" .. melee .. "_M1"
+    _G.SwordWeapon = "SW_" .. sword .. "_M1"
+    _G.Weaponz = "FS_" .. melee .. "_Z"
+    _G.Weaponx = "FS_" .. melee .. "_X"
+    _G.Weaponc = "FS_" .. melee .. "_C"
+    _G.Weaponv = "FS_" .. melee .. "_V"
+    _G.SwordWeaponz = "SW_" .. sword .. "_Z"
+    _G.SwordWeaponx = "SW_" .. sword .. "_X"
+end
+
+updateWeapons()
+
+spawn(function()
+    while true do
+        updateWeapons()
+        task.wait(2)
+    end
+end)
+
+spawn(function()
+    while wait(1) do
+        if _G.Auto_Farm then
+            pcall(function()
+                local tool = player.Backpack:FindFirstChild(player.PlayerStats.SwordName.Value)
+                if tool then
+                    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+                    if humanoid and not humanoid:FindFirstChild(tool.Name) then
+                        humanoid:EquipTool(tool)
+                    end
+                end
+            end)
+        end
+    end
+end)
+
 local skillStates = {
-    Z = {SwordWeaponz, Weaponz},
-    X = {SwordWeaponx},
-    C = {Weaponc},
-    V = {Weaponv}
+    Z = {_G.SwordWeaponz, _G.Weaponz},
+    X = {_G.SwordWeaponx},
+    C = {_G.Weaponc},
+    V = {_G.Weaponv}
 }
 
 local function useSkill(weapons, skillType)
@@ -108,19 +119,13 @@ local function useSkill(weapons, skillType)
 end
 
 local function handleSkill(skillName, interval)
-    local isActive = false
-
     while true do
-        if skillStates[skillName] and skillStates[skillName][1] then
-            if not isActive then
-                isActive = true
-                pcall(function()
-                    useSkill(skillStates[skillName], "Down")
-                    wait(0.1)
-                    useSkill(skillStates[skillName], "Up")
-                end)
-                isActive = false
-            end
+        if skillStates[skillName] then
+            pcall(function()
+                useSkill(skillStates[skillName], "Down")
+                wait(0.1)
+                useSkill(skillStates[skillName], "Up")
+            end)
         end
         wait(interval)
     end
@@ -130,7 +135,6 @@ spawn(function() handleSkill("Z", 3) end)
 spawn(function() handleSkill("X", 3.44) end)
 spawn(function() handleSkill("C", 3.13) end)
 spawn(function() handleSkill("V", 3.53) end)
-
 
 AutofarmSettingTab:AddToggle({
     Name = "Z",
