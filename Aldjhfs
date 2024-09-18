@@ -80,133 +80,73 @@ spawn(function()
         end)
     end
 end)
-
-
-spawn(function()
-    while task.wait(4.71) do
-        pcall(function()
-            if Skillz then
-                local args = { [1] = SwordWeaponz,
- [2] = { ["Type"] = "Down",
-         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
-}
-}
-                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-     wait(0.1)
-                local args = { [1] = SwordWeaponz,
- [2] = { ["Type"] = "Up",
-         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
-}
-}
-                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-            end
-        end)
-    end
-end)
-
-
-
-spawn(function()
-    while task.wait(3.44) do
-        pcall(function()
-            if Skillx then
-                local args = { [1] = SwordWeaponx,
- [2] = { ["Type"] = "Down",
-         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
-}
-}
-                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-     wait(0.1)
-                local args = { [1] = SwordWeaponx,
- [2] = { ["Type"] = "Up",
-         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
-}
-}
-                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-            end
-        end)
-    end
-end)
-
-spawn(function()
-    while task.wait(3.13) do
-        pcall(function()
-            if Skillc then
-                local args = { [1] = Weaponc,
- [2] = { ["Type"] = "Down",
-         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
-}
-}
-                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-     wait(0.1)
-                local args = { [1] = Weaponc,
- [2] = { ["Type"] = "Up",
-         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
-}
-}
-                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-            end
-        end)
-    end
-end)
-
-spawn(function()
-    while task.wait(3.53) do
-        pcall(function()
-            if Skillv then
-                local args = { [1] = Weaponv,
- [2] = { ["Type"] = "Down",
-         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
-}
-}
-                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-     wait(0.1)
-                local args = { [1] = Weaponv,
- [2] = { ["Type"] = "Up",
-         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
-}
-}
-                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-            end
-        end)
-    end
-end)
-
 local Section = AutofarmSettingTab:AddSection({
 	Name = "Skill"
 })
 
+local skillStates = {
+    Z = false,
+    X = false,
+    C = false,
+    V = false
+}
+
+local function useSkill(weapon, skillType)
+    local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
+    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+end
+
+local function handleSkill(skillName, weapon, interval)
+    while true do
+        if skillStates[skillName] then
+            pcall(function()
+                useSkill(weapon, "Down")
+                wait(0.1)
+                useSkill(weapon, "Up")
+            end)
+        end
+        wait(interval)
+    end
+end
+
+spawn(function() handleSkill("Z", SwordWeaponz, 4.71) end)
+spawn(function() handleSkill("X", SwordWeaponx, 3.44) end)
+spawn(function() handleSkill("C", Weaponc, 3.13) end)
+spawn(function() handleSkill("V", Weaponv, 3.53) end)
+
 AutofarmSettingTab:AddToggle({
-	Name = "Z",
-	Default = false,
-	Callback = function(Value)
-		Skillz = Value
-	end    
+    Name = "Z",
+    Default = false,
+    Callback = function(value)
+        skillStates["Z"] = value
+    end
 })
 
 AutofarmSettingTab:AddToggle({
-	Name = "X",
-	Default = false,
-	Callback = function(Value)
-		Skillx = Value
-	end    
+    Name = "X",
+    Default = false,
+    Callback = function(value)
+        skillStates["X"] = value
+    end
 })
 
 AutofarmSettingTab:AddToggle({
-	Name = "C",
-	Default = false,
-	Callback = function(Value)
-		Skillc = Value
-	end    
+    Name = "C",
+    Default = false,
+    Callback = function(value)
+        skillStates["C"] = value
+    end
 })
 
 AutofarmSettingTab:AddToggle({
-	Name = "V",
-	Default = false,
-	Callback = function(Value)
-		Skillv = Value
-	end    
+    Name = "V",
+    Default = false,
+    Callback = function(value)
+        skillStates["V"] = value
+    end
 })
+
+                
 
 AutofarmSettingTab:AddTextbox({
     Name = "Distance",
