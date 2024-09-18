@@ -102,7 +102,9 @@ local isProcessing = false
 
 local function useSkill(weapon, skillType)
     local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) } }
-    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+    pcall(function()
+        ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+    end)
 end
 
 local function processSkills()
@@ -115,7 +117,7 @@ local function processSkills()
             if skillStates[skillName] then
                 pcall(function()
                     useSkill(weapon, "Down")
-                    wait(0.05)  -- ปรับระยะเวลา wait ตามความต้องการ
+                    wait(0.05)  -- ปรับระยะเวลา wait ตามความเหมาะสม
                     useSkill(weapon, "Up")
                 end)
             end
@@ -132,15 +134,13 @@ local function queueSkill(skillName, weapon, interval)
     end
 end
 
--- Use coroutines to ensure that skill processing does not block the main thread
+-- ใช้ coroutine เพื่อให้แน่ใจว่า processSkills ทำงานได้อย่างราบรื่น
 local function startProcessingSkills()
-    local thread = coroutine.create(processSkills)
-    coroutine.resume(thread)
+    coroutine.wrap(processSkills)()
 end
 
 startProcessingSkills()
 
--- Example of adding skills to the queue when toggles are changed
 local function addSkillsToQueue()
     if skillStates["Z"] then
         queueSkill("Z", SwordWeaponz, 0.6)
