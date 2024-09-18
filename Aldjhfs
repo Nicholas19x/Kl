@@ -47,12 +47,6 @@ end
 
 updateWeapons()
 
-spawn(function()
-    while true do
-        updateWeapons()
-        task.wait(2) 
-    end
-end)
 
 
 spawn(function()
@@ -110,6 +104,7 @@ end
 
 local function handleSkill(skillName, weapon, interval)
     while true do
+       updateWeapons()
         if skillStates[skillName] then
             pcall(function()
                 useSkill(weapon, "Down")
