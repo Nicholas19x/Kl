@@ -30,24 +30,19 @@ end)
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local player = Players.LocalPlayer
-
-local function getWeaponDetails()
+local function updateWeaponDetails()
     local melee = player.PlayerStats.FightingStyle.Value
     local sword = player.PlayerStats.SwordName.Value
-    local Weapon = "FS_" .. melee .. "_M1"
-    local SwordWeapon = "SW_" .. sword .. "_M1"
-    local Weaponz = "FS_" .. melee .. "_Z"
-    local Weaponx = "FS_" .. melee .. "_X"
-    local Weaponc = "FS_" .. melee .. "_C"
-    local Weaponv = "FS_" .. melee .. "_V"
-    local SwordWeaponz = "SW_" .. sword .. "_Z"
-    local SwordWeaponx = "SW_" .. sword .. "_X"
     
-    return Weapon, SwordWeapon, Weaponz, Weaponx, Weaponc, Weaponv, SwordWeaponz, SwordWeaponx
+    Weapon = "FS_" .. melee .. "_M1"
+    SwordWeapon = "SW_" .. sword .. "_M1"
+    Weaponz = "FS_" .. melee .. "_Z"
+    Weaponx = "FS_" .. melee .. "_X"
+    Weaponc = "FS_" .. melee .. "_C"
+    Weaponv = "FS_" .. melee .. "_V"
+    SwordWeaponz = "SW_" .. sword .. "_Z"
+    SwordWeaponx = "SW_" .. sword .. "_X"
 end
-
-local Weapon, SwordWeapon, Weaponz, Weaponx, Weaponc, Weaponv, SwordWeaponz, SwordWeaponx = getWeaponDetails()
 
 spawn(function()
     while wait(1) do
@@ -69,6 +64,7 @@ spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
+            updateWeaponDetails()
                 local args = { [1] = Weapon }
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
@@ -79,6 +75,7 @@ end)
 spawn(function()
     while task.wait(0.25) do
         pcall(function()
+        updateWeaponDetails()
             if _G.Auto_Farm then
                 local args = { [1] = SwordWeapon }
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
@@ -99,6 +96,7 @@ local skillStates = {
 
 local function useSkill(weapons, skillType)
     for _, weapon in pairs(weapons) do
+     updateWeaponDetails()
         local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
         ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
     end
