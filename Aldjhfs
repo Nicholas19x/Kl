@@ -84,7 +84,7 @@ end)
 spawn(function()
     while task.wait(1) do
         pcall(function()
-            if _G.Auto_Farm then
+            if Skillz then
                 local args = { [1] = Weaponz,
  [2] = { ["Type"] = "Down",
          ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
@@ -99,7 +99,7 @@ end)
 spawn(function()
     while task.wait(1) do
         pcall(function()
-            if _G.Auto_Farm then
+            if Skillz then
                 local args = { [1] = Weaponz,
  [2] = { ["Type"] = "Up",
          ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
@@ -110,6 +110,16 @@ spawn(function()
         end)
     end
 end)
+
+AutofarmSettingTab:AddToggle({
+	Name = "Z",
+	Default = false,
+	Callback = function(Value)
+		Skillz = Value
+	end    
+})
+
+
 
 AutofarmSettingTab:AddTextbox({
     Name = "Distance",
