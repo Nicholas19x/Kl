@@ -94,34 +94,43 @@ local Section = AutofarmSettingTab:AddSection({
 })
 
 local skillStates = {
-    Z = false,
-    X = false,
-    C = false,
-    V = false
+    Z = {SwordWeaponz, Weaponz},
+    X = {SwordWeaponx},
+    C = {Weaponc},
+    V = {Weaponv}
 }
 
-local function useSkill(weapon, skillType)
-    local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
-    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+local function useSkill(weapons, skillType)
+    for _, weapon in pairs(weapons) do
+        local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
+        ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+    end
 end
 
-local function handleSkill(skillName, weapon, interval)
+local function handleSkill(skillName, interval)
+    local isActive = false
+
     while true do
-        if skillStates[skillName] then
-            pcall(function()
-                useSkill(weapon, "Down")
-                wait(0.1)
-                useSkill(weapon, "Up")
-            end)
+        if skillStates[skillName] and skillStates[skillName][1] then
+            if not isActive then
+                isActive = true
+                pcall(function()
+                    useSkill(skillStates[skillName], "Down")
+                    wait(0.1)
+                    useSkill(skillStates[skillName], "Up")
+                end)
+                isActive = false
+            end
         end
         wait(interval)
     end
 end
 
-spawn(function() handleSkill("Z", SwordWeaponz, 3) end)
-spawn(function() handleSkill("X", SwordWeaponx, 3.44) end)
-spawn(function() handleSkill("C", Weaponc, 3.13) end)
-spawn(function() handleSkill("V", Weaponv, 3.53) end)
+spawn(function() handleSkill("Z", 3) end)
+spawn(function() handleSkill("X", 3.44) end)
+spawn(function() handleSkill("C", 3.13) end)
+spawn(function() handleSkill("V", 3.53) end)
+
 
 AutofarmSettingTab:AddToggle({
     Name = "Z",
