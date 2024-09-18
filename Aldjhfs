@@ -37,8 +37,7 @@ local Weaponc = "FS_" .. melee .. "_C"
 local Weaponv = "FS_" .. melee .. "_V"
 local SwordWeaponz = "SW_" .. sword .. "_Z"
 local SwordWeaponx = "SW_" .. sword .. "_X"
-print(melee)
-print(sword) 
+
 
 
 
@@ -64,8 +63,10 @@ end)
 spawn(function()
     while task.wait(0.25) do
         pcall(function()
-        updateWeapons()
             if _G.Auto_Farm then
+print(melee)
+print(sword) 
+
                 local args = { [1] = Weapon }
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
