@@ -47,7 +47,7 @@ local function getWeaponDetails()
     return Weapon, SwordWeapon, Weaponz, Weaponx, Weaponc, Weaponv, SwordWeaponz, SwordWeaponx
 end
 
-
+local Weapon, SwordWeapon, Weaponz, Weaponx, Weaponc, Weaponv, SwordWeaponz, SwordWeaponx = getWeaponDetails()
 
 spawn(function()
     while wait(1) do
