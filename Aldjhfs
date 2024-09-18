@@ -34,8 +34,6 @@ local function updateWeaponDetails()
     local melee = player.PlayerStats.FightingStyle.Value
     local sword = player.PlayerStats.SwordName.Value
     
-    Weapon = "FS_" .. melee .. "_M1"
-    SwordWeapon = "SW_" .. sword .. "_M1"
     Weaponz = "FS_" .. melee .. "_Z"
     Weaponx = "FS_" .. melee .. "_X"
     Weaponc = "FS_" .. melee .. "_C"
@@ -64,8 +62,7 @@ spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
-            updateWeaponDetails()
-                local args = { [1] = Weapon }
+                local args = { [1] = "FS_" .. melee .. "_M1" }
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
@@ -77,7 +74,7 @@ spawn(function()
         pcall(function()
         updateWeaponDetails()
             if _G.Auto_Farm then
-                local args = { [1] = SwordWeapon }
+                local args = { [1] = "SW_" .. sword .. "_M1" }
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
