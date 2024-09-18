@@ -115,7 +115,6 @@ local function processSkills()
             if skillStates[skillName] then
                 pcall(function()
                     useSkill(weapon, "Down")
-                    wait(0.1)
                     useSkill(weapon, "Up")
                 end)
             end
