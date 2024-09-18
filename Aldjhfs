@@ -55,7 +55,8 @@ spawn(function()
     while wait(1) do
         if _G.Auto_Farm then
             pcall(function()
-                local tool = player.Backpack:FindFirstChild(player.PlayerStats.SwordName.Value)
+           updateWeapons()
+                local tool = player.Backpack:FindFirstChild(sword)
                 if tool then
                     local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
                     if humanoid and not humanoid:FindFirstChild(tool.Name) then
@@ -70,6 +71,7 @@ end)
 spawn(function()
     while task.wait(0.25) do
         pcall(function()
+        updateWeapons()
             if _G.Auto_Farm then
                 local args = { [1] = Weapon }
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
@@ -81,6 +83,7 @@ end)
 spawn(function()
     while task.wait(0.25) do
         pcall(function()
+            updateWeapons()
             if _G.Auto_Farm then
                 local args = { [1] = SwordWeapon }
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
