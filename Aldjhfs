@@ -109,7 +109,7 @@ local function handleSkill(skillName, weapon, interval)
     end
 end
 
-spawn(function() handleSkill("Z", SwordWeaponz, 4.71) end)
+spawn(function() handleSkill("Z", SwordWeaponz, 3) end)
 spawn(function() handleSkill("X", SwordWeaponx, 3.44) end)
 spawn(function() handleSkill("C", Weaponc, 3.13) end)
 spawn(function() handleSkill("V", Weaponv, 3.53) end)
