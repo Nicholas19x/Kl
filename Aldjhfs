@@ -27,36 +27,33 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
     vu:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
 end)
 
+local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-function update()
-local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
-local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
-local Weapon = "FS_" .. melee .. "_M1"
-local SwordWeapon = "SW_" .. sword .. "_M1"
-local Weaponz = "FS_" .. melee .. "_Z"
-local Weaponx = "FS_" .. melee .. "_X"
-local Weaponc = "FS_" .. melee .. "_C"
-local Weaponv = "FS_" .. melee .. "_V"
-local SwordWeaponz = "SW_" .. sword .. "_Z"
-local SwordWeaponx = "SW_" .. sword .. "_X"
+
+local player = Players.LocalPlayer
+
+local function getWeaponDetails()
+    local melee = player.PlayerStats.FightingStyle.Value
+    local sword = player.PlayerStats.SwordName.Value
+    local Weapon = "FS_" .. melee .. "_M1"
+    local SwordWeapon = "SW_" .. sword .. "_M1"
+    local Weaponz = "FS_" .. melee .. "_Z"
+    local Weaponx = "FS_" .. melee .. "_X"
+    local Weaponc = "FS_" .. melee .. "_C"
+    local Weaponv = "FS_" .. melee .. "_V"
+    local SwordWeaponz = "SW_" .. sword .. "_Z"
+    local SwordWeaponx = "SW_" .. sword .. "_X"
+    
+    return Weapon, SwordWeapon, Weaponz, Weaponx, Weaponc, Weaponv, SwordWeaponz, SwordWeaponx
 end
-update()
 
-spawn(function()
-while wait (2) do
-update()
-end)
-
-
-
-
+local Weapon, SwordWeapon, Weaponz, Weaponx, Weaponc, Weaponv, SwordWeaponz, SwordWeaponx = getWeaponDetails()
 
 spawn(function()
     while wait(1) do
         if _G.Auto_Farm then
             pcall(function()
-           updateWeapons()
-                local tool = player.Backpack:FindFirstChild(sword)
+                local tool = player.Backpack:FindFirstChild(player.PlayerStats.SwordName.Value)
                 if tool then
                     local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
                     if humanoid and not humanoid:FindFirstChild(tool.Name) then
@@ -72,8 +69,7 @@ spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
-                local args = { [1] = Weapon 
-}
+                local args = { [1] = Weapon }
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
@@ -84,8 +80,7 @@ spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
-                local args = { [1] =  "SW_" .. sword .. "_M1"
-}
+                local args = { [1] = SwordWeapon }
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
@@ -96,44 +91,63 @@ local Section = AutofarmSettingTab:AddSection({
 })
 
 local skillStates = {
-    Z = {SwordWeaponz, Weaponz},
-    X = {SwordWeaponx},
-    C = {Weaponc},
-    V = {Weaponv}
+    Z = false,
+    X = false,
+    C = false,
+    V = false
 }
 
-local function useSkill(weapons, skillType)
-    for _, weapon in pairs(weapons) do
-        local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
+local skillQueue = {}
+local isProcessing = false
+
+local function useSkill(weapon, skillType)
+    local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) } }
+    local success, errorMessage = pcall(function()
         ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+    end)
+    if not success then
+        print("Error using skill: " .. errorMessage)
     end
 end
 
-local function handleSkill(skillName, interval)
-    local isActive = false
-
+local function processSkills()
     while true do
-        if skillStates[skillName] and skillStates[skillName][1] then
-            if not isActive then
-                isActive = true
+        if not isProcessing and #skillQueue > 0 then
+            isProcessing = true
+            local skill = table.remove(skillQueue, 1)
+            local skillName, weapon, interval = skill.name, skill.weapon, skill.interval
+            
+            if skillStates[skillName] then
                 pcall(function()
-                    useSkill(skillStates[skillName], "Down")
-                    wait(0.1)
-                    useSkill(skillStates[skillName], "Up")
+                    useSkill(weapon, "Down")
+                    wait(0.1)  -- ปรับเวลานี้ตามความเหมาะสม
+                    useSkill(weapon, "Up")
                 end)
-                isActive = false
             end
+            wait(interval)
+            isProcessing = false
         end
-        wait(interval)
+        wait(0.1)
     end
 end
 
-spawn(function() handleSkill("Z", 3) end)
-spawn(function() handleSkill("X", 3.44) end)
-spawn(function() handleSkill("C", 3.13) end)
-spawn(function() handleSkill("V", 3.53) end)
+local function queueSkill(skillName, weapon, interval)
+    if skillStates[skillName] then
+        table.insert(skillQueue, { name = skillName, weapon = weapon, interval = interval })
+    end
+end
 
+spawn(processSkills)
 
+-- เพิ่มทักษะในคิว
+queueSkill("Z", SwordWeaponz, 0.6)
+queueSkill("Z", Weaponz, 0.6)
+queueSkill("X", SwordWeaponx, 0.6)
+queueSkill("X", Weaponx, 0.6)
+queueSkill("C", Weaponc, 0.6)
+queueSkill("V", Weaponv, 0.6)
+
+-- Add toggles to enable/disable skills
 AutofarmSettingTab:AddToggle({
     Name = "Z",
     Default = false,
@@ -166,7 +180,6 @@ AutofarmSettingTab:AddToggle({
     end
 })
 
-                
 
 AutofarmSettingTab:AddTextbox({
     Name = "Distance",
