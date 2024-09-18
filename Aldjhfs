@@ -1,6 +1,26 @@
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local OrionLib
 
-local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+local function loadOrionLib()
+    local success, result = pcall(function()
+        return loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+    end)
+    if success and result then
+        return result
+    end
+    return nil
+end
+
+repeat
+    OrionLib = loadOrionLib()
+    wait(1)
+until OrionLib
+
+local Window = OrionLib:MakeWindow({
+    Name = "Title of the library",
+    HidePremium = false,
+    SaveConfig = true,
+    ConfigFolder = "OrionTest"
+})
 
 local AutofarmSettingTab = Window:MakeTab({
     Name = "Setting",
