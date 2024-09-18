@@ -82,7 +82,7 @@ spawn(function()
 end)
 
 spawn(function()
-    while task.wait(5) do
+    while task.wait(1) do
         pcall(function()
             if _G.Auto_Farm then
                 local args = { [1] = Weaponz,
@@ -97,7 +97,7 @@ spawn(function()
 end)
 
 spawn(function()
-    while task.wait(5) do
+    while task.wait(1) do
         pcall(function()
             if _G.Auto_Farm then
                 local args = { [1] = Weaponz,
