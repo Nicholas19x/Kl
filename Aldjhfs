@@ -77,8 +77,8 @@ spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
-         local a = SwordWeapon
-                local args = { [1] = a }
+                local args = { [1] =  "SW_" .. sword .. "_M1"
+}
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
