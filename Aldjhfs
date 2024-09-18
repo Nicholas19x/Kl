@@ -201,8 +201,68 @@ spawn(function()
     end
 end)
 
+spawn(function()
+    while task.wait(3) do
+        pcall(function()
+            if Skillc then
+                local args = { [1] = Weaponc,
+ [2] = { ["Type"] = "Down",
+         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
+}
+}
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            end
+        end)
+    end
+end)
+
+spawn(function()
+    while task.wait(3) do
+        pcall(function()
+            if Skillc then
+                local args = { [1] = Weaponc,
+ [2] = { ["Type"] = "Up",
+         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
+}
+}
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            end
+        end)
+    end
+end)
+
+spawn(function()
+    while task.wait(3) do
+        pcall(function()
+            if Skillv then
+                local args = { [1] = Weaponv,
+ [2] = { ["Type"] = "Down",
+         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
+}
+}
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            end
+        end)
+    end
+end)
+
+spawn(function()
+    while task.wait(3) do
+        pcall(function()
+            if Skillv then
+                local args = { [1] = Weaponv,
+ [2] = { ["Type"] = "Up",
+         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
+}
+}
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            end
+        end)
+    end
+end)
+
 local Section = AutofarmSettingTab:AddSection({
-	Name = "Section"
+	Name = "Skill"
 })
 
 AutofarmSettingTab:AddToggle({
@@ -221,6 +281,21 @@ AutofarmSettingTab:AddToggle({
 	end    
 })
 
+AutofarmSettingTab:AddToggle({
+	Name = "C",
+	Default = false,
+	Callback = function(Value)
+		Skillc = Value
+	end    
+})
+
+AutofarmSettingTab:AddToggle({
+	Name = "V",
+	Default = false,
+	Callback = function(Value)
+		Skillv = Value
+	end    
+})
 
 AutofarmSettingTab:AddTextbox({
     Name = "Distance",
