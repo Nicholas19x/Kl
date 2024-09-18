@@ -28,6 +28,7 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
 end)
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+function update()
 local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
 local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
 local Weapon = "FS_" .. melee .. "_M1"
@@ -38,7 +39,13 @@ local Weaponc = "FS_" .. melee .. "_C"
 local Weaponv = "FS_" .. melee .. "_V"
 local SwordWeaponz = "SW_" .. sword .. "_Z"
 local SwordWeaponx = "SW_" .. sword .. "_X"
+end
+update()
 
+spawn(function()
+while wait (2) do
+update()
+end)
 
 
 
