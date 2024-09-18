@@ -85,7 +85,7 @@ spawn(function()
     while task.wait(1) do
         pcall(function()
             if Skillz then
-                local args = { [1] = Weaponz,
+                local args = { [1] = "FS_" .. melee .. "_Z",
  [2] = { ["Type"] = "Down",
          ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
 }
@@ -100,7 +100,7 @@ spawn(function()
     while task.wait(1) do
         pcall(function()
             if Skillz then
-                local args = { [1] = Weaponz,
+                local args = { [1] = "FS_" .. melee .. "_Z",
  [2] = { ["Type"] = "Up",
          ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
 }
