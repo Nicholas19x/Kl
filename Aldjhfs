@@ -105,6 +105,8 @@ spawn(function()
 end)
 
 
+spawn(function()
+
 
 spawn(function()
     while task.wait(3.44) do
