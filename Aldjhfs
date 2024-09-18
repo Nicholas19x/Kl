@@ -97,30 +97,62 @@ local skillStates = {
     V = false
 }
 
+local skillQueue = {}
+local isProcessing = false
+
 local function useSkill(weapon, skillType)
-    local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
+    local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) } }
     ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
 end
 
-local function handleSkill(skillName, weapon, interval)
+local function processSkills()
     while true do
-        if skillStates[skillName] then
-            pcall(function()
-                useSkill(weapon, "Down")
-                wait(0.1)
-                useSkill(weapon, "Up")
-            end)
+        if #skillQueue > 0 and not isProcessing then
+            isProcessing = true
+            local skill = table.remove(skillQueue, 1)
+            local skillName, weapon, interval = skill.name, skill.weapon, skill.interval
+            
+            if skillStates[skillName] then
+                pcall(function()
+                    useSkill(weapon, "Down")
+                    wait(0.1)
+                    useSkill(weapon, "Up")
+                end)
+            end
+            
+            skillStates[skillName] = false
+            wait(interval)
+            isProcessing = false
         end
-        wait(interval)
+        wait(0.1)
     end
 end
 
-spawn(function() handleSkill("Z", SwordWeaponz, 3) end)
-spawn(function() handleSkill("Z", Weaponz, 3) end)
-spawn(function() handleSkill("X", SwordWeaponx, 3.44) end)
-spawn(function() handleSkill("X", Weaponx, 3.44) end)
-spawn(function() handleSkill("C", Weaponc, 3.13) end)
-spawn(function() handleSkill("V", Weaponv, 3.53) end)
+local function queueSkill(skillName, weapon, interval)
+    if skillStates[skillName] then
+        table.insert(skillQueue, { name = skillName, weapon = weapon, interval = interval })
+    end
+end
+
+spawn(processSkills)
+
+skillStates["Z"] = true
+queueSkill("Z", SwordWeaponz, 3)
+
+skillStates["Z"] = true
+queueSkill("Z", Weaponz, 3)
+
+skillStates["X"] = true
+queueSkill("X", SwordWeaponx, 3.44)
+
+skillStates["X"] = true
+queueSkill("X", Weaponx, 3.44)
+
+skillStates["C"] = true
+queueSkill("C", Weaponc, 3.13)
+
+skillStates["V"] = true
+queueSkill("V", Weaponv, 3.53)
 
 -- Add toggles to enable/disable skills
 AutofarmSettingTab:AddToggle({
