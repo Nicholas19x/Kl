@@ -30,10 +30,13 @@ end)
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local function updateWeaponDetails()
+local player = Players.LocalPlayer
+
+local function updateWeapons()
     local melee = player.PlayerStats.FightingStyle.Value
     local sword = player.PlayerStats.SwordName.Value
-    
+    Weapon = "FS_" .. melee .. "_M1"
+    SwordWeapon = "SW_" .. sword .. "_M1"
     Weaponz = "FS_" .. melee .. "_Z"
     Weaponx = "FS_" .. melee .. "_X"
     Weaponc = "FS_" .. melee .. "_C"
@@ -42,48 +45,45 @@ local function updateWeaponDetails()
     SwordWeaponx = "SW_" .. sword .. "_X"
 end
 
+updateWeapons()
+
+spawn(function()
+    while true do
+        updateWeapons()
+        task.wait(2) 
+    end
+end)
+
+
 spawn(function()
     while wait(1) do
         if _G.Auto_Farm then
             pcall(function()
-                local tool = player.Backpack:FindFirstChild(player.PlayerStats.SwordName.Value)
+                local tool = player.Backpack:FindFirstChild(sword)
                 if tool then
-                    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-                    if humanoid and not humanoid:FindFirstChild(tool.Name) then
-                        humanoid:EquipTool(tool)
-                    end
+                    player.Character.Humanoid:EquipTool(tool)
                 end
             end)
         end
     end
 end)
 
-local function getMeleeValue()
-    return player.PlayerStats.FightingStyle.Value
-end
-
 spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
-                local melee = getMeleeValue()  -- อัปเดตค่า melee
-                local args = { [1] = "FS_" .. melee .. "_M1" }
-                local success, errorMessage = pcall(function()
-                    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-                end)
-                end
+                local args = { [1] = Weapon }
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
     end
 end)
 
-
 spawn(function()
     while task.wait(0.25) do
         pcall(function()
-        updateWeaponDetails()
             if _G.Auto_Farm then
-                local args = { [1] = "SW_" .. sword .. "_M1" }
+                local args = { [1] = SwordWeapon }
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
@@ -102,7 +102,6 @@ local skillStates = {
 
 local function useSkill(weapons, skillType)
     for _, weapon in pairs(weapons) do
-     updateWeaponDetails()
         local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
         ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
     end
@@ -132,7 +131,7 @@ spawn(function() handleSkill("X", 3.44) end)
 spawn(function() handleSkill("C", 3.13) end)
 spawn(function() handleSkill("V", 3.53) end)
 
--- Add toggles to enable/disable skills
+
 AutofarmSettingTab:AddToggle({
     Name = "Z",
     Default = false,
@@ -165,6 +164,7 @@ AutofarmSettingTab:AddToggle({
     end
 })
 
+                
 
 AutofarmSettingTab:AddTextbox({
     Name = "Distance",
