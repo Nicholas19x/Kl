@@ -82,10 +82,10 @@ spawn(function()
 end)
 
 spawn(function()
-    while task.wait(1) do
+    while task.wait(3) do
         pcall(function()
             if Skillz then
-                local args = { [1] = "FS_" .. melee .. "_Z",
+                local args = { [1] = Weaponz,
  [2] = { ["Type"] = "Down",
          ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
 }
@@ -97,10 +97,40 @@ spawn(function()
 end)
 
 spawn(function()
-    while task.wait(1) do
+    while task.wait(3) do
         pcall(function()
             if Skillz then
-                local args = { [1] = "FS_" .. melee .. "_Z",
+                local args = { [1] = Weaponz,
+ [2] = { ["Type"] = "Up",
+         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
+}
+}
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            end
+        end)
+    end
+end)
+
+spawn(function()
+    while task.wait(3) do
+        pcall(function()
+            if Skillz then
+                local args = { [1] = SwordWeaponz,
+ [2] = { ["Type"] = "Down",
+         ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
+}
+}
+                ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            end
+        end)
+    end
+end)
+
+spawn(function()
+    while task.wait(3) do
+        pcall(function()
+            if Skillz then
+                local args = { [1] = SwordWeaponz,
  [2] = { ["Type"] = "Up",
          ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
 }
