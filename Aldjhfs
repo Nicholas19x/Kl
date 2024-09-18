@@ -103,7 +103,6 @@ local skillStates = {
 
 
 local function useSkill(weapons, skillType)
-    for _, weapon in pairs(weapons) do
         local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
         pcall(function()
             ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
