@@ -59,9 +59,12 @@ spawn(function()
     while wait(1) do
         if _G.Auto_Farm then
             pcall(function()
-                local tool = player.Backpack:FindFirstChild(sword)
+                local tool = player.Backpack:FindFirstChild(player.PlayerStats.SwordName.Value)
                 if tool then
-                    player.Character.Humanoid:EquipTool(tool)
+                    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+                    if humanoid and not humanoid:FindFirstChild(tool.Name) then
+                        humanoid:EquipTool(tool)
+                    end
                 end
             end)
         end
