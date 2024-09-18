@@ -33,16 +33,16 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local player = Players.LocalPlayer
 
 local function updateWeapons()
-    local melee = player.PlayerStats.FightingStyle.Value
-    local sword = player.PlayerStats.SwordName.Value
-    Weapon = "FS_" .. melee .. "_M1"
-    SwordWeapon = "SW_" .. sword .. "_M1"
-    Weaponz = "FS_" .. melee .. "_Z"
-    Weaponx = "FS_" .. melee .. "_X"
-    Weaponc = "FS_" .. melee .. "_C"
-    Weaponv = "FS_" .. melee .. "_V"
-    SwordWeaponz = "SW_" .. sword .. "_Z"
-    SwordWeaponx = "SW_" .. sword .. "_X"
+    local _G.melee = player.PlayerStats.FightingStyle.Value
+    local _G.sword = player.PlayerStats.SwordName.Value
+    Weapon = "FS_" .. _G.melee .. "_M1"
+    SwordWeapon = "SW_" .. _G.sword .. "_M1"
+    Weaponz = "FS_" .. _G.melee .. "_Z"
+    Weaponx = "FS_" .. _G.melee .. "_X"
+    Weaponc = "FS_" .. _G.melee .. "_C"
+    Weaponv = "FS_" .. _G.melee .. "_V"
+    SwordWeaponz = "SW_" .. _G.sword .. "_Z"
+    SwordWeaponx = "SW_" .. _G.sword .. "_X"
 end
 
 updateWeapons()
@@ -59,7 +59,7 @@ spawn(function()
     while wait(1) do
         if _G.Auto_Farm then
             pcall(function()
-                local tool = player.Backpack:FindFirstChild(sword)
+                local tool = player.Backpack:FindFirstChild(_G.sword)
                 if tool then
                     player.Character.Humanoid:EquipTool(tool)
                 end
