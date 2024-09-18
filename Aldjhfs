@@ -102,9 +102,12 @@ local isProcessing = false
 
 local function useSkill(weapon, skillType)
     local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) } }
-    pcall(function()
+    local success, errorMessage = pcall(function()
         ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
     end)
+    if not success then
+        print("Error using skill: " .. errorMessage)
+    end
 end
 
 local function processSkills()
@@ -117,7 +120,7 @@ local function processSkills()
             if skillStates[skillName] then
                 pcall(function()
                     useSkill(weapon, "Down")
-                    wait(0.05)  -- ปรับระยะเวลา wait ตามความเหมาะสม
+                    wait(0.1)  -- ปรับเวลานี้ตามความเหมาะสม
                     useSkill(weapon, "Up")
                 end)
             end
@@ -134,39 +137,22 @@ local function queueSkill(skillName, weapon, interval)
     end
 end
 
--- ใช้ coroutine เพื่อให้แน่ใจว่า processSkills ทำงานได้อย่างราบรื่น
-local function startProcessingSkills()
-    coroutine.wrap(processSkills)()
-end
+spawn(processSkills)
 
-startProcessingSkills()
+-- เพิ่มทักษะในคิว
+queueSkill("Z", SwordWeaponz, 0.6)
+queueSkill("Z", Weaponz, 0.6)
+queueSkill("X", SwordWeaponx, 0.6)
+queueSkill("X", Weaponx, 0.6)
+queueSkill("C", Weaponc, 0.6)
+queueSkill("V", Weaponv, 0.6)
 
-local function addSkillsToQueue()
-    if skillStates["Z"] then
-        queueSkill("Z", SwordWeaponz, 0.6)
-        queueSkill("Z", Weaponz, 0.6)
-    end
-
-    if skillStates["X"] then
-        queueSkill("X", SwordWeaponx, 0.6)
-        queueSkill("X", Weaponx, 0.6)
-    end
-
-    if skillStates["C"] then
-        queueSkill("C", Weaponc, 0.6)
-    end
-
-    if skillStates["V"] then
-        queueSkill("V", Weaponv, 0.6)
-    end
-end
-
+-- Add toggles to enable/disable skills
 AutofarmSettingTab:AddToggle({
     Name = "Z",
     Default = false,
     Callback = function(value)
         skillStates["Z"] = value
-        addSkillsToQueue()
     end
 })
 
@@ -175,7 +161,6 @@ AutofarmSettingTab:AddToggle({
     Default = false,
     Callback = function(value)
         skillStates["X"] = value
-        addSkillsToQueue()
     end
 })
 
@@ -184,7 +169,6 @@ AutofarmSettingTab:AddToggle({
     Default = false,
     Callback = function(value)
         skillStates["C"] = value
-        addSkillsToQueue()
     end
 })
 
@@ -193,7 +177,6 @@ AutofarmSettingTab:AddToggle({
     Default = false,
     Callback = function(value)
         skillStates["V"] = value
-        addSkillsToQueue()
     end
 })
 
