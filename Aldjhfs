@@ -27,14 +27,10 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
     vu:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
 end)
 
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local player = Players.LocalPlayer
 
 local function updateWeapons()
-    local melee = player.PlayerStats.FightingStyle.Value
-    local sword = player.PlayerStats.SwordName.Value
+    local melee = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
+    local sword = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
     Weapon = "FS_" .. melee .. "_M1"
     SwordWeapon = "SW_" .. sword .. "_M1"
     Weaponz = "FS_" .. melee .. "_Z"
@@ -61,7 +57,10 @@ spawn(function()
             pcall(function()
                 local tool = player.Backpack:FindFirstChild(player.PlayerStats.SwordName.Value)
                 if tool then
-                    player.Character.Humanoid:EquipTool(tool)
+                    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+                    if humanoid and not humanoid:FindFirstChild(tool.Name) then
+                        humanoid:EquipTool(tool)
+                    end
                 end
             end)
         end
