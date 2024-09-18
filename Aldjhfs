@@ -37,6 +37,8 @@ local Weaponc = "FS_" .. melee .. "_C"
 local Weaponv = "FS_" .. melee .. "_V"
 local SwordWeaponz = "SW_" .. sword .. "_Z"
 local SwordWeaponx = "SW_" .. sword .. "_X"
+print(melee)
+print(sword) 
 
 
 
