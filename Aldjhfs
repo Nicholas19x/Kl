@@ -107,7 +107,7 @@ end
 
 local function processSkills()
     while true do
-        if #skillQueue > 0 and not isProcessing then
+        if not isProcessing and #skillQueue > 0 then
             isProcessing = true
             local skill = table.remove(skillQueue, 1)
             local skillName, weapon, interval = skill.name, skill.weapon, skill.interval
@@ -119,8 +119,6 @@ local function processSkills()
                     useSkill(weapon, "Up")
                 end)
             end
-            
-            skillStates[skillName] = false
             wait(interval)
             isProcessing = false
         end
@@ -136,22 +134,12 @@ end
 
 spawn(processSkills)
 
-skillStates["Z"] = true
+-- เพิ่มทักษะในคิว
 queueSkill("Z", SwordWeaponz, 0.6)
-
-skillStates["Z"] = true
 queueSkill("Z", Weaponz, 0.6)
-
-skillStates["X"] = true
 queueSkill("X", SwordWeaponx, 0.6)
-
-skillStates["X"] = true
 queueSkill("X", Weaponx, 0.6)
-
-skillStates["C"] = true
 queueSkill("C", Weaponc, 0.6)
-
-skillStates["V"] = true
 queueSkill("V", Weaponv, 0.6)
 
 -- Add toggles to enable/disable skills
