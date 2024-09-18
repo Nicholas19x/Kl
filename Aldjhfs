@@ -90,7 +90,6 @@ local Section = AutofarmSettingTab:AddSection({
 	Name = "Skill"
 })
 
-
 local skillStates = {
     Z = false,
     X = false,
@@ -100,9 +99,7 @@ local skillStates = {
 
 local function useSkill(weapon, skillType)
     local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
-    pcall(function()
-        ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-    end)
+    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
 end
 
 local function handleSkill(skillName, weapon, interval)
@@ -118,49 +115,12 @@ local function handleSkill(skillName, weapon, interval)
     end
 end
 
-spawn(function()
-    while true do
-        local Weapon, SwordWeapon, Weaponz, Weaponx, Weaponc, Weaponv, SwordWeaponz, SwordWeaponx = getWeaponDetails()
-        
-        if skillStates["Z"] then
-            pcall(function()
-                useSkill(SwordWeaponz, "Down")
-                wait(0.1)
-                useSkill(SwordWeaponz, "Up")
-                wait(0.1)
-                useSkill(Weaponz, "Down")
-                wait(0.1)
-                useSkill(Weaponz, "Up")
-            end)
-        end
-
-        if skillStates["X"] then
-            pcall(function()
-                useSkill(SwordWeaponx, "Down")
-                wait(0.1)
-                useSkill(SwordWeaponx, "Up")
-            end)
-        end
-
-        if skillStates["C"] then
-            pcall(function()
-                useSkill(Weaponc, "Down")
-                wait(0.1)
-                useSkill(Weaponc, "Up")
-            end)
-        end
-
-        if skillStates["V"] then
-            pcall(function()
-                useSkill(Weaponv, "Down")
-                wait(0.1)
-                useSkill(Weaponv, "Up")
-            end)
-        end
-
-        wait(0.1) -- Adjust wait time as needed
-    end
-end)
+spawn(function() handleSkill("Z", SwordWeaponz, 3) end)
+spawn(function() handleSkill("Z", Weaponz, 3) end)
+spawn(function() handleSkill("X", SwordWeaponx, 3.44) end)
+spawn(function() handleSkill("X", Weaponx, 3.44) end)
+spawn(function() handleSkill("C", Weaponc, 3.13) end)
+spawn(function() handleSkill("V", Weaponv, 3.53) end)
 
 -- Add toggles to enable/disable skills
 AutofarmSettingTab:AddToggle({
