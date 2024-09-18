@@ -93,6 +93,15 @@ local Section = AutofarmSettingTab:AddSection({
 	Name = "Skill"
 })
 
+local skillStates = {
+    Z = {SwordWeaponz, Weaponz},
+    X = {SwordWeaponx},
+    C = {Weaponc},
+    V = {Weaponv}
+}
+
+
+
 local function useSkill(weapons, skillType)
     for _, weapon in pairs(weapons) do
         local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
