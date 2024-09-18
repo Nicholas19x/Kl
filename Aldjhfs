@@ -134,20 +134,33 @@ end
 
 spawn(processSkills)
 
--- เพิ่มทักษะในคิว
+skillStates["Z"] = true
 queueSkill("Z", SwordWeaponz, 0.6)
+
+skillStates["Z"] = true
 queueSkill("Z", Weaponz, 0.6)
+
+skillStates["X"] = true
 queueSkill("X", SwordWeaponx, 0.6)
+
+skillStates["X"] = true
 queueSkill("X", Weaponx, 0.6)
+
+skillStates["C"] = true
 queueSkill("C", Weaponc, 0.6)
+
+skillStates["V"] = true
 queueSkill("V", Weaponv, 0.6)
 
--- Add toggles to enable/disable skills
 AutofarmSettingTab:AddToggle({
     Name = "Z",
     Default = false,
     Callback = function(value)
         skillStates["Z"] = value
+        if value then
+            queueSkill("Z", SwordWeaponz, 0.6)
+            queueSkill("Z", Weaponz, 0.6)
+        end
     end
 })
 
@@ -156,6 +169,10 @@ AutofarmSettingTab:AddToggle({
     Default = false,
     Callback = function(value)
         skillStates["X"] = value
+        if value then
+            queueSkill("X", SwordWeaponx, 0.6)
+            queueSkill("X", Weaponx, 0.6)
+        end
     end
 })
 
@@ -164,6 +181,9 @@ AutofarmSettingTab:AddToggle({
     Default = false,
     Callback = function(value)
         skillStates["C"] = value
+        if value then
+            queueSkill("C", Weaponc, 0.6)
+        end
     end
 })
 
@@ -172,10 +192,12 @@ AutofarmSettingTab:AddToggle({
     Default = false,
     Callback = function(value)
         skillStates["V"] = value
+        if value then
+            queueSkill("V", Weaponv, 0.6)
+        end
     end
 })
 
-                
 
 AutofarmSettingTab:AddTextbox({
     Name = "Distance",
