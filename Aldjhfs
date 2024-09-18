@@ -91,15 +91,7 @@ spawn(function()
 }
 }
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-            end
-        end)
-    end
-end)
-
-spawn(function()
-    while task.wait(3) do
-        pcall(function()
-            if Skillz then
+     wait(0.5)
                 local args = { [1] = Weaponz,
  [2] = { ["Type"] = "Up",
          ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
@@ -121,15 +113,7 @@ spawn(function()
 }
 }
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-            end
-        end)
-    end
-end)
-
-spawn(function()
-    while task.wait(3) do
-        pcall(function()
-            if Skillz then
+     wait(0.5)
                 local args = { [1] = SwordWeaponz,
  [2] = { ["Type"] = "Up",
          ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
@@ -140,6 +124,7 @@ spawn(function()
         end)
     end
 end)
+
 
 spawn(function()
     while task.wait(3) do
