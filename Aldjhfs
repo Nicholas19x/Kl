@@ -80,7 +80,9 @@ spawn(function()
     while task.wait(0.25) do
         pcall(function()
             if _G.Auto_Farm then
-                local args = { [1] = SwordWeapon }
+          local sw = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
+          local SwordWeapons = "SW_" .. sw .. "_M1"
+                local args = { [1] = SwordWeapons }
                 ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
             end
         end)
