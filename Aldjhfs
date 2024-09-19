@@ -86,7 +86,6 @@ local skillStates = {
     V = false
 }
 
-local Stable = false
 
 local function useSkill(weapon, skillType)
     local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
