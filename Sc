@@ -1,4 +1,5 @@
-local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Orion/main/source'))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+wait(3)
 local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local AutofarmSettingTab = Window:MakeTab({
@@ -93,12 +94,14 @@ end
 
 local function handleSkill(skillName, weapon, interval)
     while true do
-        if skillStates[skillName]
+        if skillStates[skillName] and not Stable then
+            Stable = true
             pcall(function()
                 useSkill(weapon, "Down")
                 wait(0.15)
                 useSkill(weapon, "Up")
             end)
+            Stable = false
         end
         wait(interval)
     end
