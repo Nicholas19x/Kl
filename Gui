@@ -1,0 +1,89 @@
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local TitleLabel = Instance.new("TextLabel")
+
+-- สร้าง Toggle ปุ่มสำหรับสกิลต่างๆ
+local ZToggle = Instance.new("TextButton")
+local XToggle = Instance.new("TextButton")
+local CToggle = Instance.new("TextButton")
+local VToggle = Instance.new("TextButton")
+
+-- สร้าง TextBox สำหรับตั้งค่าระยะฟาร์ม
+local DistanceTextbox = Instance.new("TextBox")
+
+-- GUI Properties
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.Name = "AutoFarmGui"
+
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Frame.Position = UDim2.new(0.4, 0, 0.3, 0)
+Frame.Size = UDim2.new(0, 300, 0, 300)
+Frame.Active = true
+Frame.Draggable = true
+
+TitleLabel.Parent = Frame
+TitleLabel.Size = UDim2.new(0, 300, 0, 50)
+TitleLabel.Position = UDim2.new(0, 0, 0, 0)
+TitleLabel.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+TitleLabel.Text = "Auto Farm Settings"
+TitleLabel.TextSize = 20
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Function to create toggles for each skill
+local function createToggle(button, name, position, callback)
+    button.Parent = Frame
+    button.Size = UDim2.new(0, 100, 0, 50)
+    button.Position = position
+    button.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+    button.Text = name
+    button.TextSize = 20
+    button.MouseButton1Click:Connect(function()
+        local state = button.BackgroundColor3 == Color3.fromRGB(0, 255, 0)
+        button.BackgroundColor3 = state and Color3.fromRGB(100, 100, 100) or Color3.fromRGB(0, 255, 0)
+        callback(not state)
+    end)
+end
+
+-- Add skill toggles
+createToggle(ZToggle, "Z Skill", UDim2.new(0, 20, 0, 60), function(value)
+    print("Z skill: ", value)
+    skillStates["Z"] = value
+end)
+
+createToggle(XToggle, "X Skill", UDim2.new(0, 20, 0, 120), function(value)
+    print("X skill: ", value)
+    skillStates["X"] = value
+end)
+
+createToggle(CToggle, "C Skill", UDim2.new(0, 160, 0, 60), function(value)
+    print("C skill: ", value)
+    skillStates["C"] = value
+end)
+
+createToggle(VToggle, "V Skill", UDim2.new(0, 160, 0, 120), function(value)
+    print("V skill: ", value)
+    skillStates["V"] = value
+end)
+
+-- Add Distance TextBox
+DistanceTextbox.Parent = Frame
+DistanceTextbox.Size = UDim2.new(0, 260, 0, 50)
+DistanceTextbox.Position = UDim2.new(0, 20, 0, 200)
+DistanceTextbox.Text = "2.5"
+DistanceTextbox.TextSize = 20
+DistanceTextbox.PlaceholderText = "Enter Distance"
+DistanceTextbox.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+DistanceTextbox.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+DistanceTextbox.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local distanceValue = tonumber(DistanceTextbox.Text)
+        if distanceValue then
+            print("Distance set to: ", distanceValue)
+            Distancehigh = distanceValue
+        else
+            print("Invalid input")
+        end
+    end
+end)
