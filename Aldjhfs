@@ -102,6 +102,8 @@ end
 local function processSkills()
     while true do
         if not isProcessing and #skillQueue > 0 then
+        local WepSkill = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
+        local Weaponz = "FS_" .. WepSkill .. "Z"
             isProcessing = true
             local skill = table.remove(skillQueue, 1)
             local skillName, weapon, interval = skill.name, skill.weapon, skill.interval
