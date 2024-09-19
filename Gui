@@ -7,13 +7,14 @@ Frame.Name = "MainFrame"
 Frame.Parent = ScreenGui
 Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)  -- สีพื้นหลังเป็นสีดำอมเทา
 Frame.Size = UDim2.new(0.7, 0, 0.7, 0)  -- ขนาด 70% ของหน้าจอ
+Frame.Position = UDim2.new(0.15, 0, 0.15, 0)  -- ศูนย์กลางของหน้าจอ
 
 local CloseButton = Instance.new("TextButton")
 CloseButton.Name = "CloseButton"
 CloseButton.Parent = Frame
 CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- สีพื้นหลังของปุ่มเป็นสีแดง
 CloseButton.Size = UDim2.new(0.1, 0, 0.1, 0)  -- ขนาดของปุ่ม
-CloseButton.Position = UDim2.new(0.9, 0, 0.1, 0)  -- ตำแหน่งของปุ่ม
+CloseButton.Position = UDim2.new(0.9, 0, 0, 0)  -- ตำแหน่งของปุ่ม
 CloseButton.Text = "X"
 CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)  -- สีข้อความของปุ่มเป็นสีขาว
 CloseButton.TextScaled = true
