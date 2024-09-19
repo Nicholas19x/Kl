@@ -94,14 +94,12 @@ end
 
 local function handleSkill(skillName, weapon, interval)
     while true do
-        if skillStates[skillName] and not Stable then
-            Stable = true
+        if skillStates[skillName]
             pcall(function()
                 useSkill(weapon, "Down")
                 wait(0.15)
                 useSkill(weapon, "Up")
             end)
-            Stable = false
         end
         wait(interval)
     end
