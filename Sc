@@ -97,7 +97,7 @@ local function handleSkill(skillName, weapon, interval)
         if skillStates[skillName] then
             pcall(function()
                 useSkill(weapon, "Down")
-                wait(0.15)
+                wait(0.5)
                 useSkill(weapon, "Up")
             end)
         end
