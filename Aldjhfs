@@ -79,10 +79,6 @@ local Section = AutofarmSettingTab:AddSection({
 	Name = "Skill"
 })
 
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local player = Players.LocalPlayer
 
 local Weapon, SwordWeapon, Weaponz, Weaponx, Weaponc, Weaponv, SwordWeaponz, SwordWeaponx
 
@@ -135,11 +131,11 @@ spawn(function()
         if skillStates["Z"] then
             pcall(function()
                 useSkill(SwordWeaponz, "Down")
-                wait(0.4)
+                wait(0.1)
                 useSkill(SwordWeaponz, "Up")
-                wait(0.4)
+                wait(0.1)
                 useSkill(Weaponz, "Down")
-                wait(0.4)
+                wait(0.1)
                 useSkill(Weaponz, "Up")
             end)
         end
@@ -147,7 +143,7 @@ spawn(function()
         if skillStates["X"] then
             pcall(function()
                 useSkill(SwordWeaponx, "Down")
-                wait(0.4)
+                wait(0.1)
                 useSkill(SwordWeaponx, "Up")
             end)
         end
@@ -155,7 +151,7 @@ spawn(function()
         if skillStates["C"] then
             pcall(function()
                 useSkill(Weaponc, "Down")
-                wait(0.4)
+                wait(0.1)
                 useSkill(Weaponc, "Up")
             end)
         end
@@ -163,12 +159,12 @@ spawn(function()
         if skillStates["V"] then
             pcall(function()
                 useSkill(Weaponv, "Down")
-                wait(0.4)
+                wait(0.1)
                 useSkill(Weaponv, "Up")
             end)
         end
 
-        wait(2) -- Adjust wait time as needed
+        wait(0.1) -- Adjust wait time as needed
     end
 end)
 
