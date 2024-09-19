@@ -80,12 +80,7 @@ local Section = AutofarmSettingTab:AddSection({
 })
 
 
-    local Ma = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
-    local Sa = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
-    local Weaponz = "FS_" .. Ma .. "_Z"
-    local Weaponx = "FS_" .. Ma .. "_X"
-    local Weaponc = "FS_" .. Ma .. "_C"
-    local Weaponv = "FS_" .. Ma .. "_V"
+    
     local SwordWeaponz = "SW_" .. Sa .. "_Z"
     local SwordWeaponx = "SW_" .. Sa .. "_X"
 
@@ -110,6 +105,8 @@ local function handleSkill(skillName, weapon, interval)
         if skillStates[skillName] and not Stable then
             Stable = true
             pcall(function()
+    local Ma = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
+    local Sa = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
                 useSkill(weapon, "Down")
                 wait(0.15)
                 useSkill(weapon, "Up")
@@ -120,10 +117,10 @@ local function handleSkill(skillName, weapon, interval)
     end
 end
 
-spawn(function() handleSkill("Z", SwordWeaponz, 0.2) end)
-spawn(function() handleSkill("X", SwordWeaponx, 0.2) end)
-spawn(function() handleSkill("C", Weaponc, 0.2) end)
-spawn(function() handleSkill("V", Weaponv, 0.2) end)
+spawn(function() handleSkill("Z", "FS_" .. Ma .. "_Z", 0.2) end)
+spawn(function() handleSkill("X", "FS_" .. Ma .. "_X", 0.2) end)
+spawn(function() handleSkill("C", "FS_" .. Ma .. "_C", 0.2) end)
+spawn(function() handleSkill("V", "FS_" .. Ma .. "_V", 0.2) end)
 
 AutofarmSettingTab:AddToggle({
     Name = "Z",
