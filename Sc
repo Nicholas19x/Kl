@@ -87,24 +87,17 @@ local skillStates = {
 }
 
 
-local function useSkill(weapon, skillType)
-    local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
-    game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-end
-
 local function handleSkill(skillName, weapon, interval)
-    while true do
-        if skillStates[skillName] then
-            pcall(function()
-                useSkill(weapon, "Down")
-                wait(0.5)
-                useSkill(weapon, "Up")
-            end)
-        end
-        wait(interval)
-    end
+    while wait(interval) do
+    if skillStates[skillName] then
+    pcall(function()
+    local args = { [1] = weapon, [2] = { ["Down"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
+    game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+    wait(0.2)
+    local args = { [1] = weapon, [2] = { ["Up"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
+    game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+end)
 end
-
 
 spawn(function() handleSkill("Z", "FS_" .. game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value .. "_Z", 0.2) end)
 spawn(function() handleSkill("X", "FS_" .. game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value .. "_X", 0.2) end)
