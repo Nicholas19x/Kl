@@ -1,95 +1,33 @@
--- สร้าง ScreenGui และ GUI หลัก
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "MainGui"
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+-- สร้าง ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.CoreGui
 
-local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0.5, 0, 0.5, 0)  -- ขนาดเล็กลงประมาณครึ่งหนึ่งของหน้าจอ
-mainFrame.Position = UDim2.new(0.25, 0, 0.25, 0)
-mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25) -- ธีมสีดำ
-mainFrame.Parent = screenGui
+-- สร้าง Frame
+local MainFrame = Instance.new("Frame")
+MainFrame.Parent = ScreenGui
+MainFrame.Size = UDim2.new(0.5, 0, 0.5, 0)
+MainFrame.Position = UDim2.new(0.25, 0, 0.25, 0)
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- สีดำเข้ม
 
--- สร้างปุ่มปิด
-local closeButton = Instance.new("TextButton")
-closeButton.Size = UDim2.new(0.1, 0, 0.1, 0)
-closeButton.Position = UDim2.new(0.9, 0, 0, 0)
-closeButton.Text = "X"
-closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- สีแดง
-closeButton.TextColor3 = Color3.fromRGB(240, 240, 240)
-closeButton.Parent = mainFrame
+-- สร้าง TextLabel
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Parent = MainFrame
+TitleLabel.Text = "Main Setting"
+TitleLabel.Size = UDim2.new(1, 0, 0.1, 0)
+TitleLabel.TextColor3 = Color3.new(1, 1, 1) -- สีขาว
 
-closeButton.MouseButton1Click:Connect(function()
-    screenGui:Destroy() -- ปิด GUI
-end)
+-- สร้าง Dropdown
+local DropdownFarm = Instance.new("Dropdown")
+DropdownFarm.Parent = MainFrame
+DropdownFarm.Position = UDim2.new(0, 10, 0.2, 0)
+DropdownFarm.Size = UDim2.new(0.5, 0, 0.1, 0)
+DropdownFarm.Add("Behind")
+DropdownFarm.Add("Front")
 
--- สร้างแท็บด้านข้าง
-local tabFrame = Instance.new("Frame")
-tabFrame.Size = UDim2.new(0.3, 0, 1, 0)
-tabFrame.Position = UDim2.new(0, 0, 0, 0)
-tabFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35) -- สีพื้นหลังของแท็บ
-tabFrame.Parent = mainFrame
+-- ... (สร้าง Object อื่นๆ เช่น CheckBox, Slider)
 
-local tabButton1 = Instance.new("TextButton")
-tabButton1.Size = UDim2.new(1, 0, 0.2, 0)
-tabButton1.Position = UDim2.new(0, 0, 0, 0)
-tabButton1.Text = "Page 1"
-tabButton1.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-tabButton1.TextColor3 = Color3.fromRGB(240, 240, 240)
-tabButton1.Parent = tabFrame
-
-local tabButton2 = Instance.new("TextButton")
-tabButton2.Size = UDim2.new(1, 0, 0.2, 0)
-tabButton2.Position = UDim2.new(0, 0, 0.2, 0)
-tabButton2.Text = "Page 2"
-tabButton2.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-tabButton2.TextColor3 = Color3.fromRGB(240, 240, 240)
-tabButton2.Parent = tabFrame
-
--- ฟังก์ชันสร้าง Toggle และ Button
-local function createToggle()
-    local toggleFrame = Instance.new("Frame")
-    toggleFrame.Size = UDim2.new(0.5, 0, 0.1, 0)
-    toggleFrame.Position = UDim2.new(0.2, 0, 0.1, 0)
-    toggleFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    toggleFrame.Parent = mainFrame
-
-    local toggleButton = Instance.new("TextButton")
-    toggleButton.Size = UDim2.new(1, 0, 1, 0)
-    toggleButton.Text = "Toggle"
-    toggleButton.BackgroundColor3 = Color3.fromRGB(0, 146, 214)
-    toggleButton.TextColor3 = Color3.fromRGB(240, 240, 240)
-    toggleButton.Parent = toggleFrame
-end
-
-local function createButton()
-    local button = Instance.new("TextButton")
-    button.Size = UDim2.new(0.5, 0, 0.1, 0)
-    button.Position = UDim2.new(0.2, 0, 0.2, 0)
-    button.Text = "Button"
-    button.BackgroundColor3 = Color3.fromRGB(43, 105, 159)
-    button.TextColor3 = Color3.fromRGB(240, 240, 240)
-    button.Parent = mainFrame
-end
-
-createToggle()
-createButton()
-
--- ฟังก์ชันจัดการการเปลี่ยนหน้า
-local function showPage(pageNumber)
-    -- ซ่อนและแสดงหน้าแท็บตามหมายเลข
-    if pageNumber == 1 then
-        -- แสดงหน้า 1
-        print("Showing Page 1")
-    elseif pageNumber == 2 then
-        -- แสดงหน้า 2
-        print("Showing Page 2")
-    end
-end
-
-tabButton1.MouseButton1Click:Connect(function()
-    showPage(1)
-end)
-
-tabButton2.MouseButton1Click:Connect(function()
-    showPage(2)
+-- เชื่อมโยงเหตุการณ์เมื่อมีการเลือกค่าใน Dropdown
+DropdownFarm.Changed:Connect(function(newValue)
+    print("คุณเลือก: " .. newValue)
+    -- เพิ่มโค้ดเพื่อทำสิ่งอื่นๆ เช่น เปลี่ยนค่าตัวแปรอื่นๆ, เรียกฟังก์ชันอื่นๆ
 end)
