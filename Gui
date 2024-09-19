@@ -1,33 +1,24 @@
--- สร้าง ScreenGui
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Parent = game.CoreGui
+ScreenGui.Name = "DarkThemeGui"
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
--- สร้าง Frame
-local MainFrame = Instance.new("Frame")
-MainFrame.Parent = ScreenGui
-MainFrame.Size = UDim2.new(0.5, 0, 0.5, 0)
-MainFrame.Position = UDim2.new(0.25, 0, 0.25, 0)
-MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- สีดำเข้ม
+local Frame = Instance.new("Frame")
+Frame.Name = "MainFrame"
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)  -- สีพื้นหลังเป็นสีดำอมเทา
+Frame.Size = UDim2.new(0.7, 0, 0.7, 0)  -- ขนาด 70% ของหน้าจอ
 
--- สร้าง TextLabel
-local TitleLabel = Instance.new("TextLabel")
-TitleLabel.Parent = MainFrame
-TitleLabel.Text = "Main Setting"
-TitleLabel.Size = UDim2.new(1, 0, 0.1, 0)
-TitleLabel.TextColor3 = Color3.new(1, 1, 1) -- สีขาว
+local CloseButton = Instance.new("TextButton")
+CloseButton.Name = "CloseButton"
+CloseButton.Parent = Frame
+CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- สีพื้นหลังของปุ่มเป็นสีแดง
+CloseButton.Size = UDim2.new(0.1, 0, 0.1, 0)  -- ขนาดของปุ่ม
+CloseButton.Position = UDim2.new(0.9, 0, 0.1, 0)  -- ตำแหน่งของปุ่ม
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)  -- สีข้อความของปุ่มเป็นสีขาว
+CloseButton.TextScaled = true
 
--- สร้าง Dropdown
-local DropdownFarm = Instance.new("Dropdown")
-DropdownFarm.Parent = MainFrame
-DropdownFarm.Position = UDim2.new(0, 10, 0.2, 0)
-DropdownFarm.Size = UDim2.new(0.5, 0, 0.1, 0)
-DropdownFarm.Add("Behind")
-DropdownFarm.Add("Front")
-
--- ... (สร้าง Object อื่นๆ เช่น CheckBox, Slider)
-
--- เชื่อมโยงเหตุการณ์เมื่อมีการเลือกค่าใน Dropdown
-DropdownFarm.Changed:Connect(function(newValue)
-    print("คุณเลือก: " .. newValue)
-    -- เพิ่มโค้ดเพื่อทำสิ่งอื่นๆ เช่น เปลี่ยนค่าตัวแปรอื่นๆ, เรียกฟังก์ชันอื่นๆ
+-- ฟังก์ชันปิด GUI เมื่อคลิกปุ่ม
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
 end)
