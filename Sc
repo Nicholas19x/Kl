@@ -106,6 +106,8 @@ end
 -- Use coroutine.wrap instead of spawn
 coroutine.wrap(function() handleSkill("Z", "FS_" .. game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value .. "_Z", 0.2) end)()
 coroutine.wrap(function() handleSkill("X", "FS_" .. game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value .. "_X", 0.2) end)()
+coroutine.wrap(function() handleSkill("Z", "SW_" .. game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value .. "_Z", 0.2) end)()
+coroutine.wrap(function() handleSkill("X", "SW_" .. game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value .. "_X", 0.2) end)()
 coroutine.wrap(function() handleSkill("C", "FS_" .. game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value .. "_C", 0.2) end)()
 coroutine.wrap(function() handleSkill("V", "FS_" .. game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value .. "_V", 0.2) end)()
 
