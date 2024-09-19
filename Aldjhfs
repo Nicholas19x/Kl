@@ -80,8 +80,6 @@ local Section = AutofarmSettingTab:AddSection({
 })
 
 
-local Weapon, SwordWeapon, Weaponz, Weaponx, Weaponc, Weaponv, SwordWeaponz, SwordWeaponx
-
 local function updateWeapons()
     local melee = player.PlayerStats.FightingStyle.Value
     local sword = player.PlayerStats.SwordName.Value
@@ -104,69 +102,33 @@ local skillStates = {
     V = false
 }
 
+local Stable = false
+
 local function useSkill(weapon, skillType)
     local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
-    pcall(function()
-        ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-    end)
+    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
 end
 
 local function handleSkill(skillName, weapon, interval)
-    while true do
-        if skillStates[skillName] then
+    updateWeapons()
+        while true do
+        if skillStates[skillName] and not Stable then
+            Stable = true
             pcall(function()
                 useSkill(weapon, "Down")
-                wait(0.1)
+                wait(0.15)
                 useSkill(weapon, "Up")
             end)
+       Stable = false
         end
         wait(interval)
     end
 end
 
-spawn(function()
-    while true do
-        updateWeapons()
-
-        if skillStates["Z"] then
-            pcall(function()
-                useSkill(SwordWeaponz, "Down")
-                wait(0.1)
-                useSkill(SwordWeaponz, "Up")
-                wait(0.1)
-                useSkill(Weaponz, "Down")
-                wait(0.1)
-                useSkill(Weaponz, "Up")
-            end)
-        end
-
-        if skillStates["X"] then
-            pcall(function()
-                useSkill(SwordWeaponx, "Down")
-                wait(0.1)
-                useSkill(SwordWeaponx, "Up")
-            end)
-        end
-
-        if skillStates["C"] then
-            pcall(function()
-                useSkill(Weaponc, "Down")
-                wait(0.1)
-                useSkill(Weaponc, "Up")
-            end)
-        end
-
-        if skillStates["V"] then
-            pcall(function()
-                useSkill(Weaponv, "Down")
-                wait(0.1)
-                useSkill(Weaponv, "Up")
-            end)
-        end
-
-        wait(0.1) -- Adjust wait time as needed
-    end
-end)
+spawn(function() handleSkill("Z", SwordWeaponz, 0.2) end)
+spawn(function() handleSkill("X", SwordWeaponx, 0.2) end)
+spawn(function() handleSkill("C", Weaponc, 0.2) end)
+spawn(function() handleSkill("V", Weaponv, 0.2) end)
 
 AutofarmSettingTab:AddToggle({
     Name = "Z",
