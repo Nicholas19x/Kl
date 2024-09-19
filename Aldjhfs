@@ -20,6 +20,107 @@ local TeleportTab = Window:MakeTab({
     PremiumOnly = false
 })
 
+local Section = AutofarmSettingTab:AddSection({
+	Name = "Skill"
+})
+
+AutofarmSettingTab:AddTextbox({
+    Name = "Distance",
+    Default = "2.5",
+    TextDisappear = true,
+    Callback = function(Value)
+        Distancehigh = tonumber(Value)
+    end    
+})
+
+AutofarmSettingTab:AddToggle({
+    Name = "Z",
+    Default = false,
+    Callback = function(value)
+        skillStates["Z"] = value
+    end
+})
+
+AutofarmSettingTab:AddToggle({
+    Name = "X",
+    Default = false,
+    Callback = function(value)
+        skillStates["X"] = value
+    end
+})
+
+AutofarmSettingTab:AddToggle({
+    Name = "C",
+    Default = false,
+    Callback = function(value)
+        skillStates["C"] = value
+    end
+})
+
+AutofarmSettingTab:AddToggle({
+    Name = "V",
+    Default = false,
+    Callback = function(value)
+        skillStates["V"] = value
+    end
+})
+
+AutofarmTab:AddToggle({
+    Name = "Auto farm",
+    Default = false,
+    Callback = function(Value)
+        _G.Auto_Farm = Value
+
+        local player = game.Players.LocalPlayer
+        local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+
+        if not _G.Auto_Farm then
+            if hrp then
+                local existingGyro = hrp:FindFirstChild("BodyGyro")
+                if existingGyro then existingGyro:Destroy() end
+
+                local existingPosition = hrp:FindFirstChild("BodyPosition")
+                if existingPosition then existingPosition:Destroy() end
+
+                local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+                if humanoid then
+                    humanoid.PlatformStand = false
+                end
+            end
+        end
+    end    
+})
+
+local function createButtonsForIslands()
+    local areas = game:GetService("Workspace"):FindFirstChild("Areas")
+    if not areas then
+        return
+    end
+
+    local areaChildren = areas:GetChildren()
+    
+    for _, area in pairs(areaChildren) do
+        local islandName = area.Name
+        if teleportPositions[islandName] then
+            local buttonName = "Go to " .. islandName
+            local callback = function()
+                teleportToPosition(islandName)
+            end
+            
+            if TeleportTab and TeleportTab.AddButton then
+                TeleportTab:AddButton({
+                    Name = buttonName,
+                    Callback = callback
+                })
+            end
+        end
+    end
+end
+
+createButtonsForIslands()
+
+
+
 local vu = game:GetService("VirtualUser")
 game:GetService("Players").LocalPlayer.Idled:connect(function()
     vu:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
@@ -75,16 +176,9 @@ spawn(function()
         end)
     end
 end)
-local Section = AutofarmSettingTab:AddSection({
-	Name = "Skill"
-})
 
-
-    
     local SwordWeaponz = "SW_" .. Sa .. "_Z"
     local SwordWeaponx = "SW_" .. Sa .. "_X"
-
-
 
 local skillStates = {
     Z = false,
@@ -121,48 +215,6 @@ spawn(function() handleSkill("Z", "FS_" .. Ma .. "_Z", 0.2) end)
 spawn(function() handleSkill("X", "FS_" .. Ma .. "_X", 0.2) end)
 spawn(function() handleSkill("C", "FS_" .. Ma .. "_C", 0.2) end)
 spawn(function() handleSkill("V", "FS_" .. Ma .. "_V", 0.2) end)
-
-AutofarmSettingTab:AddToggle({
-    Name = "Z",
-    Default = false,
-    Callback = function(value)
-        skillStates["Z"] = value
-    end
-})
-
-AutofarmSettingTab:AddToggle({
-    Name = "X",
-    Default = false,
-    Callback = function(value)
-        skillStates["X"] = value
-    end
-})
-
-AutofarmSettingTab:AddToggle({
-    Name = "C",
-    Default = false,
-    Callback = function(value)
-        skillStates["C"] = value
-    end
-})
-
-AutofarmSettingTab:AddToggle({
-    Name = "V",
-    Default = false,
-    Callback = function(value)
-        skillStates["V"] = value
-    end
-})
-
-
-AutofarmSettingTab:AddTextbox({
-    Name = "Distance",
-    Default = "2.5",
-    TextDisappear = true,
-    Callback = function(Value)
-        Distancehigh = tonumber(Value)
-    end    
-})
 
 function checklevel()
     local lv = game:GetService("Players").LocalPlayer.PlayerStats.lvl.Value
@@ -298,31 +350,6 @@ spawn(function()
     end
 end)
 
-AutofarmTab:AddToggle({
-    Name = "Auto farm",
-    Default = false,
-    Callback = function(Value)
-        _G.Auto_Farm = Value
-
-        local player = game.Players.LocalPlayer
-        local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-
-        if not _G.Auto_Farm then
-            if hrp then
-                local existingGyro = hrp:FindFirstChild("BodyGyro")
-                if existingGyro then existingGyro:Destroy() end
-
-                local existingPosition = hrp:FindFirstChild("BodyPosition")
-                if existingPosition then existingPosition:Destroy() end
-
-                local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-                if humanoid then
-                    humanoid.PlatformStand = false
-                end
-            end
-        end
-    end    
-})
 
 local teleportPositions = {
     StarterIsland = Vector3.new(-2091, 300, -4615),
@@ -343,31 +370,3 @@ local function teleportToPosition(islandName)
         humanoidRootPart.CFrame = CFrame.new(position)
     end
 end
-
-local function createButtonsForIslands()
-    local areas = game:GetService("Workspace"):FindFirstChild("Areas")
-    if not areas then
-        return
-    end
-
-    local areaChildren = areas:GetChildren()
-    
-    for _, area in pairs(areaChildren) do
-        local islandName = area.Name
-        if teleportPositions[islandName] then
-            local buttonName = "Go to " .. islandName
-            local callback = function()
-                teleportToPosition(islandName)
-            end
-            
-            if TeleportTab and TeleportTab.AddButton then
-                TeleportTab:AddButton({
-                    Name = buttonName,
-                    Callback = callback
-                })
-            end
-        end
-    end
-end
-
-createButtonsForIslands()
