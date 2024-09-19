@@ -4,17 +4,30 @@ screenGui.Name = "MainGui"
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0.8, 0, 1, 0)
-mainFrame.Position = UDim2.new(0.2, 0, 0, 0)
+mainFrame.Size = UDim2.new(0.5, 0, 0.5, 0)  -- ขนาดเล็กลงประมาณครึ่งหนึ่งของหน้าจอ
+mainFrame.Position = UDim2.new(0.25, 0, 0.25, 0)
 mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25) -- ธีมสีดำ
 mainFrame.Parent = screenGui
 
+-- สร้างปุ่มปิด
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+closeButton.Position = UDim2.new(0.9, 0, 0, 0)
+closeButton.Text = "X"
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- สีแดง
+closeButton.TextColor3 = Color3.fromRGB(240, 240, 240)
+closeButton.Parent = mainFrame
+
+closeButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy() -- ปิด GUI
+end)
+
 -- สร้างแท็บด้านข้าง
 local tabFrame = Instance.new("Frame")
-tabFrame.Size = UDim2.new(0.2, 0, 1, 0)
+tabFrame.Size = UDim2.new(0.3, 0, 1, 0)
 tabFrame.Position = UDim2.new(0, 0, 0, 0)
 tabFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35) -- สีพื้นหลังของแท็บ
-tabFrame.Parent = screenGui
+tabFrame.Parent = mainFrame
 
 local tabButton1 = Instance.new("TextButton")
 tabButton1.Size = UDim2.new(1, 0, 0.2, 0)
@@ -35,8 +48,8 @@ tabButton2.Parent = tabFrame
 -- ฟังก์ชันสร้าง Toggle และ Button
 local function createToggle()
     local toggleFrame = Instance.new("Frame")
-    toggleFrame.Size = UDim2.new(0.2, 0, 0.1, 0)
-    toggleFrame.Position = UDim2.new(0.1, 0, 0.1, 0)
+    toggleFrame.Size = UDim2.new(0.5, 0, 0.1, 0)
+    toggleFrame.Position = UDim2.new(0.2, 0, 0.1, 0)
     toggleFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     toggleFrame.Parent = mainFrame
 
@@ -50,8 +63,8 @@ end
 
 local function createButton()
     local button = Instance.new("TextButton")
-    button.Size = UDim2.new(0.2, 0, 0.1, 0)
-    button.Position = UDim2.new(0.1, 0, 0.2, 0)
+    button.Size = UDim2.new(0.5, 0, 0.1, 0)
+    button.Position = UDim2.new(0.2, 0, 0.2, 0)
     button.Text = "Button"
     button.BackgroundColor3 = Color3.fromRGB(43, 105, 159)
     button.TextColor3 = Color3.fromRGB(240, 240, 240)
