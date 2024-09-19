@@ -81,16 +81,14 @@ local Section = AutofarmSettingTab:AddSection({
 
 
 local function updateWeapons()
-    local melee = player.PlayerStats.FightingStyle.Value
-    local sword = player.PlayerStats.SwordName.Value
-    Weapon = "FS_" .. melee .. "_M1"
-    SwordWeapon = "SW_" .. sword .. "_M1"
-    Weaponz = "FS_" .. melee .. "_Z"
-    Weaponx = "FS_" .. melee .. "_X"
-    Weaponc = "FS_" .. melee .. "_C"
-    Weaponv = "FS_" .. melee .. "_V"
-    SwordWeaponz = "SW_" .. sword .. "_Z"
-    SwordWeaponx = "SW_" .. sword .. "_X"
+    local Ma = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
+    local Sa = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
+    Weaponz = "FS_" .. Ma .. "_Z"
+    Weaponx = "FS_" .. Ma .. "_X"
+    Weaponc = "FS_" .. Ma .. "_C"
+    Weaponv = "FS_" .. Ma .. "_V"
+    SwordWeaponz = "SW_" .. Sa .. "_Z"
+    SwordWeaponx = "SW_" .. Sa .. "_X"
 end
 
 updateWeapons()
