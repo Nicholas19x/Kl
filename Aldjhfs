@@ -80,18 +80,16 @@ local Section = AutofarmSettingTab:AddSection({
 })
 
 
-local function updateWeapons()
     local Ma = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
     local Sa = game:GetService("Players").LocalPlayer.PlayerStats.SwordName.Value
-    Weaponz = "FS_" .. Ma .. "_Z"
-    Weaponx = "FS_" .. Ma .. "_X"
-    Weaponc = "FS_" .. Ma .. "_C"
-    Weaponv = "FS_" .. Ma .. "_V"
-    SwordWeaponz = "SW_" .. Sa .. "_Z"
-    SwordWeaponx = "SW_" .. Sa .. "_X"
-end
+    local Weaponz = "FS_" .. Ma .. "_Z"
+    local Weaponx = "FS_" .. Ma .. "_X"
+    local Weaponc = "FS_" .. Ma .. "_C"
+    local Weaponv = "FS_" .. Ma .. "_V"
+    local SwordWeaponz = "SW_" .. Sa .. "_Z"
+    local SwordWeaponx = "SW_" .. Sa .. "_X"
 
-updateWeapons()
+
 
 local skillStates = {
     Z = false,
@@ -108,7 +106,6 @@ local function useSkill(weapon, skillType)
 end
 
 local function handleSkill(skillName, weapon, interval)
-    updateWeapons()
         while true do
         if skillStates[skillName] and not Stable then
             Stable = true
