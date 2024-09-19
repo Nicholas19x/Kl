@@ -1,89 +1,82 @@
-local ScreenGui = Instance.new("ScreenGui")
-local Frame = Instance.new("Frame")
-local TitleLabel = Instance.new("TextLabel")
+-- สร้าง ScreenGui และ GUI หลัก
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "MainGui"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
--- สร้าง Toggle ปุ่มสำหรับสกิลต่างๆ
-local ZToggle = Instance.new("TextButton")
-local XToggle = Instance.new("TextButton")
-local CToggle = Instance.new("TextButton")
-local VToggle = Instance.new("TextButton")
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0.8, 0, 1, 0)
+mainFrame.Position = UDim2.new(0.2, 0, 0, 0)
+mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25) -- ธีมสีดำ
+mainFrame.Parent = screenGui
 
--- สร้าง TextBox สำหรับตั้งค่าระยะฟาร์ม
-local DistanceTextbox = Instance.new("TextBox")
+-- สร้างแท็บด้านข้าง
+local tabFrame = Instance.new("Frame")
+tabFrame.Size = UDim2.new(0.2, 0, 1, 0)
+tabFrame.Position = UDim2.new(0, 0, 0, 0)
+tabFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35) -- สีพื้นหลังของแท็บ
+tabFrame.Parent = screenGui
 
--- GUI Properties
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-ScreenGui.Name = "AutoFarmGui"
+local tabButton1 = Instance.new("TextButton")
+tabButton1.Size = UDim2.new(1, 0, 0.2, 0)
+tabButton1.Position = UDim2.new(0, 0, 0, 0)
+tabButton1.Text = "Page 1"
+tabButton1.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+tabButton1.TextColor3 = Color3.fromRGB(240, 240, 240)
+tabButton1.Parent = tabFrame
 
-Frame.Parent = ScreenGui
-Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-Frame.Position = UDim2.new(0.4, 0, 0.3, 0)
-Frame.Size = UDim2.new(0, 300, 0, 300)
-Frame.Active = true
-Frame.Draggable = true
+local tabButton2 = Instance.new("TextButton")
+tabButton2.Size = UDim2.new(1, 0, 0.2, 0)
+tabButton2.Position = UDim2.new(0, 0, 0.2, 0)
+tabButton2.Text = "Page 2"
+tabButton2.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+tabButton2.TextColor3 = Color3.fromRGB(240, 240, 240)
+tabButton2.Parent = tabFrame
 
-TitleLabel.Parent = Frame
-TitleLabel.Size = UDim2.new(0, 300, 0, 50)
-TitleLabel.Position = UDim2.new(0, 0, 0, 0)
-TitleLabel.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-TitleLabel.Text = "Auto Farm Settings"
-TitleLabel.TextSize = 20
-TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+-- ฟังก์ชันสร้าง Toggle และ Button
+local function createToggle()
+    local toggleFrame = Instance.new("Frame")
+    toggleFrame.Size = UDim2.new(0.2, 0, 0.1, 0)
+    toggleFrame.Position = UDim2.new(0.1, 0, 0.1, 0)
+    toggleFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    toggleFrame.Parent = mainFrame
 
--- Function to create toggles for each skill
-local function createToggle(button, name, position, callback)
-    button.Parent = Frame
-    button.Size = UDim2.new(0, 100, 0, 50)
-    button.Position = position
-    button.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-    button.Text = name
-    button.TextSize = 20
-    button.MouseButton1Click:Connect(function()
-        local state = button.BackgroundColor3 == Color3.fromRGB(0, 255, 0)
-        button.BackgroundColor3 = state and Color3.fromRGB(100, 100, 100) or Color3.fromRGB(0, 255, 0)
-        callback(not state)
-    end)
+    local toggleButton = Instance.new("TextButton")
+    toggleButton.Size = UDim2.new(1, 0, 1, 0)
+    toggleButton.Text = "Toggle"
+    toggleButton.BackgroundColor3 = Color3.fromRGB(0, 146, 214)
+    toggleButton.TextColor3 = Color3.fromRGB(240, 240, 240)
+    toggleButton.Parent = toggleFrame
 end
 
--- Add skill toggles
-createToggle(ZToggle, "Z Skill", UDim2.new(0, 20, 0, 60), function(value)
-    print("Z skill: ", value)
-    skillStates["Z"] = value
-end)
+local function createButton()
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0.2, 0, 0.1, 0)
+    button.Position = UDim2.new(0.1, 0, 0.2, 0)
+    button.Text = "Button"
+    button.BackgroundColor3 = Color3.fromRGB(43, 105, 159)
+    button.TextColor3 = Color3.fromRGB(240, 240, 240)
+    button.Parent = mainFrame
+end
 
-createToggle(XToggle, "X Skill", UDim2.new(0, 20, 0, 120), function(value)
-    print("X skill: ", value)
-    skillStates["X"] = value
-end)
+createToggle()
+createButton()
 
-createToggle(CToggle, "C Skill", UDim2.new(0, 160, 0, 60), function(value)
-    print("C skill: ", value)
-    skillStates["C"] = value
-end)
-
-createToggle(VToggle, "V Skill", UDim2.new(0, 160, 0, 120), function(value)
-    print("V skill: ", value)
-    skillStates["V"] = value
-end)
-
--- Add Distance TextBox
-DistanceTextbox.Parent = Frame
-DistanceTextbox.Size = UDim2.new(0, 260, 0, 50)
-DistanceTextbox.Position = UDim2.new(0, 20, 0, 200)
-DistanceTextbox.Text = "2.5"
-DistanceTextbox.TextSize = 20
-DistanceTextbox.PlaceholderText = "Enter Distance"
-DistanceTextbox.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-DistanceTextbox.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-DistanceTextbox.FocusLost:Connect(function(enterPressed)
-    if enterPressed then
-        local distanceValue = tonumber(DistanceTextbox.Text)
-        if distanceValue then
-            print("Distance set to: ", distanceValue)
-            Distancehigh = distanceValue
-        else
-            print("Invalid input")
-        end
+-- ฟังก์ชันจัดการการเปลี่ยนหน้า
+local function showPage(pageNumber)
+    -- ซ่อนและแสดงหน้าแท็บตามหมายเลข
+    if pageNumber == 1 then
+        -- แสดงหน้า 1
+        print("Showing Page 1")
+    elseif pageNumber == 2 then
+        -- แสดงหน้า 2
+        print("Showing Page 2")
     end
+end
+
+tabButton1.MouseButton1Click:Connect(function()
+    showPage(1)
+end)
+
+tabButton2.MouseButton1Click:Connect(function()
+    showPage(2)
 end)
