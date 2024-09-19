@@ -79,6 +79,28 @@ local Section = AutofarmSettingTab:AddSection({
 	Name = "Skill"
 })
 
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local player = Players.LocalPlayer
+
+local Weapon, SwordWeapon, Weaponz, Weaponx, Weaponc, Weaponv, SwordWeaponz, SwordWeaponx
+
+local function updateWeapons()
+    local melee = player.PlayerStats.FightingStyle.Value
+    local sword = player.PlayerStats.SwordName.Value
+    Weapon = "FS_" .. melee .. "_M1"
+    SwordWeapon = "SW_" .. sword .. "_M1"
+    Weaponz = "FS_" .. melee .. "_Z"
+    Weaponx = "FS_" .. melee .. "_X"
+    Weaponc = "FS_" .. melee .. "_C"
+    Weaponv = "FS_" .. melee .. "_V"
+    SwordWeaponz = "SW_" .. sword .. "_Z"
+    SwordWeaponx = "SW_" .. sword .. "_X"
+end
+
+updateWeapons()
+
 local skillStates = {
     Z = false,
     X = false,
@@ -86,59 +108,70 @@ local skillStates = {
     V = false
 }
 
-local skillQueue = {}
-local isProcessing = false
-
 local function useSkill(weapon, skillType)
-    local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) } }
-    local success, errorMessage = pcall(function()
+    local args = { [1] = weapon, [2] = { ["Type"] = skillType, ["MouseHit"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0) } }
+    pcall(function()
         ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
     end)
-    if not success then
-        print("Error using skill: " .. errorMessage)
-    end
 end
 
-local function processSkills()
+local function handleSkill(skillName, weapon, interval)
     while true do
-        if not isProcessing and #skillQueue > 0 then
-        local WepSkill = game:GetService("Players").LocalPlayer.PlayerStats.FightingStyle.Value
-        local Weaponz = "FS_" .. WepSkill .. "Z"
-            isProcessing = true
-            local skill = table.remove(skillQueue, 1)
-            local skillName, weapon, interval = skill.name, skill.weapon, skill.interval
-            
-            if skillStates[skillName] then
-                pcall(function()
-                    useSkill(weapon, "Down")
-                    wait(0.1)  -- ปรับเวลานี้ตามความเหมาะสม
-                    useSkill(weapon, "Up")
-                end)
-            end
-            wait(interval)
-            isProcessing = false
+        if skillStates[skillName] then
+            pcall(function()
+                useSkill(weapon, "Down")
+                wait(0.1)
+                useSkill(weapon, "Up")
+            end)
         end
-        wait(0.1)
+        wait(interval)
     end
 end
 
-local function queueSkill(skillName, weapon, interval)
-    if skillStates[skillName] then
-        table.insert(skillQueue, { name = skillName, weapon = weapon, interval = interval })
+spawn(function()
+    while true do
+        updateWeapons()
+
+        if skillStates["Z"] then
+            pcall(function()
+                useSkill(SwordWeaponz, "Down")
+                wait(0.4)
+                useSkill(SwordWeaponz, "Up")
+                wait(0.4)
+                useSkill(Weaponz, "Down")
+                wait(0.4)
+                useSkill(Weaponz, "Up")
+            end)
+        end
+
+        if skillStates["X"] then
+            pcall(function()
+                useSkill(SwordWeaponx, "Down")
+                wait(0.4)
+                useSkill(SwordWeaponx, "Up")
+            end)
+        end
+
+        if skillStates["C"] then
+            pcall(function()
+                useSkill(Weaponc, "Down")
+                wait(0.4)
+                useSkill(Weaponc, "Up")
+            end)
+        end
+
+        if skillStates["V"] then
+            pcall(function()
+                useSkill(Weaponv, "Down")
+                wait(0.4)
+                useSkill(Weaponv, "Up")
+            end)
+        end
+
+        wait(2) -- Adjust wait time as needed
     end
-end
+end)
 
-spawn(processSkills)
-
--- เพิ่มทักษะในคิว
-queueSkill("Z", SwordWeaponz, 0.6)
-queueSkill("Z", Weaponz, 0.6)
-queueSkill("X", SwordWeaponx, 0.6)
-queueSkill("X", Weaponx, 0.6)
-queueSkill("C", Weaponc, 0.6)
-queueSkill("V", Weaponv, 0.6)
-
--- Add toggles to enable/disable skills
 AutofarmSettingTab:AddToggle({
     Name = "Z",
     Default = false,
